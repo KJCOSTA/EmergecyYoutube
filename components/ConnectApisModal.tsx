@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { X, Check, AlertCircle, RefreshCw, Key, Save, Server, Monitor, Trash2 } from 'lucide-react';
 import { useAPIKeysStore, StoredAPIKeys } from '@/lib/api-keys-store';
+import { useUIStore } from '@/lib/store';
 
 // Mapeamento EXATO com lib/api-keys-store.ts
 const KEY_MAP: Record<string, keyof StoredAPIKeys> = {
@@ -29,7 +30,10 @@ const API_NAMES: Record<string, string> = {
   json2video: "JSON2Video"
 };
 
-export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+export default function ConnectApisModal() {
+  const { isApiKeyModalOpen, closeApiKeyModal } = useUIStore();
+  const isOpen = isApiKeyModalOpen;
+  const onClose = closeApiKeyModal;
   const [loading, setLoading] = useState(true);
   const [serverKeys, setServerKeys] = useState<Record<string, boolean>>({});
   const [showEdit, setShowEdit] = useState<string | null>(null);

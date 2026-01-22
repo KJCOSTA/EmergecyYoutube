@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import ConnectApisModal from '@/components/ConnectApisModal';
 import { Upload, Youtube, Wifi, FileText, Sparkles, CheckCircle2, RefreshCw } from "lucide-react";
 import { useAPIKeysStore } from '@/lib/api-keys-store';
+import { useUIStore } from '@/lib/store';
 
 interface ServerStatus {
   openai?: boolean;
@@ -18,13 +18,13 @@ interface ServerStatus {
 }
 
 export default function InputPage() {
-  const [showModal, setShowModal] = useState(false);
   const [serverStatus, setServerStatus] = useState<ServerStatus>({});
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   // Pega as chaves que você salvou no navegador
   const { keys: localKeys } = useAPIKeysStore();
+  const { openApiKeyModal } = useUIStore();
 
   useEffect(() => {
     setMounted(true);
@@ -63,7 +63,7 @@ export default function InputPage() {
         </div>
         
         <button 
-          onClick={() => setShowModal(true)}
+          onClick={() => openApiKeyModal()}
           className={`px-5 py-2.5 rounded-lg font-semibold shadow-lg flex items-center gap-2 transition-all active:scale-95 whitespace-nowrap cursor-pointer hover:ring-2 ${
             isYoutubeConnected && isAIConnected 
               ? "bg-green-600 hover:bg-green-500 text-white shadow-green-500/20 hover:ring-green-500/50" 
@@ -130,7 +130,7 @@ export default function InputPage() {
                   <span className="text-sm font-medium">API Necessária</span>
                 </div>
                 <button 
-                  onClick={() => setShowModal(true)}
+                  onClick={() => openApiKeyModal()}
                   className="text-xs bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-md border border-zinc-700 transition-colors cursor-pointer"
                 >
                   Configurar Acesso
@@ -152,14 +152,12 @@ export default function InputPage() {
           </div>
         </div>
         
-        <input 
-          type="text" 
-          placeholder="Ex: Oração da Manhã, Notícias sobre IA, Review de Tech..." 
-          className="w-full bg-black/50 border border-zinc-700 rounded-xl py-4 px-4 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" 
+        <input
+          type="text"
+          placeholder="Ex: Oração da Manhã, Notícias sobre IA, Review de Tech..."
+          className="w-full bg-black/50 border border-zinc-700 rounded-xl py-4 px-4 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
         />
       </div>
-
-      <ConnectApisModal isOpen={showModal} onClose={() => { setShowModal(false); checkServerStatus(); }} />
     </div>
   );
 }

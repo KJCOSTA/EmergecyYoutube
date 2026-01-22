@@ -14,6 +14,8 @@ import {
   Key,
   ChevronRight,
 } from "lucide-react";
+import GuidelinesModal from "./GuidelinesModal";
+import ConnectApisModal from "./ConnectApisModal";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -167,6 +169,10 @@ export default function Layout({ children }: LayoutProps) {
       <main className="flex-1 min-h-screen">
         {children}
       </main>
+
+      {/* Modals */}
+      <GuidelinesModal />
+      <ConnectApisModal />
     </div>
   );
 }
