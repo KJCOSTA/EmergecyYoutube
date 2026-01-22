@@ -379,7 +379,6 @@ export default function Step5Studio() {
                     {/* Scene Actions */}
                     <div className="flex flex-col gap-2">
                       <SearchMediaButton
-                        sceneId={scene.id}
                         sceneText={scene.text}
                         isSearching={isSearchingMedia === scene.id}
                         onSearch={(query) => searchMediaForScene(scene.id, query)}
@@ -555,12 +554,10 @@ export default function Step5Studio() {
 
 // Search Media Button Component
 function SearchMediaButton({
-  sceneId: _sceneId,
   sceneText,
   isSearching,
   onSearch,
 }: {
-  sceneId: string;
   sceneText: string;
   isSearching: boolean;
   onSearch: (query: string) => void;

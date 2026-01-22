@@ -12,7 +12,6 @@ export async function POST(request: NextRequest) {
       title,
       description,
       tags,
-      thumbnailUrl: _thumbnailUrl,
       uploadSetup,
       accessToken,
     } = body as {
@@ -22,7 +21,6 @@ export async function POST(request: NextRequest) {
       title: string;
       description: string;
       tags: string[];
-      thumbnailUrl?: string;
       uploadSetup: UploadSetup;
       accessToken: string;
     };
