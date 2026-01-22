@@ -9,7 +9,7 @@ export default function InputPage() {
 
   return (
     <div className="space-y-6 p-6 max-w-7xl mx-auto animate-in fade-in duration-500">
-      {/* Header com Botão Funcional */}
+      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-zinc-900/50 p-6 rounded-xl border border-zinc-800 shadow-sm">
         <div>
           <h1 className="text-2xl font-bold text-white mb-2">Menu de Entrada</h1>
