@@ -1,9 +1,22 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { X, Check, AlertCircle, RefreshCw, Key, Save, Eye, EyeOff } from 'lucide-react';
+import { X, Check, AlertCircle, RefreshCw, Key, Save, Server, Monitor } from 'lucide-react';
+import { useAPIKeysStore } from '@/lib/api-keys-store'; // Importando a store real
 
-// Mapa de nomes amigáveis
+// Mapeamento: Nome Simples -> Nome na Store
+const KEY_MAP: Record<string, string> = {
+  openai: "openai_api_key",
+  gemini: "google_api_key",
+  anthropic: "anthropic_api_key",
+  youtube: "youtube_api_key",
+  pexels: "pexels_api_key",
+  pixabay: "pixabay_api_key",
+  elevenlabs: "elevenlabs_api_key",
+  tavily: "tavily_api_key",
+  json2video: "json2video_api_key"
+};
+
 const API_NAMES: Record<string, string> = {
   openai: "OpenAI (GPT-4)",
   gemini: "Google Gemini",
@@ -20,9 +33,11 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
   const [loading, setLoading] = useState(true);
   const [serverKeys, setServerKeys] = useState<Record<string, boolean>>({});
   const [showEdit, setShowEdit] = useState<string | null>(null);
-  const [manualKeys, setManualKeys] = useState<Record<string, string>>({});
+  const [manualInput, setManualInput] = useState("");
+  
+  // Pega as funções da store real
+  const { keys: localKeys, setKey } = useAPIKeysStore();
 
-  // Carrega status do servidor ao abrir
   useEffect(() => {
     if (isOpen) checkServerKeys();
   }, [isOpen]);
@@ -40,11 +55,14 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
     }
   };
 
-  const handleSaveKey = (key: string) => {
-    // Aqui você pode implementar a lógica para salvar no localStorage ou enviar para uma API de teste
-    // Por enquanto, vamos apenas fechar a edição para simular o salvamento visual
-    setShowEdit(null);
-    alert(`Chave ${key} salva localmente! (Implementação de persistência pendente)`);
+  const handleSaveKey = (simpleKey: string) => {
+    const storeKeyName = KEY_MAP[simpleKey];
+    if (storeKeyName) {
+      // SALVA DE VERDADE NA STORE (SessionStorage)
+      setKey(storeKeyName as any, manualInput);
+      setShowEdit(null);
+      setManualInput("");
+    }
   };
 
   if (!isOpen) return null;
@@ -53,30 +71,31 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
     <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-in fade-in duration-200">
       <div className="w-full max-w-3xl bg-[#09090b] border border-zinc-800 rounded-xl text-white shadow-2xl flex flex-col max-h-[85vh]">
         
-        {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-zinc-800 bg-zinc-900/50 rounded-t-xl">
           <div>
             <h2 className="text-xl font-bold flex items-center gap-2">
               <Key className="w-5 h-5 text-indigo-500" />
-              Gerenciar Conexões
+              Central de Conexões
             </h2>
-            <p className="text-zinc-400 text-sm">Verifique o status do servidor ou insira chaves manuais.</p>
+            <p className="text-zinc-400 text-sm">Gerencie chaves do Servidor (.env) ou Locais (Navegador).</p>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-zinc-800 rounded-full transition-colors">
+          <button onClick={onClose} className="p-2 hover:bg-zinc-800 rounded-full transition-colors cursor-pointer">
             <X className="w-6 h-6 text-zinc-400 hover:text-white" />
           </button>
         </div>
 
-        {/* Body (Scrollable) */}
         <div className="p-6 overflow-y-auto custom-scrollbar space-y-4">
           {loading ? (
              <div className="flex flex-col items-center justify-center py-12 text-zinc-500 gap-3">
                <RefreshCw className="animate-spin w-8 h-8 text-indigo-500" />
-               <p>Verificando variáveis de ambiente...</p>
+               <p>Verificando status...</p>
              </div>
           ) : (
             Object.keys(API_NAMES).map((key) => {
-              const isConnected = serverKeys[key];
+              const storeKeyName = KEY_MAP[key];
+              const isServerConnected = serverKeys[key];
+              const isLocalConnected = !!localKeys[storeKeyName as any];
+              const isConnected = isServerConnected || isLocalConnected;
               const isEditing = showEdit === key;
 
               return (
@@ -88,53 +107,53 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
                       </div>
                       <div>
                         <h3 className="font-semibold text-zinc-200">{API_NAMES[key]}</h3>
-                        <p className="text-xs text-zinc-500 font-mono mt-0.5">
-                          {isConnected ? 'Conectado via Vercel Env' : 'Chave não detectada no servidor'}
-                        </p>
+                        <div className="flex items-center gap-2 mt-1">
+                          {isServerConnected && (
+                            <span className="flex items-center gap-1 text-[10px] bg-zinc-800 px-2 py-0.5 rounded text-zinc-300">
+                              <Server className="w-3 h-3" /> Servidor
+                            </span>
+                          )}
+                          {isLocalConnected && (
+                            <span className="flex items-center gap-1 text-[10px] bg-blue-900/30 px-2 py-0.5 rounded text-blue-300 border border-blue-500/20">
+                              <Monitor className="w-3 h-3" /> Local
+                            </span>
+                          )}
+                          {!isConnected && <span className="text-[10px] text-red-400">Chave ausente</span>}
+                        </div>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2">
-                      {isConnected ? (
-                        <span className="px-3 py-1 bg-green-500/10 text-green-500 text-xs font-bold rounded-full border border-green-500/20">
-                          ATIVO
-                        </span>
-                      ) : (
-                        <button 
-                          onClick={() => setShowEdit(isEditing ? null : key)}
-                          className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium rounded-md transition-colors"
-                        >
-                          {isEditing ? 'Cancelar' : 'Editar'}
-                        </button>
-                      )}
+                      <button 
+                        onClick={() => {
+                          setShowEdit(isEditing ? null : key);
+                          setManualInput(localKeys[storeKeyName as any] || "");
+                        }}
+                        className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer border ${isEditing ? 'bg-zinc-700 border-zinc-600 text-white' : 'bg-zinc-900 border-zinc-700 text-zinc-300 hover:bg-zinc-800'}`}
+                      >
+                        {isEditing ? 'Cancelar' : (isLocalConnected ? 'Editar' : 'Adicionar')}
+                      </button>
                     </div>
                   </div>
 
-                  {/* Área de Edição Manual (Só aparece se clicar em Editar) */}
-                  {isEditing && !isConnected && (
+                  {isEditing && (
                     <div className="p-4 border-t border-zinc-800 bg-black/20 animate-in slide-in-from-top-2 duration-200">
-                      <label className="text-xs text-zinc-400 mb-1.5 block">Insira a chave manualmente (Session Storage)</label>
+                      <label className="text-xs text-zinc-400 mb-1.5 block">Cole sua chave API aqui (Salva no navegador):</label>
                       <div className="flex gap-2">
-                        <div className="relative flex-1">
-                          <input 
-                            type="password"
-                            placeholder={`Cole sua chave ${API_NAMES[key]} aqui...`}
-                            className="w-full bg-zinc-950 border border-zinc-700 rounded-md py-2 px-3 text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-                            value={manualKeys[key] || ''}
-                            onChange={(e) => setManualKeys({...manualKeys, [key]: e.target.value})}
-                          />
-                        </div>
+                        <input 
+                          type="password"
+                          placeholder={`sk-...`}
+                          className="flex-1 bg-zinc-950 border border-zinc-700 rounded-md py-2 px-3 text-sm text-white focus:outline-none focus:border-indigo-500"
+                          value={manualInput}
+                          onChange={(e) => setManualInput(e.target.value)}
+                        />
                         <button 
                           onClick={() => handleSaveKey(key)}
-                          className="bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-md text-sm font-medium flex items-center gap-2"
+                          className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md text-sm font-medium flex items-center gap-2 cursor-pointer shadow-lg shadow-indigo-500/20"
                         >
-                          <Save className="w-4 h-4" />
-                          Salvar
+                          <Save className="w-4 h-4" /> Salvar
                         </button>
                       </div>
-                      <p className="text-[10px] text-zinc-500 mt-2">
-                        * Nota: Chaves manuais são temporárias. Para produção, adicione nas variáveis de ambiente da Vercel.
-                      </p>
                     </div>
                   )}
                 </div>
@@ -143,19 +162,11 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
           )}
         </div>
         
-        {/* Footer */}
         <div className="p-6 border-t border-zinc-800 bg-zinc-900/50 rounded-b-xl flex justify-between items-center">
-          <button 
-            onClick={checkServerKeys} 
-            className="text-zinc-400 hover:text-white text-sm flex items-center gap-2 transition-colors"
-          >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-            Verificar Novamente
+          <button onClick={checkServerKeys} className="text-zinc-400 hover:text-white text-sm flex items-center gap-2 transition-colors cursor-pointer">
+            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} /> Verificar
           </button>
-          <button 
-            onClick={onClose} 
-            className="px-6 py-2.5 bg-white hover:bg-zinc-200 text-black font-bold rounded-lg transition-colors shadow-lg shadow-white/5"
-          >
+          <button onClick={onClose} className="px-6 py-2.5 bg-white hover:bg-zinc-200 text-black font-bold rounded-lg transition-colors cursor-pointer">
             Concluir
           </button>
         </div>
