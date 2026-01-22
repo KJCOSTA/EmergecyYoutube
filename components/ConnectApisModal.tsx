@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { X, Check, AlertCircle, RefreshCw, Key, Save, Server, Monitor } from 'lucide-react';
-import { useAPIKeysStore } from '@/lib/api-keys-store'; // Importando a store real
+import { useAPIKeysStore } from '@/lib/api-keys-store';
 
-// Mapeamento: Nome Simples -> Nome na Store
+// Mapeia o nome simples para o nome técnico da store
 const KEY_MAP: Record<string, string> = {
   openai: "openai_api_key",
   gemini: "google_api_key",
@@ -35,7 +35,7 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
   const [showEdit, setShowEdit] = useState<string | null>(null);
   const [manualInput, setManualInput] = useState("");
   
-  // Pega as funções da store real
+  // Puxa a função de salvar do seu sistema
   const { keys: localKeys, setKey } = useAPIKeysStore();
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
   const handleSaveKey = (simpleKey: string) => {
     const storeKeyName = KEY_MAP[simpleKey];
     if (storeKeyName) {
-      // SALVA DE VERDADE NA STORE (SessionStorage)
+      // SALVA DE VERDADE NA STORE
       setKey(storeKeyName as any, manualInput);
       setShowEdit(null);
       setManualInput("");
@@ -142,7 +142,7 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
                       <div className="flex gap-2">
                         <input 
                           type="password"
-                          placeholder={`sk-...`}
+                          placeholder={`Cole a chave ${API_NAMES[key]}...`}
                           className="flex-1 bg-zinc-950 border border-zinc-700 rounded-md py-2 px-3 text-sm text-white focus:outline-none focus:border-indigo-500"
                           value={manualInput}
                           onChange={(e) => setManualInput(e.target.value)}
