@@ -5,9 +5,21 @@ import ConnectApisModal from '@/components/ConnectApisModal';
 import { Upload, Youtube, Wifi, FileText, Sparkles, CheckCircle2, RefreshCw } from "lucide-react";
 import { useAPIKeysStore } from '@/lib/api-keys-store';
 
+interface ServerStatus {
+  openai?: boolean;
+  gemini?: boolean;
+  anthropic?: boolean;
+  youtube?: boolean;
+  pexels?: boolean;
+  pixabay?: boolean;
+  elevenlabs?: boolean;
+  tavily?: boolean;
+  json2video?: boolean;
+}
+
 export default function InputPage() {
   const [showModal, setShowModal] = useState(false);
-  const [serverStatus, setServerStatus] = useState<any>({});
+  const [serverStatus, setServerStatus] = useState<ServerStatus>({});
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 

@@ -1,5 +1,11 @@
 'use client'
-export default function Step3({ data, onApprove }: any) {
+
+interface Step3Props {
+  data: unknown;
+  onApprove: () => void;
+}
+
+export default function Step3({ onApprove }: Step3Props) {
   return (
     <>
       <h1>Revisão & Aprovação</h1>

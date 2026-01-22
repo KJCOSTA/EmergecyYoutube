@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { X, Check, AlertCircle, RefreshCw, Key, Save, Server, Monitor, Trash2 } from 'lucide-react';
-import { useAPIKeysStore } from '@/lib/api-keys-store';
+import { useAPIKeysStore, StoredAPIKeys } from '@/lib/api-keys-store';
 
 // Mapeamento EXATO com lib/api-keys-store.ts
-const KEY_MAP: Record<string, string> = {
+const KEY_MAP: Record<string, keyof StoredAPIKeys> = {
   openai: "openai_api_key",
   gemini: "google_api_key",
   anthropic: "anthropic_api_key",
@@ -64,7 +64,7 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
   const handleSaveKey = (visualKey: string) => {
     const storeKeyName = KEY_MAP[visualKey];
     if (storeKeyName) {
-      setKey(storeKeyName as any, manualInput);
+      setKey(storeKeyName, manualInput);
       setShowEdit(null);
       setManualInput("");
     }
@@ -73,7 +73,7 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
   const handleClearKey = (visualKey: string) => {
     const storeKeyName = KEY_MAP[visualKey];
     if (storeKeyName) {
-      clearKey(storeKeyName as any);
+      clearKey(storeKeyName);
     }
   };
 
@@ -106,7 +106,7 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
             Object.keys(API_NAMES).map((key) => {
               const storeKeyName = KEY_MAP[key];
               const isServerConnected = serverKeys[key];
-              const hasLocalKey = mounted && !!localKeys[storeKeyName as any];
+              const hasLocalKey = mounted && !!localKeys[storeKeyName];
               const isLocalConnected = hasLocalKey;
               const isConnected = isServerConnected || isLocalConnected;
               const isEditing = showEdit === key;
@@ -143,10 +143,10 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
                          </button>
                       )}
                       {!isServerConnected && (
-                        <button 
+                        <button
                           onClick={() => {
                             setShowEdit(isEditing ? null : key);
-                            setManualInput(localKeys[storeKeyName as any] || "");
+                            setManualInput(localKeys[storeKeyName] || "");
                           }}
                           className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer border ${isEditing ? 'bg-zinc-700 border-zinc-600 text-white' : 'bg-zinc-900 border-zinc-700 text-zinc-300 hover:bg-zinc-800'}`}
                         >

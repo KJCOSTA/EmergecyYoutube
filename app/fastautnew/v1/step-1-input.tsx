@@ -1,5 +1,10 @@
 'use client'
-export default function Step1({ onNext }: any) {
+
+interface Step1Props {
+  onNext: (data: { tema: string }) => void;
+}
+
+export default function Step1({ onNext }: Step1Props) {
   return (
     <>
       <h1>FASTAUTNEW — Entrada</h1>

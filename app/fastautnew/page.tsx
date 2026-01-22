@@ -1,10 +1,16 @@
 'use client'
 import { useState } from 'react'
 
+interface FastAutnewResult {
+  status?: string;
+  proposta?: unknown;
+  video_url?: string;
+}
+
 export default function FastAutnew() {
   const [tema, setTema] = useState('')
   const [loading, setLoading] = useState(false)
-  const [result, setResult] = useState<any>(null)
+  const [result, setResult] = useState<FastAutnewResult | null>(null)
 
   async function run() {
     setLoading(true)

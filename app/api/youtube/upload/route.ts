@@ -2,6 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { UploadData, UploadSetup } from "@/types";
 
+/**
+ * ⚠️ STUB IMPLEMENTATION - NOT PRODUCTION READY
+ *
+ * This endpoint returns simulated upload responses only.
+ * Actual YouTube upload requires:
+ * 1. OAuth2 authentication flow with youtube.upload scope
+ * 2. Resumable upload implementation
+ * 3. Video download from videoUrl
+ * 4. Proper error handling and retry logic
+ *
+ * See PRODUCTION_NOTES.md for implementation guide.
+ */
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

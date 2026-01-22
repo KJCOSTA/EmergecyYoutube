@@ -138,8 +138,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "A chave informada é inválida ou expirou.", details }, { status: 401 });
     }
 
-  } catch (error: any) {
+  } catch (error) {
     console.error("Erro interno no teste de API:", error);
-    return NextResponse.json({ error: error.message || "Erro interno no servidor" }, { status: 500 });
+    const message = error instanceof Error ? error.message : "Erro interno no servidor";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

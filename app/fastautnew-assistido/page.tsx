@@ -1,9 +1,15 @@
 'use client'
 import { useState } from 'react'
 
+interface AssistidoResult {
+  status?: string;
+  tema?: string;
+  conteudo?: string;
+}
+
 export default function FastAutnewAssistido() {
   const [tema, setTema] = useState('')
-  const [resultado, setResultado] = useState<any>(null)
+  const [resultado, setResultado] = useState<AssistidoResult | null>(null)
   const [loading, setLoading] = useState(false)
 
   async function gerar() {

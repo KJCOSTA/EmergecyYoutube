@@ -9,9 +9,9 @@ export interface ApiCheck {
 export const apiRegistry: ApiCheck[] = [
   {
     name: "GEMINI",
-    env: "GOOGLE_API_KEY",
+    env: "GOOGLE_GENERATIVE_AI_API_KEY",
     check: async () => {
-      return process.env.GOOGLE_API_KEY ? "ONLINE" : "OFFLINE";
+      return process.env.GOOGLE_GENERATIVE_AI_API_KEY ? "ONLINE" : "OFFLINE";
     }
   }
 ];

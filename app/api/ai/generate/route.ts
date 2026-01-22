@@ -1,11 +1,11 @@
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { createAnthropic } from '@ai-sdk/anthropic';
 import { createOpenAI } from '@ai-sdk/openai';
-import { streamObject, generateText } from 'ai';
+import { streamObject } from 'ai';
 import { z } from 'zod';
 
 // Configuração segura dos provedores
-const google = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY });
+const google = createGoogleGenerativeAI({ apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY });
 const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const openai = createOpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -79,8 +79,9 @@ export async function POST(req: Request) {
 
     return result.toTextStreamResponse();
 
-  } catch (error: any) {
+  } catch (error) {
     console.error("ERRO NA GERAÇÃO:", error);
-    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(JSON.stringify({ error: message }), { status: 500 });
   }
 }
