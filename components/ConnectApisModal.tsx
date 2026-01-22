@@ -7,7 +7,8 @@ interface ApiStatus {
   [key: string]: boolean;
 }
 
-export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+// Definição do Componente
+const ConnectApisModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [loading, setLoading] = useState(true);
   const [serverKeys, setServerKeys] = useState<ApiStatus>({});
 
@@ -33,14 +34,14 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-      <div className="w-full max-w-2xl bg-zinc-950 border border-zinc-800 rounded-xl text-white shadow-2xl">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+      <div className="w-full max-w-2xl bg-zinc-950 border border-zinc-800 rounded-xl text-white shadow-2xl relative">
         <div className="flex items-center justify-between p-6 border-b border-zinc-800">
           <div>
             <h2 className="text-xl font-semibold">Status das Conexões</h2>
             <p className="text-sm text-zinc-400 mt-1">Verificação automática das chaves no servidor Vercel.</p>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-zinc-800 rounded-full transition-colors">
+          <button onClick={onClose} className="p-2 hover:bg-zinc-800 rounded-full transition-colors cursor-pointer">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -59,7 +60,7 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
                 { id: 'pexels', label: 'Pexels Media' },
                 { id: 'elevenlabs', label: 'ElevenLabs Voz' }
               ].map((api) => (
-                <div key={api.id} className="flex items-center justify-between p-4 border border-zinc-800 rounded-lg bg-zinc-900/50 hover:bg-zinc-900 transition-colors">
+                <div key={api.id} className="flex items-center justify-between p-4 border border-zinc-800 rounded-lg bg-zinc-900/50">
                   <div className="flex items-center gap-4">
                     <div className={`p-2 rounded-md ${serverKeys[api.id] ? 'bg-green-500/10' : 'bg-red-500/10'}`}>
                       <Key className={`w-4 h-4 ${serverKeys[api.id] ? 'text-green-500' : 'text-red-500'}`} />
@@ -85,13 +86,13 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
         <div className="flex justify-end gap-3 p-6 border-t border-zinc-800 bg-zinc-900/30 rounded-b-xl">
            <button 
              onClick={checkServerKeys} 
-             className="px-4 py-2 text-sm font-medium text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 rounded-md transition-colors"
+             className="px-4 py-2 text-sm font-medium text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 rounded-md transition-colors cursor-pointer"
            >
              Recarregar
            </button>
            <button 
              onClick={onClose} 
-             className="px-4 py-2 text-sm font-medium text-black bg-white hover:bg-zinc-200 rounded-md transition-colors"
+             className="px-4 py-2 text-sm font-medium text-black bg-white hover:bg-zinc-200 rounded-md transition-colors cursor-pointer"
            >
              Fechar
            </button>
@@ -99,4 +100,8 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
       </div>
     </div>
   );
-}
+};
+
+// EXPORTAÇÃO DUPLA (Para evitar erros de importação default/named)
+export { ConnectApisModal };
+export default ConnectApisModal;
