@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Layout from "@/components/Layout"; // Importa o Menu Lateral
+import Layout from "@/components/Layout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="dark">
       <body className={`${inter.className} bg-[#09090b] text-white overflow-hidden`}>
-        {/* Aqui está o segredo: O Layout envolve todo o conteúdo */}
+        {/* O Layout aqui garante que o Menu Lateral apareça sempre */}
         <Layout>
           {children}
         </Layout>

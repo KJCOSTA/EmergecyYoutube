@@ -1,11 +1,32 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ConnectApisModal from '@/components/ConnectApisModal';
-import { Upload, Youtube, Wifi, FileText, Sparkles, Zap } from "lucide-react";
+import { Upload, Youtube, Wifi, FileText, Sparkles, CheckCircle2, RefreshCw } from "lucide-react";
 
 export default function InputPage() {
   const [showModal, setShowModal] = useState(false);
+  const [status, setStatus] = useState<any>({});
+  const [loading, setLoading] = useState(true);
+
+  // VERIFICAÇÃO AUTOMÁTICA AO ENTRAR NO SITE
+  useEffect(() => {
+    checkStatus();
+  }, []);
+
+  const checkStatus = async () => {
+    try {
+      const res = await fetch('/api/status');
+      const data = await res.json();
+      setStatus(data);
+    } catch (error) {
+      console.error("Erro ao verificar status:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const isYoutubeConnected = status.youtube;
 
   return (
     <div className="h-full w-full overflow-y-auto p-6 md:p-8 space-y-8 animate-in fade-in duration-500">
@@ -19,17 +40,17 @@ export default function InputPage() {
         
         <button 
           onClick={() => setShowModal(true)}
-          className="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-lg font-semibold shadow-lg shadow-indigo-500/20 flex items-center gap-2 transition-all active:scale-95 whitespace-nowrap cursor-pointer hover:ring-2 hover:ring-indigo-500/50"
+          className="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-lg font-semibold shadow-lg shadow-indigo-500/20 flex items-center gap-2 transition-all active:scale-95 whitespace-nowrap cursor-pointer"
         >
-          <Wifi className="w-4 h-4" />
-          Conectar APIs
+          {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Wifi className="w-4 h-4" />}
+          {loading ? "Verificando..." : "Gerenciar Conexões"}
         </button>
       </div>
 
       {/* Grid de Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
-        {/* Card 1: Upload */}
+        {/* Card 1: Upload (Sempre disponível) */}
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 hover:border-zinc-700 transition-all group">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-2.5 bg-blue-500/10 rounded-lg group-hover:bg-blue-500/20 transition-colors">
@@ -37,7 +58,7 @@ export default function InputPage() {
             </div>
             <div>
               <h3 className="font-semibold text-white text-lg">Upload de Métricas</h3>
-              <p className="text-xs text-zinc-500">Dados históricos do canal</p>
+              <p className="text-xs text-zinc-500">Dados históricos do canal (CSV)</p>
             </div>
           </div>
           
@@ -45,36 +66,50 @@ export default function InputPage() {
             <div className="p-3 bg-zinc-800 rounded-full mb-3 shadow-inner">
               <FileText className="w-6 h-6 text-zinc-400" />
             </div>
-            <p className="font-medium text-zinc-300">Arraste o CSV aqui</p>
-            <p className="text-xs text-zinc-500 mt-1">YouTube Studio Export</p>
+            <p className="font-medium text-zinc-300">Arraste o arquivo aqui</p>
           </div>
         </div>
 
-        {/* Card 2: YouTube Sync */}
-        <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 hover:border-zinc-700 transition-all group">
+        {/* Card 2: YouTube Sync (INTELIGENTE - Muda se estiver conectado) */}
+        <div className={`border rounded-xl p-6 transition-all group ${isYoutubeConnected ? 'bg-green-900/10 border-green-900/30' : 'bg-zinc-900/50 border-zinc-800 hover:border-zinc-700'}`}>
           <div className="flex items-center gap-3 mb-6">
-            <div className="p-2.5 bg-red-500/10 rounded-lg group-hover:bg-red-500/20 transition-colors">
-              <Youtube className="w-5 h-5 text-red-500" />
+            <div className={`p-2.5 rounded-lg transition-colors ${isYoutubeConnected ? 'bg-green-500/20' : 'bg-red-500/10'}`}>
+              <Youtube className={`w-5 h-5 ${isYoutubeConnected ? 'text-green-500' : 'text-red-500'}`} />
             </div>
             <div>
               <h3 className="font-semibold text-white text-lg">Sincronização</h3>
               <p className="text-xs text-zinc-500">Conexão em tempo real</p>
             </div>
+            {isYoutubeConnected && (
+               <span className="ml-auto bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded-full font-bold flex items-center gap-1">
+                 <CheckCircle2 className="w-3 h-3" /> ATIVO
+               </span>
+            )}
           </div>
 
           <div className="bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800 rounded-xl h-40 flex flex-col items-center justify-center p-6 text-center relative overflow-hidden">
-            <div className="z-10 flex flex-col items-center gap-3">
-              <div className="flex items-center gap-2 text-zinc-300">
-                <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                <span className="text-sm font-medium">API Necessária</span>
+            {isYoutubeConnected ? (
+              <div className="z-10 flex flex-col items-center gap-3">
+                 <div className="p-3 bg-green-500/10 rounded-full mb-1">
+                    <CheckCircle2 className="w-8 h-8 text-green-500" />
+                 </div>
+                 <p className="text-green-400 font-medium">Canal Sincronizado</p>
+                 <p className="text-zinc-500 text-xs">Pronto para gerar conteúdo</p>
               </div>
-              <button 
-                onClick={() => setShowModal(true)}
-                className="text-xs bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-md border border-zinc-700 transition-colors"
-              >
-                Configurar Acesso
-              </button>
-            </div>
+            ) : (
+              <div className="z-10 flex flex-col items-center gap-3">
+                <div className="flex items-center gap-2 text-zinc-300">
+                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                  <span className="text-sm font-medium">API Necessária</span>
+                </div>
+                <button 
+                  onClick={() => setShowModal(true)}
+                  className="text-xs bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-md border border-zinc-700 transition-colors"
+                >
+                  Configurar Acesso
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -91,20 +126,15 @@ export default function InputPage() {
           </div>
         </div>
         
-        <div className="relative">
-          <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-            <Zap className="h-5 w-5 text-zinc-500" />
-          </div>
-          <input 
-            type="text" 
-            placeholder="Ex: Oração da Manhã, Notícias sobre IA, Review de Tech..." 
-            className="w-full bg-black/50 border border-zinc-700 rounded-xl py-4 pl-10 pr-4 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
-          />
-        </div>
+        <input 
+          type="text" 
+          placeholder="Ex: Oração da Manhã, Notícias sobre IA, Review de Tech..." 
+          className="w-full bg-black/50 border border-zinc-700 rounded-xl py-4 px-4 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" 
+        />
       </div>
 
       {/* Modal de Conexões */}
-      <ConnectApisModal isOpen={showModal} onClose={() => setShowModal(false)} />
+      <ConnectApisModal isOpen={showModal} onClose={() => { setShowModal(false); checkStatus(); }} />
     </div>
   );
 }
