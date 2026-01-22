@@ -7,8 +7,7 @@ interface ApiStatus {
   [key: string]: boolean;
 }
 
-// Definição do Componente
-const ConnectApisModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [loading, setLoading] = useState(true);
   const [serverKeys, setServerKeys] = useState<ApiStatus>({});
 
@@ -34,15 +33,18 @@ const ConnectApisModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-in fade-in duration-200">
       <div className="w-full max-w-2xl bg-zinc-950 border border-zinc-800 rounded-xl text-white shadow-2xl relative">
         <div className="flex items-center justify-between p-6 border-b border-zinc-800">
           <div>
-            <h2 className="text-xl font-semibold">Status das Conexões</h2>
-            <p className="text-sm text-zinc-400 mt-1">Verificação automática das chaves no servidor Vercel.</p>
+            <h2 className="text-xl font-semibold text-white">Central de Conexões</h2>
+            <p className="text-sm text-zinc-400 mt-1">Verificação em Tempo Real (Servidor Vercel)</p>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-zinc-800 rounded-full transition-colors cursor-pointer">
-            <X className="w-5 h-5" />
+          <button 
+            onClick={onClose} 
+            className="p-2 hover:bg-zinc-800 rounded-full transition-colors cursor-pointer text-white"
+          >
+            <X className="w-6 h-6" />
           </button>
         </div>
 
@@ -66,10 +68,10 @@ const ConnectApisModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
                       <Key className={`w-4 h-4 ${serverKeys[api.id] ? 'text-green-500' : 'text-red-500'}`} />
                     </div>
                     <div>
-                      <h4 className="font-medium">{api.label}</h4>
+                      <h4 className="font-medium text-white">{api.label}</h4>
                       {serverKeys[api.id] 
-                        ? <span className="text-green-500 text-xs font-medium">Conectado (Servidor)</span>
-                        : <span className="text-red-500 text-xs font-medium">Chave ausente no Vercel</span>
+                        ? <span className="text-green-500 text-xs font-bold">CONECTADO ✅</span>
+                        : <span className="text-red-500 text-xs font-bold">AUSENTE ❌</span>
                       }
                     </div>
                   </div>
@@ -86,13 +88,13 @@ const ConnectApisModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
         <div className="flex justify-end gap-3 p-6 border-t border-zinc-800 bg-zinc-900/30 rounded-b-xl">
            <button 
              onClick={checkServerKeys} 
-             className="px-4 py-2 text-sm font-medium text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 rounded-md transition-colors cursor-pointer"
+             className="px-4 py-2 text-sm font-medium text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 rounded-md transition-colors border border-zinc-700"
            >
              Recarregar
            </button>
            <button 
              onClick={onClose} 
-             className="px-4 py-2 text-sm font-medium text-black bg-white hover:bg-zinc-200 rounded-md transition-colors cursor-pointer"
+             className="px-4 py-2 text-sm font-medium text-black bg-white hover:bg-zinc-200 rounded-md transition-colors font-bold"
            >
              Fechar
            </button>
@@ -100,8 +102,4 @@ const ConnectApisModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
       </div>
     </div>
   );
-};
-
-// EXPORTAÇÃO DUPLA (Para evitar erros de importação default/named)
-export { ConnectApisModal };
-export default ConnectApisModal;
+}
