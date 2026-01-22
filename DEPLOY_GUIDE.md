@@ -129,17 +129,12 @@ vercel --prod
 
 Antes de fazer deploy, esteja ciente das seguintes limitações:
 
-### 1. FASTAUTNEW Endpoints (Não Funcionais)
-- `/api/fastautnew/run` retorna dados simulados
-- `/api/fastautnew/render` retorna URL fake
-- **Solução**: Use o workflow completo em `/step/1-input` até `/step/6-upload`
-
-### 2. YouTube Upload (Não Implementado)
+### 1. YouTube Upload (Não Implementado)
 - Upload para YouTube requer implementação OAuth2
 - Atualmente retorna apenas mensagem informativa
 - **Solução**: Implementar fluxo OAuth2 ou fazer upload manual
 
-### 3. Sem Persistência de Dados
+### 2. Sem Persistência de Dados
 - Dados armazenados apenas no navegador (localStorage)
 - Nenhuma base de dados server-side
 - **Recomendação**: Adicionar PostgreSQL/MongoDB em produção
@@ -172,7 +167,6 @@ Após o deploy, verifique:
 - [ ] Adicionar sistema de filas para processamento
 
 ### Longo Prazo:
-- [ ] Implementar endpoints FASTAUTNEW reais
 - [ ] Adicionar cache e otimização de performance
 - [ ] Criar testes automatizados
 - [ ] Configurar CI/CD pipeline completo
