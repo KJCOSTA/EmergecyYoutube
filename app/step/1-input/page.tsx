@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import ConnectApisModal from '@/components/ConnectApisModal';
 import { Upload, Youtube, Wifi, FileText, Sparkles, CheckCircle2, RefreshCw } from "lucide-react";
-import { useAPIKeysStore } from '@/lib/api-keys-store'; // Importando a store para ler chaves locais
+import { useAPIKeysStore } from '@/lib/api-keys-store';
 
 export default function InputPage() {
   const [showModal, setShowModal] = useState(false);
@@ -11,7 +11,6 @@ export default function InputPage() {
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 
-  // Pega as chaves locais do navegador
   const { keys: localKeys } = useAPIKeysStore();
 
   useEffect(() => {
@@ -31,11 +30,8 @@ export default function InputPage() {
     }
   };
 
-  // LÓGICA CORRIGIDA: Verifica se tem chave no Servidor OU no Local
-  // Se tiver em qualquer um dos dois, considera CONECTADO.
   const isYoutubeConnected = serverStatus.youtube || (mounted && !!localKeys.youtube_api_key && localKeys.youtube_api_key.length > 5);
   
-  // Verifica se tem pelo menos uma IA conectada (OpenAI, Gemini ou Anthropic)
   const isAIConnected = 
     serverStatus.openai || (mounted && !!localKeys.openai_api_key) ||
     serverStatus.gemini || (mounted && !!localKeys.google_api_key) ||
@@ -44,7 +40,6 @@ export default function InputPage() {
   return (
     <div className="h-full w-full overflow-y-auto p-6 md:p-8 space-y-8 animate-in fade-in duration-500">
       
-      {/* Cabeçalho */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800 pb-6">
         <div>
           <h1 className="text-3xl font-bold text-white tracking-tight">Menu de Entrada</h1>
@@ -64,10 +59,8 @@ export default function InputPage() {
         </button>
       </div>
 
-      {/* Grid de Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
-        {/* Card 1: Upload (Sempre disponível) */}
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 hover:border-zinc-700 transition-all group">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-2.5 bg-blue-500/10 rounded-lg group-hover:bg-blue-500/20 transition-colors">
@@ -87,7 +80,6 @@ export default function InputPage() {
           </div>
         </div>
 
-        {/* Card 2: YouTube Sync (AGORA REAGE ÀS SUAS CHAVES LOCAIS) */}
         <div className={`border rounded-xl p-6 transition-all group ${isYoutubeConnected ? 'bg-green-900/10 border-green-900/30' : 'bg-zinc-900/50 border-zinc-800 hover:border-zinc-700'}`}>
           <div className="flex items-center gap-3 mb-6">
             <div className={`p-2.5 rounded-lg transition-colors ${isYoutubeConnected ? 'bg-green-500/20' : 'bg-red-500/10'}`}>
@@ -131,7 +123,6 @@ export default function InputPage() {
         </div>
       </div>
 
-      {/* Tema */}
       <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
         <div className="flex items-center gap-3 mb-6">
           <div className="p-2.5 bg-amber-500/10 rounded-lg">
@@ -150,7 +141,6 @@ export default function InputPage() {
         />
       </div>
 
-      {/* Modal de Conexões */}
       <ConnectApisModal isOpen={showModal} onClose={() => { setShowModal(false); checkServerStatus(); }} />
     </div>
   );
