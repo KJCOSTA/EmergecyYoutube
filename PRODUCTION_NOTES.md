@@ -4,26 +4,7 @@
 
 ### 🔴 CRITICAL - Not Production Ready
 
-#### 1. FASTAUTNEW Endpoints (Stub Implementation)
-**Files:**
-- `app/api/fastautnew/run/route.ts`
-- `app/api/fastautnew/render/route.ts`
-
-**Status:** Returns mock/fake data only
-
-**Impact:**
-- `/fastautnew` page will appear to work but generates no real content
-- No actual AI script generation
-- No actual video rendering
-
-**To Fix:**
-- Integrate with AI providers (OpenAI, Gemini, Claude) for script generation
-- Implement video rendering via JSON2Video API or alternative
-- Add proper error handling and validation
-
----
-
-#### 2. YouTube Upload (OAuth2 Not Implemented)
+#### 1. YouTube Upload (OAuth2 Not Implemented)
 **File:** `app/api/youtube/upload/route.ts`
 
 **Status:** Returns message "YouTube OAuth2 authentication required"
