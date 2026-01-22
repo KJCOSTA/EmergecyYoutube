@@ -1,14 +1,13 @@
 import { NextResponse } from 'next/server';
 
-// ESTA LINHA OBRIGA O SERVIDOR A LER AS CHAVES NA HORA (CORRIGE O "AUSENTE")
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic'; // OBRIGATÓRIO para não cachear erro
 
 export async function GET() {
   return NextResponse.json({
     openai: !!process.env.OPENAI_API_KEY,
-    gemini: !!process.env.GEMINI_API_KEY,
+    gemini: !!process.env.GEMINI_API_KEY || !!process.env.GOOGLE_GENERATIVE_AI_API_KEY,
     anthropic: !!process.env.ANTHROPIC_API_KEY,
-    youtube: !!process.env.YOUTUBEDATA_API_KEY || !!process.env.YOUTUBE_CLIENT_SECRET,
+    youtube: !!process.env.YOUTUBEDATA_API_KEY || !!process.env.YOUTUBE_API_KEY,
     pexels: !!process.env.PEXELS_API_KEY,
     pixabay: !!process.env.PIXABAY_API_KEY,
     elevenlabs: !!process.env.ELEVENLABS_API_KEY,
