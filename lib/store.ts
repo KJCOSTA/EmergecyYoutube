@@ -251,6 +251,7 @@ interface UIStore {
   isSidebarOpen: boolean;
   isGuidelinesModalOpen: boolean;
   isApiKeyModalOpen: boolean;
+  isConnectApisModalOpen: boolean;
   activeModal: string | null;
 
   toggleSidebar: () => void;
@@ -259,6 +260,7 @@ interface UIStore {
   closeGuidelinesModal: () => void;
   openApiKeyModal: () => void;
   closeApiKeyModal: () => void;
+  setConnectApisModalOpen: (open: boolean) => void;
   setActiveModal: (modal: string | null) => void;
 }
 
@@ -266,6 +268,7 @@ export const useUIStore = create<UIStore>()((set) => ({
   isSidebarOpen: true,
   isGuidelinesModalOpen: false,
   isApiKeyModalOpen: false,
+  isConnectApisModalOpen: false,
   activeModal: null,
 
   toggleSidebar: () => set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
@@ -274,5 +277,6 @@ export const useUIStore = create<UIStore>()((set) => ({
   closeGuidelinesModal: () => set({ isGuidelinesModalOpen: false }),
   openApiKeyModal: () => set({ isApiKeyModalOpen: true }),
   closeApiKeyModal: () => set({ isApiKeyModalOpen: false }),
+  setConnectApisModalOpen: (open) => set({ isConnectApisModalOpen: open }),
   setActiveModal: (modal) => set({ activeModal: modal }),
 }));

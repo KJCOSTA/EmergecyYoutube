@@ -1,13 +1,18 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { ChannelData, RecentVideo } from "@/types";
+import { getYouTubeKeys } from "@/lib/get-api-key";
 
-export async function GET() {
-  const apiKey = process.env.YOUTUBE_API_KEY;
-  const channelId = process.env.YOUTUBE_CHANNEL_ID;
+export async function GET(request: NextRequest) {
+  const { apiKey, channelId } = getYouTubeKeys(request);
 
   if (!apiKey || !channelId) {
     return NextResponse.json(
-      { error: "YouTube API key or Channel ID not configured" },
+      {
+        error: "YouTube API key or Channel ID not configured",
+        details: !apiKey
+          ? "YOUTUBE_API_KEY missing"
+          : "YOUTUBE_CHANNEL_ID missing",
+      },
       { status: 400 }
     );
   }
@@ -19,14 +24,20 @@ export async function GET() {
     );
 
     if (!channelResponse.ok) {
-      throw new Error("Failed to fetch channel data");
+      const errorData = await channelResponse.json().catch(() => ({}));
+      const errorMessage =
+        errorData?.error?.message || `HTTP ${channelResponse.status}`;
+      throw new Error(`YouTube API Error: ${errorMessage}`);
     }
 
     const channelData = await channelResponse.json();
 
     if (!channelData.items || channelData.items.length === 0) {
       return NextResponse.json(
-        { error: "Channel not found" },
+        {
+          error: "Channel not found",
+          details: `No channel found with ID: ${channelId}`,
+        },
         { status: 404 }
       );
     }
@@ -39,11 +50,17 @@ export async function GET() {
     );
 
     if (!videosResponse.ok) {
-      throw new Error("Failed to fetch videos");
+      const errorData = await videosResponse.json().catch(() => ({}));
+      const errorMessage =
+        errorData?.error?.message || `HTTP ${videosResponse.status}`;
+      throw new Error(`Failed to fetch videos: ${errorMessage}`);
     }
 
     const videosData = await videosResponse.json();
-    const videoIds = videosData.items?.map((item: { id: { videoId: string } }) => item.id.videoId).join(",") || "";
+    const videoIds =
+      videosData.items
+        ?.map((item: { id: { videoId: string } }) => item.id.videoId)
+        .join(",") || "";
 
     // Fetch video statistics
     let recentVideos: RecentVideo[] = [];
@@ -54,29 +71,32 @@ export async function GET() {
 
       if (statsResponse.ok) {
         const statsData = await statsResponse.json();
-        recentVideos = statsData.items?.map((video: {
-          id: string;
-          snippet: {
-            title: string;
-            description: string;
-            thumbnails: { medium: { url: string } };
-            publishedAt: string;
-          };
-          statistics: {
-            viewCount: string;
-            likeCount: string;
-            commentCount: string;
-          };
-        }) => ({
-          id: video.id,
-          title: video.snippet.title,
-          description: video.snippet.description,
-          thumbnailUrl: video.snippet.thumbnails.medium.url,
-          publishedAt: video.snippet.publishedAt,
-          viewCount: parseInt(video.statistics.viewCount || "0"),
-          likeCount: parseInt(video.statistics.likeCount || "0"),
-          commentCount: parseInt(video.statistics.commentCount || "0"),
-        })) || [];
+        recentVideos =
+          statsData.items?.map(
+            (video: {
+              id: string;
+              snippet: {
+                title: string;
+                description: string;
+                thumbnails: { medium: { url: string } };
+                publishedAt: string;
+              };
+              statistics: {
+                viewCount: string;
+                likeCount: string;
+                commentCount: string;
+              };
+            }) => ({
+              id: video.id,
+              title: video.snippet.title,
+              description: video.snippet.description,
+              thumbnailUrl: video.snippet.thumbnails.medium.url,
+              publishedAt: video.snippet.publishedAt,
+              viewCount: parseInt(video.statistics.viewCount || "0"),
+              likeCount: parseInt(video.statistics.likeCount || "0"),
+              commentCount: parseInt(video.statistics.commentCount || "0"),
+            })
+          ) || [];
       }
     }
 
@@ -94,7 +114,10 @@ export async function GET() {
   } catch (error) {
     console.error("YouTube API error:", error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Failed to fetch YouTube data" },
+      {
+        error: "Failed to fetch YouTube data",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
       { status: 500 }
     );
   }
