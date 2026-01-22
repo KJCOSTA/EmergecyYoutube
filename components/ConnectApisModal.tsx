@@ -61,7 +61,7 @@ const API_SERVICES: APIService[] = [
 
 export default function ConnectApisModal() {
   const { isConnectApisModalOpen, setConnectApisModalOpen } = useUIStore();
-  const { keys, setKey, getKey, hasKey } = useAPIKeysStore();
+  const { keys, setKey, getKey, hasKey, markKeyTested } = useAPIKeysStore();
 
   const [connectionResults, setConnectionResults] = useState<Record<string, ConnectionResult>>({});
   const [isTestingAll, setIsTestingAll] = useState(false);
@@ -96,27 +96,39 @@ export default function ConnectApisModal() {
     }));
 
     try {
-      const headers: Record<string, string> = {
-        "Content-Type": "application/json",
-      };
-
       // Use stored key or edited value
       const keyValue = editValues[service.keyField] || getKey(service.keyField as keyof typeof keys);
-      if (keyValue) {
-        headers[`x-${service.keyField.replace(/_/g, "-")}`] = keyValue;
+
+      if (!keyValue) {
+        const result: ConnectionResult = {
+          status: "error",
+          message: "Chave não configurada",
+          details: "Insira a API key antes de testar",
+        };
+        setConnectionResults((prev) => ({ ...prev, [service.id]: result }));
+        return result;
       }
 
+      // Prepare request body with the format the API expects
+      const body: { keyType: string; keyValue: string; channelId?: string } = {
+        keyType: service.keyField,
+        keyValue: keyValue,
+      };
+
+      // Add secondary field if needed (for YouTube Channel ID)
       if (service.secondaryField) {
         const secondaryValue = editValues[service.secondaryField] || getKey(service.secondaryField as keyof typeof keys);
         if (secondaryValue) {
-          headers[`x-${service.secondaryField.replace(/_/g, "-")}`] = secondaryValue;
+          body.channelId = secondaryValue;
         }
       }
 
       const response = await fetch("/api/config/test-key", {
         method: "POST",
-        headers,
-        body: JSON.stringify({ service: service.id }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
       });
 
       const data = await response.json();
@@ -128,14 +140,25 @@ export default function ConnectApisModal() {
           details: data.details,
         };
         setConnectionResults((prev) => ({ ...prev, [service.id]: result }));
+
+        // Mark key as tested successfully
+        markKeyTested(service.keyField as keyof typeof keys, true);
+        if (service.secondaryField) {
+          markKeyTested(service.secondaryField as keyof typeof keys, true);
+        }
+
         return result;
       } else {
         const result: ConnectionResult = {
           status: "error",
-          message: data.error || "Falha na conexão",
-          details: data.details || data.error,
+          message: data.message || "Falha na conexão",
+          details: data.message,
         };
         setConnectionResults((prev) => ({ ...prev, [service.id]: result }));
+
+        // Mark key as tested but failed
+        markKeyTested(service.keyField as keyof typeof keys, false);
+
         return result;
       }
     } catch (error) {
