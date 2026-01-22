@@ -1,0 +1,21 @@
+{
+  // ===== Gemini =====
+  "geminicodeassist.enable": true,
+
+  // ===== Cloud Code (modo leve / estável) =====
+  "cloudcode.enableGke": false,
+  "cloudcode.enableKubernetes": false,
+  "cloudcode.enableCloudRun": false,
+
+  // Evita scans automáticos
+  "cloudcode.autoDetect": false,
+
+  // Não tentar listar clusters
+  "cloudcode.showClusterExplorer": false,
+
+  // ===== Performance no Codespaces =====
+
+  "extensions.autoUpdate": false,
+  "extensions.autoCheckUpdates": false
+}
+

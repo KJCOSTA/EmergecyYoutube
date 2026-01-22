@@ -37,3 +37,7 @@ next-env.d.ts
 # Data files (persisted JSON)
 /data/*.json
 !/data/.gitkeep
+
+*.swp
+*.swo
+*.tmp
