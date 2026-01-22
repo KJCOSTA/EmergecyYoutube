@@ -5,19 +5,17 @@ import { useRouter } from "next/navigation";
 import Layout from "@/components/Layout";
 import GuidelinesModal from "@/components/GuidelinesModal";
 import ApiKeysModal from "@/components/ApiKeysModal";
-import Card, { CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/Card";
+import Card, { CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import { useWorkflowStore } from "@/lib/store";
 import { checkAPIKeys } from "@/lib/api-keys";
 import { APIKeyStatus } from "@/types";
-import { formatDuration, downloadJSON } from "@/lib/utils";
+import { downloadJSON } from "@/lib/utils";
 import {
   Upload,
   ArrowLeft,
-  Loader2,
   AlertCircle,
-  Check,
   Play,
   Youtube,
   FileVideo,
@@ -31,11 +29,11 @@ import {
 
 export default function Step6Upload() {
   const router = useRouter();
-  const { context, proposal, storyboard, render, upload, setUpload, updateUpload, resetWorkflow } =
+  const { context, proposal, storyboard, render, upload, setUpload, resetWorkflow } =
     useWorkflowStore();
 
   const [apiKeyStatus, setApiKeyStatus] = useState<APIKeyStatus | null>(null);
-  const [isLoadingKeys, setIsLoadingKeys] = useState(true);
+  const [, setIsLoadingKeys] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

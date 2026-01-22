@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
       title,
       description,
       tags,
-      thumbnailUrl,
+      thumbnailUrl: _thumbnailUrl,
       uploadSetup,
       accessToken,
     } = body as {

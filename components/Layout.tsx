@@ -14,12 +14,10 @@ import {
   FileVideo,
   Film,
   Upload,
-  Settings,
   BookOpen,
   ChevronRight,
   Key,
 } from "lucide-react";
-import Button from "@/components/ui/Button";
 
 interface LayoutProps {
   children: React.ReactNode;

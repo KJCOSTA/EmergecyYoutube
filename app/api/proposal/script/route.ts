@@ -4,7 +4,7 @@ import { openai } from "@ai-sdk/openai";
 import { google } from "@ai-sdk/google";
 import { anthropic } from "@ai-sdk/anthropic";
 import { v4 as uuidv4 } from "uuid";
-import { AIProvider, Script, ScriptSection } from "@/types";
+import { Script, ScriptSection } from "@/types";
 
 export async function POST(request: NextRequest) {
   try {

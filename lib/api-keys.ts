@@ -1,5 +1,5 @@
 import { APIKeyStatus } from "@/types";
-import { useAPIKeysStore, StoredAPIKeys } from "./api-keys-store";
+import { StoredAPIKeys } from "./api-keys-store";
 
 // Check API keys from server (env vars)
 export async function checkServerAPIKeys(): Promise<APIKeyStatus> {
@@ -116,7 +116,8 @@ export function hasRequiredKeys(
   status: APIKeyStatus,
   step: number
 ): { hasAll: boolean; missing: string[] } {
-  const required = getRequiredKeysForStep(step);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _required = getRequiredKeysForStep(step);
   const missing: string[] = [];
 
   // For AI providers, we need at least one
