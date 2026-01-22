@@ -1,28 +1,91 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// Map service IDs to environment variable names
+const ENV_MAP: Record<string, { key: string; secondary?: string }> = {
+  youtube: { key: "YOUTUBE_API_KEY", secondary: "YOUTUBE_CHANNEL_ID" },
+  openai: { key: "OPENAI_API_KEY" },
+  google: { key: "GOOGLE_GENERATIVE_AI_API_KEY" },
+  anthropic: { key: "ANTHROPIC_API_KEY" },
+  pexels: { key: "PEXELS_API_KEY" },
+  pixabay: { key: "PIXABAY_API_KEY" },
+  unsplash: { key: "UNSPLASH_ACCESS_KEY" },
+  elevenlabs: { key: "ELEVENLABS_API_KEY" },
+  tavily: { key: "TAVILY_API_KEY" },
+  replicate: { key: "REPLICATE_API_TOKEN" },
+  stability: { key: "STABILITY_API_KEY" },
+  json2video: { key: "JSON2VIDEO_API_KEY" },
+};
+
+// Map key types to service IDs
+const KEY_TYPE_TO_SERVICE: Record<string, string> = {
+  youtube_api_key: "youtube",
+  openai_api_key: "openai",
+  google_api_key: "google",
+  anthropic_api_key: "anthropic",
+  pexels_api_key: "pexels",
+  pixabay_api_key: "pixabay",
+  unsplash_api_key: "unsplash",
+  elevenlabs_api_key: "elevenlabs",
+  tavily_api_key: "tavily",
+  replicate_api_key: "replicate",
+  stability_api_key: "stability",
+  json2video_api_key: "json2video",
+};
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { keyType, keyValue, channelId } = body as {
-      keyType: string;
-      keyValue: string;
-      channelId?: string;
-    };
 
-    if (!keyType || !keyValue) {
+    // Support both old interface (keyType, keyValue) and new interface (service)
+    let service = body.service;
+    let keyValue = body.keyValue;
+    let channelId = body.channelId;
+
+    // If old interface with keyType
+    if (body.keyType && !service) {
+      service = KEY_TYPE_TO_SERVICE[body.keyType] || body.keyType.replace("_api_key", "");
+    }
+
+    if (!service) {
       return NextResponse.json(
-        { success: false, message: "Tipo e valor da chave são obrigatórios" },
+        { success: false, error: "Service or keyType is required" },
         { status: 400 }
       );
     }
 
+    // Get key from headers if not in body
+    const headerKey = `x-${service.replace(/_/g, "-")}-api-key`;
+    const headerKeyAlt = `x-${service}-api-key`;
+    if (!keyValue) {
+      keyValue = request.headers.get(headerKey) ||
+                 request.headers.get(headerKeyAlt) ||
+                 request.headers.get(`x-${service}_api_key`.replace(/_/g, "-"));
+    }
+
+    // Fall back to environment variable
+    const envConfig = ENV_MAP[service];
+    if (!keyValue && envConfig) {
+      keyValue = process.env[envConfig.key];
+      if (envConfig.secondary && !channelId) {
+        channelId = process.env[envConfig.secondary];
+      }
+    }
+
+    if (!keyValue) {
+      return NextResponse.json({
+        success: false,
+        error: "Chave não configurada",
+        details: `Nenhuma chave encontrada para ${service}. Configure via Vercel Environment Variables ou insira manualmente.`,
+      });
+    }
+
     let success = false;
     let message = "";
+    let details = "";
 
-    switch (keyType) {
-      case "youtube_api_key": {
-        // Testar YouTube API
-        const testChannelId = channelId || "UC_x5XG1OV2P6uZZ5FSM9Ttw"; // Canal do Google Developers
+    switch (service) {
+      case "youtube": {
+        const testChannelId = channelId || process.env.YOUTUBE_CHANNEL_ID || "UC_x5XG1OV2P6uZZ5FSM9Ttw";
         const response = await fetch(
           `https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${testChannelId}&key=${keyValue}`
         );
@@ -30,59 +93,53 @@ export async function POST(request: NextRequest) {
           const data = await response.json();
           if (data.items && data.items.length > 0) {
             success = true;
-            message = "YouTube API Key válida!";
+            message = "YouTube API conectado!";
+            details = `Canal: ${data.items[0].snippet.title}`;
           } else {
             success = true;
-            message = "Key válida (canal não encontrado, mas API funciona)";
+            message = "YouTube API válida (canal não encontrado)";
           }
         } else {
           const error = await response.json();
-          message = error.error?.message || "Chave inválida";
+          message = "Falha na conexão";
+          details = error.error?.message || "Chave inválida ou quota excedida";
         }
         break;
       }
 
-      case "youtube_channel_id": {
-        // Apenas validar formato do Channel ID
-        if (keyValue.startsWith("UC") && keyValue.length >= 20) {
-          success = true;
-          message = "Formato de Channel ID válido";
-        } else {
-          message = "Channel ID deve começar com 'UC' e ter pelo menos 20 caracteres";
-        }
-        break;
-      }
-
-      case "openai_api_key": {
+      case "openai": {
         const response = await fetch("https://api.openai.com/v1/models", {
           headers: { Authorization: `Bearer ${keyValue}` },
         });
         if (response.ok) {
           success = true;
-          message = "OpenAI API Key válida!";
+          message = "OpenAI conectado!";
+          details = "GPT-4, DALL-E disponíveis";
         } else {
           const error = await response.json();
-          message = error.error?.message || "Chave inválida";
+          message = "Falha na conexão";
+          details = error.error?.message || "Chave inválida";
         }
         break;
       }
 
-      case "google_api_key": {
-        // Testar Google Gemini API
+      case "google": {
         const response = await fetch(
           `https://generativelanguage.googleapis.com/v1/models?key=${keyValue}`
         );
         if (response.ok) {
           success = true;
-          message = "Google Gemini API Key válida!";
+          message = "Google Gemini conectado!";
+          details = "Gemini Pro, Vision disponíveis";
         } else {
           const error = await response.json();
-          message = error.error?.message || "Chave inválida";
+          message = "Falha na conexão";
+          details = error.error?.message || "Chave inválida";
         }
         break;
       }
 
-      case "anthropic_api_key": {
+      case "anthropic": {
         const response = await fetch("https://api.anthropic.com/v1/messages", {
           method: "POST",
           headers: {
@@ -96,35 +153,38 @@ export async function POST(request: NextRequest) {
             messages: [{ role: "user", content: "Hi" }],
           }),
         });
-        // Anthropic retorna 200 mesmo para teste simples
-        if (response.ok || response.status === 400) {
-          // 400 pode ser por limite, mas a key é válida
+        if (response.ok || response.status === 400 || response.status === 429) {
           success = true;
-          message = "Anthropic API Key válida!";
+          message = "Anthropic conectado!";
+          details = "Claude 3.5 disponível";
         } else if (response.status === 401) {
-          message = "Chave inválida ou sem permissão";
+          message = "Falha na conexão";
+          details = "Chave inválida ou sem permissão";
         } else {
-          success = true; // Outros erros podem ser por rate limit
-          message = "Key parece válida (pode haver rate limit)";
+          success = true;
+          message = "Anthropic conectado (com limitações)";
+          details = "Pode haver rate limit ativo";
         }
         break;
       }
 
-      case "pexels_api_key": {
+      case "pexels": {
         const response = await fetch(
           "https://api.pexels.com/v1/search?query=test&per_page=1",
           { headers: { Authorization: keyValue } }
         );
         if (response.ok) {
           success = true;
-          message = "Pexels API Key válida!";
+          message = "Pexels conectado!";
+          details = "Biblioteca de mídia disponível";
         } else {
-          message = "Chave inválida";
+          message = "Falha na conexão";
+          details = "Chave inválida";
         }
         break;
       }
 
-      case "pixabay_api_key": {
+      case "pixabay": {
         const response = await fetch(
           `https://pixabay.com/api/?key=${keyValue}&q=test&per_page=3`
         );
@@ -132,44 +192,52 @@ export async function POST(request: NextRequest) {
           const data = await response.json();
           if (data.hits) {
             success = true;
-            message = "Pixabay API Key válida!";
+            message = "Pixabay conectado!";
+            details = "Biblioteca de mídia disponível";
           } else {
-            message = "Resposta inválida da API";
+            message = "Falha na conexão";
+            details = "Resposta inválida da API";
           }
         } else {
-          message = "Chave inválida";
+          message = "Falha na conexão";
+          details = "Chave inválida";
         }
         break;
       }
 
-      case "unsplash_api_key": {
+      case "unsplash": {
         const response = await fetch(
           "https://api.unsplash.com/photos/random?count=1",
           { headers: { Authorization: `Client-ID ${keyValue}` } }
         );
         if (response.ok) {
           success = true;
-          message = "Unsplash API Key válida!";
+          message = "Unsplash conectado!";
+          details = "Biblioteca de imagens disponível";
         } else {
-          message = "Chave inválida";
+          message = "Falha na conexão";
+          details = "Chave inválida";
         }
         break;
       }
 
-      case "elevenlabs_api_key": {
+      case "elevenlabs": {
         const response = await fetch("https://api.elevenlabs.io/v1/voices", {
           headers: { "xi-api-key": keyValue },
         });
         if (response.ok) {
+          const data = await response.json();
           success = true;
-          message = "ElevenLabs API Key válida!";
+          message = "ElevenLabs conectado!";
+          details = `${data.voices?.length || 0} vozes disponíveis`;
         } else {
-          message = "Chave inválida";
+          message = "Falha na conexão";
+          details = "Chave inválida";
         }
         break;
       }
 
-      case "tavily_api_key": {
+      case "tavily": {
         const response = await fetch("https://api.tavily.com/search", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -181,62 +249,72 @@ export async function POST(request: NextRequest) {
         });
         if (response.ok) {
           success = true;
-          message = "Tavily API Key válida!";
+          message = "Tavily conectado!";
+          details = "Deep research disponível";
         } else {
-          message = "Chave inválida";
+          const error = await response.json().catch(() => ({}));
+          message = "Falha na conexão";
+          details = error.message || "Chave inválida";
         }
         break;
       }
 
-      case "replicate_api_key": {
+      case "replicate": {
         const response = await fetch("https://api.replicate.com/v1/models", {
           headers: { Authorization: `Token ${keyValue}` },
         });
         if (response.ok) {
           success = true;
-          message = "Replicate API Key válida!";
+          message = "Replicate conectado!";
+          details = "Modelos de IA disponíveis";
         } else {
-          message = "Chave inválida";
+          message = "Falha na conexão";
+          details = "Chave inválida";
         }
         break;
       }
 
-      case "stability_api_key": {
+      case "stability": {
         const response = await fetch(
           "https://api.stability.ai/v1/engines/list",
           { headers: { Authorization: `Bearer ${keyValue}` } }
         );
         if (response.ok) {
           success = true;
-          message = "Stability AI API Key válida!";
+          message = "Stability AI conectado!";
+          details = "Geração de imagens disponível";
         } else {
-          message = "Chave inválida";
+          message = "Falha na conexão";
+          details = "Chave inválida";
         }
         break;
       }
 
-      case "json2video_api_key": {
-        // JSON2Video não tem endpoint de teste fácil, apenas validar formato
+      case "json2video": {
         if (keyValue.length >= 10) {
           success = true;
-          message = "JSON2Video Key salva (será validada no uso)";
+          message = "JSON2Video configurado";
+          details = "Será validada no primeiro uso";
         } else {
-          message = "Chave parece muito curta";
+          message = "Falha na validação";
+          details = "Chave parece muito curta";
         }
         break;
       }
 
       default:
-        message = `Tipo de chave desconhecido: ${keyType}`;
+        message = "Serviço desconhecido";
+        details = `Tipo: ${service}`;
     }
 
-    return NextResponse.json({ success, message });
+    return NextResponse.json({ success, message, details });
   } catch (error) {
     console.error("Erro ao testar chave:", error);
     return NextResponse.json(
       {
         success: false,
-        message: error instanceof Error ? error.message : "Erro ao testar chave",
+        error: "Erro interno",
+        details: error instanceof Error ? error.message : "Erro ao testar conexão",
       },
       { status: 500 }
     );
