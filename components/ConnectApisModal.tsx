@@ -144,10 +144,9 @@ export default function ConnectApisModal() {
   const testAllAPIs = async () => {
     setIsTestingAll(true);
     for (const service of API_SERVICES) {
-      // Testa se tiver chave local OU se o servidor disser que tem
-      if (editValues[service.keyField] || getKey(service.keyField as keyof typeof keys) || serverStatus?.[service.serverStatusKey]) {
-        await testSingleAPI(service);
-      }
+      // Tenta testar todos os serviços sequencialmente.
+      // Se não houver chave, o testSingleAPI vai gerar o erro visual "Chave ausente".
+      await testSingleAPI(service);
     }
     setIsTestingAll(false);
   };
