@@ -15,6 +15,7 @@ import {
   Brain,
   RefreshCw,
   Settings,
+  Play,
 } from 'lucide-react';
 import { useUIStore } from '@/lib/store';
 
@@ -24,6 +25,13 @@ interface APIStatus {
   status: 'checking' | 'online' | 'offline' | 'error';
   responseTime?: number;
   error?: string;
+  testResult?: {
+    success: boolean;
+    message: string;
+    details?: string;
+    responseTime: number;
+  };
+  isTesting?: boolean;
 }
 
 const API_LIST = [
@@ -119,6 +127,48 @@ export default function HomePage() {
       setBootStage('complete');
       setSystemReady(true);
     });
+  };
+
+  const testAPIConnection = async (apiKey: string) => {
+    // Marcar como testando
+    setApiStatuses(prev => prev.map(api =>
+      api.key === apiKey ? { ...api, isTesting: true, testResult: undefined } : api
+    ));
+
+    try {
+      const response = await fetch('/api/test-connection', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ provider: apiKey })
+      });
+
+      const result = await response.json();
+
+      setApiStatuses(prev => prev.map(api =>
+        api.key === apiKey ? {
+          ...api,
+          isTesting: false,
+          testResult: {
+            success: result.success,
+            message: result.message,
+            details: result.details,
+            responseTime: result.responseTime
+          }
+        } : api
+      ));
+    } catch {
+      setApiStatuses(prev => prev.map(api =>
+        api.key === apiKey ? {
+          ...api,
+          isTesting: false,
+          testResult: {
+            success: false,
+            message: 'Erro ao testar conexão',
+            responseTime: 0
+          }
+        } : api
+      ));
+    }
   };
 
   const onlineCount = apiStatuses.filter(api => api.status === 'online').length;
@@ -266,6 +316,55 @@ export default function HomePage() {
                       >
                         Configurar
                       </button>
+                    )}
+
+                    {/* Botão de Micro Teste para APIs Online */}
+                    {api.status === 'online' && (
+                      <div className="mt-3 space-y-2">
+                        <button
+                          onClick={() => testAPIConnection(api.key)}
+                          disabled={api.isTesting}
+                          className="w-full px-3 py-2 bg-indigo-600/20 hover:bg-indigo-600/40 border border-indigo-500/30 text-indigo-300 text-xs rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                        >
+                          {api.isTesting ? (
+                            <>
+                              <Loader2 className="w-3 h-3 animate-spin" />
+                              Testando...
+                            </>
+                          ) : (
+                            <>
+                              <Play className="w-3 h-3" />
+                              Micro Teste
+                            </>
+                          )}
+                        </button>
+
+                        {/* Resultado do Teste */}
+                        {api.testResult && (
+                          <div className={`p-2 rounded-lg text-xs ${
+                            api.testResult.success
+                              ? 'bg-green-900/20 border border-green-500/30'
+                              : 'bg-red-900/20 border border-red-500/30'
+                          }`}>
+                            <div className="flex items-center gap-1">
+                              {api.testResult.success ? (
+                                <CheckCircle2 className="w-3 h-3 text-green-400" />
+                              ) : (
+                                <XCircle className="w-3 h-3 text-red-400" />
+                              )}
+                              <span className={api.testResult.success ? 'text-green-300' : 'text-red-300'}>
+                                {api.testResult.message}
+                              </span>
+                            </div>
+                            {api.testResult.details && (
+                              <p className="text-zinc-400 mt-1 pl-4">{api.testResult.details}</p>
+                            )}
+                            <p className="text-zinc-500 mt-1 pl-4">
+                              Tempo: {api.testResult.responseTime}ms
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     )}
                   </div>
                 ))}

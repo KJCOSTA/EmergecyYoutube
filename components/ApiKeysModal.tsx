@@ -9,6 +9,7 @@ import { useUIStore } from "@/lib/store";
 import { useAPIKeysStore, StoredAPIKeys } from "@/lib/api-keys-store";
 import { APIKeyStatus } from "@/types";
 import { checkAPIKeys } from "@/lib/api-keys";
+import ModelsExplorer from "@/components/ModelsExplorer";
 import {
   Check,
   X,
@@ -19,6 +20,9 @@ import {
   Save,
   TestTube,
   Trash2,
+  Key,
+  Cpu,
+  ChevronRight,
 } from "lucide-react";
 
 interface KeyConfig {
@@ -236,6 +240,29 @@ export default function ApiKeysModal() {
     return status === "valid" || status === "server";
   }).length;
 
+  const [activeTab, setActiveTab] = useState<'keys' | 'models'>('keys');
+  const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
+
+  // Provedores de IA para explorar modelos
+  const AI_PROVIDERS = [
+    { key: 'openai', name: 'OpenAI', icon: '🤖', apiKeyField: 'openai_api_key' },
+    { key: 'anthropic', name: 'Anthropic', icon: '🔮', apiKeyField: 'anthropic_api_key' },
+    { key: 'gemini', name: 'Google Gemini', icon: '🧠', apiKeyField: 'google_api_key' },
+    { key: 'elevenlabs', name: 'ElevenLabs', icon: '🎤', apiKeyField: 'elevenlabs_api_key' },
+    { key: 'pexels', name: 'Pexels', icon: '📷', apiKeyField: 'pexels_api_key' },
+    { key: 'pixabay', name: 'Pixabay', icon: '🖼️', apiKeyField: 'pixabay_api_key' },
+    { key: 'youtube', name: 'YouTube', icon: '📺', apiKeyField: 'youtube_api_key' },
+    { key: 'tavily', name: 'Tavily', icon: '🔍', apiKeyField: 'tavily_api_key' },
+    { key: 'json2video', name: 'JSON2Video', icon: '🎬', apiKeyField: 'json2video_api_key' },
+  ];
+
+  const isProviderConnected = (apiKeyField: string) => {
+    const hasLocalKey = !!keys[apiKeyField as keyof StoredAPIKeys];
+    const serverKey = apiKeyField.replace("_api_key", "").replace("_", "") as keyof APIKeyStatus;
+    const hasServerKey = serverStatus?.[serverKey] ?? false;
+    return hasLocalKey || hasServerKey;
+  };
+
   return (
     <Modal
       isOpen={isApiKeyModalOpen}
@@ -244,6 +271,87 @@ export default function ApiKeysModal() {
       size="xl"
     >
       <div className="space-y-6">
+        {/* Tabs */}
+        <div className="flex border-b border-gray-700">
+          <button
+            onClick={() => { setActiveTab('keys'); setSelectedProvider(null); }}
+            className={`px-4 py-2 font-medium text-sm transition-colors flex items-center gap-2 ${
+              activeTab === 'keys'
+                ? 'text-indigo-400 border-b-2 border-indigo-400'
+                : 'text-gray-400 hover:text-gray-200'
+            }`}
+          >
+            <Key className="w-4 h-4" />
+            API Keys
+          </button>
+          <button
+            onClick={() => setActiveTab('models')}
+            className={`px-4 py-2 font-medium text-sm transition-colors flex items-center gap-2 ${
+              activeTab === 'models'
+                ? 'text-indigo-400 border-b-2 border-indigo-400'
+                : 'text-gray-400 hover:text-gray-200'
+            }`}
+          >
+            <Cpu className="w-4 h-4" />
+            Modelos Disponíveis
+          </button>
+        </div>
+
+        {/* Tab: Modelos */}
+        {activeTab === 'models' && (
+          <div className="space-y-4">
+            {!selectedProvider ? (
+              <>
+                <p className="text-sm text-gray-400">
+                  Selecione um provedor para explorar os modelos disponíveis:
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {AI_PROVIDERS.map(provider => {
+                    const connected = isProviderConnected(provider.apiKeyField);
+                    return (
+                      <button
+                        key={provider.key}
+                        onClick={() => setSelectedProvider(provider.key)}
+                        className={`p-4 rounded-lg border transition-all flex items-center gap-3 hover:bg-gray-800/50 ${
+                          connected
+                            ? 'border-green-500/30 bg-green-900/10'
+                            : 'border-gray-700 bg-gray-800/30'
+                        }`}
+                      >
+                        <span className="text-2xl">{provider.icon}</span>
+                        <div className="text-left flex-1">
+                          <p className="font-medium text-white text-sm">{provider.name}</p>
+                          <p className={`text-xs ${connected ? 'text-green-400' : 'text-gray-500'}`}>
+                            {connected ? 'Conectado' : 'Não configurado'}
+                          </p>
+                        </div>
+                        <ChevronRight className="w-4 h-4 text-gray-500" />
+                      </button>
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => setSelectedProvider(null)}
+                  className="text-sm text-indigo-400 hover:text-indigo-300 flex items-center gap-1"
+                >
+                  ← Voltar para lista
+                </button>
+                <ModelsExplorer
+                  provider={selectedProvider}
+                  apiKey={keys[AI_PROVIDERS.find(p => p.key === selectedProvider)?.apiKeyField as keyof StoredAPIKeys]}
+                  isConnected={isProviderConnected(AI_PROVIDERS.find(p => p.key === selectedProvider)?.apiKeyField || '')}
+                />
+              </>
+            )}
+          </div>
+        )}
+
+        {/* Tab: API Keys */}
+        {activeTab === 'keys' && (
+          <>
         {/* Resumo */}
         <div className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg">
           <div>
@@ -416,6 +524,8 @@ export default function ApiKeysModal() {
             <li>Pelo menos 1 provedor de mídia (Pexels, Pixabay, ou Unsplash)</li>
           </ul>
         </div>
+          </>
+        )}
 
         {/* Botões de ação */}
         <div className="flex justify-end gap-2 pt-4 border-t border-gray-800">
