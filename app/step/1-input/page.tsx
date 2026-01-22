@@ -11,6 +11,7 @@ export default function InputPage() {
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 
+  // Pega as chaves que você salvou no navegador
   const { keys: localKeys } = useAPIKeysStore();
 
   useEffect(() => {
@@ -30,6 +31,8 @@ export default function InputPage() {
     }
   };
 
+  // LÓGICA DE CONEXÃO HÍBRIDA (O SEGREDO ESTÁ AQUI)
+  // Verifica se a chave existe no Servidor Vercel OU no seu Navegador
   const isYoutubeConnected = serverStatus.youtube || (mounted && !!localKeys.youtube_api_key && localKeys.youtube_api_key.length > 5);
   
   const isAIConnected = 
@@ -40,6 +43,7 @@ export default function InputPage() {
   return (
     <div className="h-full w-full overflow-y-auto p-6 md:p-8 space-y-8 animate-in fade-in duration-500">
       
+      {/* Cabeçalho */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800 pb-6">
         <div>
           <h1 className="text-3xl font-bold text-white tracking-tight">Menu de Entrada</h1>
@@ -61,6 +65,7 @@ export default function InputPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
+        {/* Card Upload */}
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 hover:border-zinc-700 transition-all group">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-2.5 bg-blue-500/10 rounded-lg group-hover:bg-blue-500/20 transition-colors">
@@ -80,6 +85,7 @@ export default function InputPage() {
           </div>
         </div>
 
+        {/* Card YouTube Sync - AGORA REATIVO */}
         <div className={`border rounded-xl p-6 transition-all group ${isYoutubeConnected ? 'bg-green-900/10 border-green-900/30' : 'bg-zinc-900/50 border-zinc-800 hover:border-zinc-700'}`}>
           <div className="flex items-center gap-3 mb-6">
             <div className={`p-2.5 rounded-lg transition-colors ${isYoutubeConnected ? 'bg-green-500/20' : 'bg-red-500/10'}`}>
