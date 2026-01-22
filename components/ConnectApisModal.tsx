@@ -7,7 +7,7 @@ interface ApiStatus {
   [key: string]: boolean;
 }
 
-export function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [loading, setLoading] = useState(true);
   const [serverKeys, setServerKeys] = useState<ApiStatus>({});
 
