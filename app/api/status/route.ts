@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 
+// ESTA LINHA OBRIGA O SERVIDOR A LER AS CHAVES NA HORA (CORRIGE O "AUSENTE")
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   return NextResponse.json({
     openai: !!process.env.OPENAI_API_KEY,
