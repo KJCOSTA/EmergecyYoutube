@@ -3,22 +3,27 @@
 import { useState, useEffect } from 'react';
 import ConnectApisModal from '@/components/ConnectApisModal';
 import { Upload, Youtube, Wifi, FileText, Sparkles, CheckCircle2, RefreshCw } from "lucide-react";
+import { useAPIKeysStore } from '@/lib/api-keys-store'; // Importando a store para ler chaves locais
 
 export default function InputPage() {
   const [showModal, setShowModal] = useState(false);
-  const [status, setStatus] = useState<any>({});
+  const [serverStatus, setServerStatus] = useState<any>({});
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
-  // VERIFICAÇÃO AUTOMÁTICA AO ENTRAR NO SITE
+  // Pega as chaves locais do navegador
+  const { keys: localKeys } = useAPIKeysStore();
+
   useEffect(() => {
-    checkStatus();
+    setMounted(true);
+    checkServerStatus();
   }, []);
 
-  const checkStatus = async () => {
+  const checkServerStatus = async () => {
     try {
       const res = await fetch('/api/status');
       const data = await res.json();
-      setStatus(data);
+      setServerStatus(data);
     } catch (error) {
       console.error("Erro ao verificar status:", error);
     } finally {
@@ -26,7 +31,15 @@ export default function InputPage() {
     }
   };
 
-  const isYoutubeConnected = status.youtube;
+  // LÓGICA CORRIGIDA: Verifica se tem chave no Servidor OU no Local
+  // Se tiver em qualquer um dos dois, considera CONECTADO.
+  const isYoutubeConnected = serverStatus.youtube || (mounted && !!localKeys.youtube_api_key && localKeys.youtube_api_key.length > 5);
+  
+  // Verifica se tem pelo menos uma IA conectada (OpenAI, Gemini ou Anthropic)
+  const isAIConnected = 
+    serverStatus.openai || (mounted && !!localKeys.openai_api_key) ||
+    serverStatus.gemini || (mounted && !!localKeys.google_api_key) ||
+    serverStatus.anthropic || (mounted && !!localKeys.anthropic_api_key);
 
   return (
     <div className="h-full w-full overflow-y-auto p-6 md:p-8 space-y-8 animate-in fade-in duration-500">
@@ -40,10 +53,14 @@ export default function InputPage() {
         
         <button 
           onClick={() => setShowModal(true)}
-          className="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-lg font-semibold shadow-lg shadow-indigo-500/20 flex items-center gap-2 transition-all active:scale-95 whitespace-nowrap cursor-pointer"
+          className={`px-5 py-2.5 rounded-lg font-semibold shadow-lg flex items-center gap-2 transition-all active:scale-95 whitespace-nowrap cursor-pointer hover:ring-2 ${
+            isYoutubeConnected && isAIConnected 
+              ? "bg-green-600 hover:bg-green-500 text-white shadow-green-500/20 hover:ring-green-500/50" 
+              : "bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-500/20 hover:ring-indigo-500/50"
+          }`}
         >
           {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Wifi className="w-4 h-4" />}
-          {loading ? "Verificando..." : "Gerenciar Conexões"}
+          {isYoutubeConnected && isAIConnected ? "Conexões Ativas" : "Conectar APIs"}
         </button>
       </div>
 
@@ -70,7 +87,7 @@ export default function InputPage() {
           </div>
         </div>
 
-        {/* Card 2: YouTube Sync (INTELIGENTE - Muda se estiver conectado) */}
+        {/* Card 2: YouTube Sync (AGORA REAGE ÀS SUAS CHAVES LOCAIS) */}
         <div className={`border rounded-xl p-6 transition-all group ${isYoutubeConnected ? 'bg-green-900/10 border-green-900/30' : 'bg-zinc-900/50 border-zinc-800 hover:border-zinc-700'}`}>
           <div className="flex items-center gap-3 mb-6">
             <div className={`p-2.5 rounded-lg transition-colors ${isYoutubeConnected ? 'bg-green-500/20' : 'bg-red-500/10'}`}>
@@ -81,7 +98,7 @@ export default function InputPage() {
               <p className="text-xs text-zinc-500">Conexão em tempo real</p>
             </div>
             {isYoutubeConnected && (
-               <span className="ml-auto bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded-full font-bold flex items-center gap-1">
+               <span className="ml-auto bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded-full font-bold flex items-center gap-1 animate-in fade-in zoom-in">
                  <CheckCircle2 className="w-3 h-3" /> ATIVO
                </span>
             )}
@@ -89,8 +106,8 @@ export default function InputPage() {
 
           <div className="bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800 rounded-xl h-40 flex flex-col items-center justify-center p-6 text-center relative overflow-hidden">
             {isYoutubeConnected ? (
-              <div className="z-10 flex flex-col items-center gap-3">
-                 <div className="p-3 bg-green-500/10 rounded-full mb-1">
+              <div className="z-10 flex flex-col items-center gap-3 animate-in slide-in-from-bottom-2">
+                 <div className="p-3 bg-green-500/10 rounded-full mb-1 border border-green-500/20">
                     <CheckCircle2 className="w-8 h-8 text-green-500" />
                  </div>
                  <p className="text-green-400 font-medium">Canal Sincronizado</p>
@@ -104,7 +121,7 @@ export default function InputPage() {
                 </div>
                 <button 
                   onClick={() => setShowModal(true)}
-                  className="text-xs bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-md border border-zinc-700 transition-colors"
+                  className="text-xs bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-md border border-zinc-700 transition-colors cursor-pointer"
                 >
                   Configurar Acesso
                 </button>
@@ -134,7 +151,7 @@ export default function InputPage() {
       </div>
 
       {/* Modal de Conexões */}
-      <ConnectApisModal isOpen={showModal} onClose={() => { setShowModal(false); checkStatus(); }} />
+      <ConnectApisModal isOpen={showModal} onClose={() => { setShowModal(false); checkServerStatus(); }} />
     </div>
   );
 }
