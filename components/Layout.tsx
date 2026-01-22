@@ -13,6 +13,7 @@ import {
   BookOpen,
   Key,
   ChevronRight,
+  FileText,
 } from "lucide-react";
 import GuidelinesModal from "./GuidelinesModal";
 import ConnectApisModal from "./ConnectApisModal";
@@ -46,6 +47,12 @@ export default function Layout({ children }: LayoutProps) {
       label: "WorkFlow",
       icon: <Workflow className="w-5 h-5" />,
       path: "/workflow",
+      type: "link" as const,
+    },
+    {
+      label: "Documentação",
+      icon: <FileText className="w-5 h-5" />,
+      path: "/documentation",
       type: "link" as const,
     },
     {
@@ -98,7 +105,9 @@ export default function Layout({ children }: LayoutProps) {
           <nav className="flex-1 p-4 space-y-1 overflow-auto">
             {menuItems.map((item, index) => {
               if (item.type === "link") {
-                const isActive = pathname === item.path || (item.path === "/workflow" && pathname.startsWith("/step/"));
+                const isActive = pathname === item.path ||
+                    (item.path === "/workflow" && pathname.startsWith("/step/")) ||
+                    (item.path === "/documentation" && pathname.startsWith("/documentation"));
 
                 return (
                   <Link
