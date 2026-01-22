@@ -2,77 +2,141 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   Emergency YouTube - Command Center Theme
+   ============================================ */
+
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: #09090b;
+  --background-secondary: #18181b;
+  --background-tertiary: #27272a;
+  --foreground: #fafafa;
+  --foreground-muted: #a1a1aa;
+
+  /* Semantic colors */
+  --accent-violet: #8b5cf6;
+  --accent-blue: #3b82f6;
+  --accent-cyan: #06b6d4;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+
+  /* Depth layers (zinc scale) */
+  --layer-0: #09090b; /* Base background */
+  --layer-1: #18181b; /* Cards, sidebar */
+  --layer-2: #27272a; /* Elevated elements */
+  --layer-3: #3f3f46; /* Hover states */
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --background: #ffffff;
-    --foreground: #171717;
-  }
-}
-
+/* Force dark mode - this is a command center, not a light theme app */
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
 }
 
-/* Custom scrollbar */
+/* Typography refinements */
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+
+/* Monospace for data/numbers */
+.font-mono {
+  font-family: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-feature-settings: "liga" 0;
+}
+
+/* ============================================
+   Custom Scrollbar - Subtle & Professional
+   ============================================ */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
+  background: #3f3f46;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #444;
+  background: #52525b;
 }
 
-/* Focus styles */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3f3f46 transparent;
+}
+
+/* ============================================
+   Focus States - Accessibility + Visual Feedback
+   ============================================ */
 .focus-ring {
-  @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-900;
+  @apply focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:ring-offset-2 focus:ring-offset-zinc-950;
 }
 
-/* Card hover effects */
+/* ============================================
+   Interactive Elements - Tactile Feedback
+   ============================================ */
+
+/* Card hover with depth */
 .card-hover {
-  @apply transition-all duration-200 hover:shadow-lg hover:shadow-primary-500/10 hover:-translate-y-0.5;
+  @apply transition-all duration-300 ease-out;
 }
 
-/* Button base styles */
+.card-hover:hover {
+  @apply shadow-xl shadow-violet-500/5 -translate-y-0.5;
+  border-color: rgba(139, 92, 246, 0.2);
+}
+
+/* Button base with tactile feel */
 .btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+  @apply inline-flex items-center justify-center gap-2 rounded-lg font-medium
+         transition-all duration-200 ease-out
+         active:scale-[0.98]
+         disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
 }
 
 .btn-primary {
-  @apply btn bg-primary-600 hover:bg-primary-700 text-white px-4 py-2;
+  @apply btn bg-violet-600 hover:bg-violet-500 text-white px-4 py-2
+         shadow-lg shadow-violet-600/20 hover:shadow-violet-500/30;
 }
 
 .btn-secondary {
-  @apply btn bg-gray-700 hover:bg-gray-600 text-white px-4 py-2;
+  @apply btn bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2
+         border border-zinc-700/50 hover:border-zinc-600/50;
 }
 
 .btn-outline {
-  @apply btn border border-gray-600 hover:border-gray-500 hover:bg-gray-800 text-gray-300 px-4 py-2;
+  @apply btn border border-zinc-700 hover:border-zinc-600 hover:bg-zinc-800/50
+         text-zinc-300 hover:text-white px-4 py-2;
+}
+
+.btn-ghost {
+  @apply btn hover:bg-zinc-800/50 text-zinc-400 hover:text-white px-4 py-2;
 }
 
 .btn-success {
-  @apply btn bg-green-600 hover:bg-green-700 text-white px-4 py-2;
+  @apply btn bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2
+         shadow-lg shadow-emerald-600/20 hover:shadow-emerald-500/30;
 }
 
 .btn-warning {
-  @apply btn bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2;
+  @apply btn bg-amber-600 hover:bg-amber-500 text-white px-4 py-2;
+}
+
+.btn-danger {
+  @apply btn bg-red-600 hover:bg-red-500 text-white px-4 py-2;
 }
 
 .btn-sm {
@@ -80,90 +144,193 @@ body {
 }
 
 .btn-lg {
-  @apply text-lg px-6 py-3;
+  @apply text-base px-6 py-3;
 }
 
-/* Input styles */
+/* ============================================
+   Form Elements - Clean & Focused
+   ============================================ */
 .input {
-  @apply w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-white placeholder-gray-500 transition-colors duration-200 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500;
+  @apply w-full rounded-lg border border-zinc-800 bg-zinc-950
+         px-4 py-2.5 text-white placeholder-zinc-600
+         transition-all duration-200 ease-out
+         focus:border-violet-500/50 focus:outline-none focus:ring-2 focus:ring-violet-500/20
+         hover:border-zinc-700;
 }
 
 .textarea {
-  @apply input resize-none;
+  @apply input resize-none min-h-[100px];
 }
 
-/* Label styles */
 .label {
-  @apply block text-sm font-medium text-gray-300 mb-1.5;
+  @apply block text-sm font-medium text-zinc-400 mb-2 tracking-wide;
 }
 
-/* Card styles */
+/* Select/Dropdown */
+.select {
+  @apply input appearance-none cursor-pointer
+         bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2371717a%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')]
+         bg-no-repeat bg-[right_0.75rem_center] bg-[length:1rem] pr-10;
+}
+
+/* ============================================
+   Cards - Layered Depth System
+   ============================================ */
 .card {
-  @apply rounded-xl border border-gray-800 bg-gray-900/50 p-6 backdrop-blur-sm;
+  @apply rounded-xl border border-zinc-800/50 bg-zinc-900/50 backdrop-blur-sm;
 }
 
-/* Badge styles */
+.card-elevated {
+  @apply card shadow-xl shadow-black/20;
+}
+
+/* ============================================
+   Badges - Status Indicators
+   ============================================ */
 .badge {
-  @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium
+         border transition-colors duration-200;
 }
 
 .badge-success {
-  @apply badge bg-green-500/10 text-green-400;
+  @apply badge bg-emerald-500/10 text-emerald-400 border-emerald-500/20;
 }
 
 .badge-warning {
-  @apply badge bg-yellow-500/10 text-yellow-400;
+  @apply badge bg-amber-500/10 text-amber-400 border-amber-500/20;
 }
 
 .badge-error {
-  @apply badge bg-red-500/10 text-red-400;
+  @apply badge bg-red-500/10 text-red-400 border-red-500/20;
 }
 
 .badge-info {
-  @apply badge bg-blue-500/10 text-blue-400;
+  @apply badge bg-blue-500/10 text-blue-400 border-blue-500/20;
 }
 
-/* Step indicator */
+.badge-default {
+  @apply badge bg-zinc-500/10 text-zinc-400 border-zinc-500/20;
+}
+
+/* ============================================
+   Step Indicator - Progress Visualization
+   ============================================ */
 .step-indicator {
-  @apply flex items-center justify-center w-10 h-10 rounded-full text-sm font-semibold;
+  @apply flex items-center justify-center w-10 h-10 rounded-full text-sm font-semibold
+         transition-all duration-300 ease-out;
 }
 
 .step-active {
-  @apply step-indicator bg-primary-600 text-white;
+  @apply step-indicator bg-gradient-to-br from-violet-600 to-blue-600 text-white
+         shadow-lg shadow-violet-600/30 ring-4 ring-violet-500/20;
 }
 
 .step-completed {
-  @apply step-indicator bg-green-600 text-white;
+  @apply step-indicator bg-emerald-600 text-white;
 }
 
 .step-pending {
-  @apply step-indicator bg-gray-700 text-gray-400;
+  @apply step-indicator bg-zinc-800 text-zinc-500 border border-zinc-700;
+}
+
+.step-locked {
+  @apply step-indicator bg-zinc-900 text-zinc-600 border border-zinc-800;
+}
+
+/* ============================================
+   Animations - Smooth Micro-interactions
+   ============================================ */
+
+/* Fade in from bottom */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s ease-out forwards;
+}
+
+/* Slide in from right */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s ease-out forwards;
+}
+
+/* Scale in */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.2s ease-out forwards;
+}
+
+/* Pulse glow for active elements */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+  }
+  50% {
+    box-shadow: 0 0 20px 4px rgba(139, 92, 246, 0.15);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
 }
 
 /* Dropdown animation */
 .dropdown-enter {
   opacity: 0;
-  transform: translateY(-4px);
+  transform: translateY(-4px) scale(0.98);
 }
 
 .dropdown-enter-active {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
   transition: opacity 150ms ease-out, transform 150ms ease-out;
 }
 
 .dropdown-exit {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 .dropdown-exit-active {
   opacity: 0;
-  transform: translateY(-4px);
+  transform: translateY(-4px) scale(0.98);
   transition: opacity 100ms ease-in, transform 100ms ease-in;
 }
 
-/* Loading spinner */
+/* ============================================
+   Loading States - Visual Feedback
+   ============================================ */
+
+/* Spinner */
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -175,7 +342,89 @@ body {
   animation: spin 0.6s linear infinite;
 }
 
-/* Pulse animation for loading states */
+/* Skeleton loader with shimmer */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  @apply rounded bg-zinc-800;
+  background: linear-gradient(
+    90deg,
+    #27272a 0%,
+    #3f3f46 50%,
+    #27272a 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Pulse for loading states */
 .pulse-loading {
-  @apply animate-pulse bg-gray-700 rounded;
+  @apply animate-pulse bg-zinc-800 rounded;
+}
+
+/* ============================================
+   Glass Effect - Modern Depth
+   ============================================ */
+.glass {
+  @apply bg-zinc-900/80 backdrop-blur-xl border border-zinc-800/50;
+}
+
+.glass-subtle {
+  @apply bg-zinc-950/50 backdrop-blur-sm border border-zinc-900/50;
+}
+
+/* ============================================
+   Gradient Utilities
+   ============================================ */
+.gradient-violet-blue {
+  @apply bg-gradient-to-r from-violet-600 to-blue-600;
+}
+
+.gradient-violet-blue-hover:hover {
+  @apply bg-gradient-to-r from-violet-500 to-blue-500;
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-blue-400;
+}
+
+/* ============================================
+   Status Colors
+   ============================================ */
+.status-online {
+  @apply bg-emerald-500;
+}
+
+.status-offline {
+  @apply bg-zinc-600;
+}
+
+.status-warning {
+  @apply bg-amber-500;
+}
+
+.status-error {
+  @apply bg-red-500;
+}
+
+/* Status dot with pulse */
+.status-dot {
+  @apply w-2 h-2 rounded-full;
+}
+
+.status-dot-pulse {
+  @apply status-dot relative;
+}
+
+.status-dot-pulse::after {
+  content: '';
+  @apply absolute inset-0 rounded-full animate-ping opacity-75;
+  background: inherit;
 }
