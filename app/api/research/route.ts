@@ -1,13 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateText } from "ai";
-import { openai } from "@ai-sdk/openai";
-import { google } from "@ai-sdk/google";
-import { anthropic } from "@ai-sdk/anthropic";
+import { createOpenAI } from "@ai-sdk/openai";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { createAnthropic } from "@ai-sdk/anthropic";
 import { v4 as uuidv4 } from "uuid";
 import { AIProvider, ResearchData, ResearchQuery, ResearchResult } from "@/types";
+import {
+  getOpenAIKey,
+  getGoogleKey,
+  getAnthropicKey,
+  getTavilyKey,
+} from "@/lib/get-api-key";
 
-async function searchWithTavily(query: string): Promise<ResearchResult[]> {
-  const apiKey = process.env.TAVILY_API_KEY;
+async function searchWithTavily(query: string, apiKey: string): Promise<ResearchResult[]> {
   if (!apiKey) {
     return [];
   }
@@ -46,22 +51,12 @@ async function searchWithTavily(query: string): Promise<ResearchResult[]> {
 async function simulateSearchWithLLM(
   query: string,
   provider: AIProvider,
-  model: string
+  model: string,
+  openaiKey?: string,
+  googleKey?: string,
+  anthropicKey?: string
 ): Promise<ResearchResult[]> {
-  let aiModel;
-  switch (provider) {
-    case "openai":
-      aiModel = openai(model);
-      break;
-    case "google":
-      aiModel = google(model);
-      break;
-    case "anthropic":
-      aiModel = anthropic(model);
-      break;
-    default:
-      throw new Error(`Unknown provider: ${provider}`);
-  }
+  const aiModel = getAIModel(provider, model, openaiKey, googleKey, anthropicKey);
 
   const { text } = await generateText({
     model: aiModel,
@@ -85,6 +80,37 @@ Return ONLY valid JSON, no other text.`,
   }
 }
 
+function getAIModel(
+  provider: AIProvider,
+  model: string,
+  openaiKey?: string,
+  googleKey?: string,
+  anthropicKey?: string
+) {
+  switch (provider) {
+    case "openai": {
+      const openai = createOpenAI({
+        apiKey: openaiKey || process.env.OPENAI_API_KEY,
+      });
+      return openai(model);
+    }
+    case "google": {
+      const google = createGoogleGenerativeAI({
+        apiKey: googleKey || process.env.GOOGLE_GENERATIVE_AI_API_KEY,
+      });
+      return google(model);
+    }
+    case "anthropic": {
+      const anthropicClient = createAnthropic({
+        apiKey: anthropicKey || process.env.ANTHROPIC_API_KEY,
+      });
+      return anthropicClient(model);
+    }
+    default:
+      throw new Error(`Unknown provider: ${provider}`);
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -105,31 +131,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Get API keys from headers or env
+    const openaiKey = getOpenAIKey(request);
+    const googleKey = getGoogleKey(request);
+    const anthropicKey = getAnthropicKey(request);
+    const tavilyKey = getTavilyKey(request);
+
     // Verify AI provider is configured
-    if (provider === "openai" && !process.env.OPENAI_API_KEY) {
+    if (provider === "openai" && !openaiKey) {
       return NextResponse.json({ error: "OpenAI API key not configured" }, { status: 400 });
     }
-    if (provider === "google" && !process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    if (provider === "google" && !googleKey) {
       return NextResponse.json({ error: "Google API key not configured" }, { status: 400 });
     }
-    if (provider === "anthropic" && !process.env.ANTHROPIC_API_KEY) {
+    if (provider === "anthropic" && !anthropicKey) {
       return NextResponse.json({ error: "Anthropic API key not configured" }, { status: 400 });
     }
 
-    let aiModel;
-    switch (provider) {
-      case "openai":
-        aiModel = openai(model);
-        break;
-      case "google":
-        aiModel = google(model);
-        break;
-      case "anthropic":
-        aiModel = anthropic(model);
-        break;
-      default:
-        return NextResponse.json({ error: `Unknown provider: ${provider}` }, { status: 400 });
-    }
+    const aiModel = getAIModel(provider, model, openaiKey, googleKey, anthropicKey);
 
     // Build context for analysis
     const channelContext = channelData
@@ -175,7 +194,7 @@ Generate search queries to research this topic for a YouTube video.`,
     }
 
     // Step 2: Execute searches
-    const hasTavily = !!process.env.TAVILY_API_KEY;
+    const hasTavily = !!tavilyKey;
     const researchQueries: ResearchQuery[] = [];
 
     for (const query of queries.slice(0, 5)) {
@@ -183,10 +202,10 @@ Generate search queries to research this topic for a YouTube video.`,
       let source: "tavily" | "llm_simulated";
 
       if (hasTavily) {
-        results = await searchWithTavily(query);
+        results = await searchWithTavily(query, tavilyKey!);
         source = "tavily";
       } else {
-        results = await simulateSearchWithLLM(query, provider, model);
+        results = await simulateSearchWithLLM(query, provider, model, openaiKey, googleKey, anthropicKey);
         source = "llm_simulated";
       }
 
