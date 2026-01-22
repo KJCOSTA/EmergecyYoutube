@@ -64,7 +64,7 @@ const API_SERVICES: APIService[] = [
 
 export default function ConnectApisModal() {
   const { isConnectApisModalOpen, setConnectApisModalOpen } = useUIStore();
-  const { keys, setKey, getKey, hasKey } = useAPIKeysStore();
+  const { keys, setKey, getKey, hasKey, markKeyTested } = useAPIKeysStore();
 
   const [serverStatus, setServerStatus] = useState<APIKeyStatus | null>(null);
   const [isLoadingServerStatus, setIsLoadingServerStatus] = useState(true);
@@ -127,21 +127,57 @@ export default function ConnectApisModal() {
     }));
 
     try {
+      // 1. Pega a chave que o usuário digitou ou a que está salva
+      const keyValue = editValues[service.keyField] || getKey(service.keyField as keyof typeof keys);
+
+      // Se não tiver chave, nem tenta conectar
+      if (!keyValue) {
+        const result: ConnectionResult = {
+          status: "error",
+          message: "Chave não configurada",
+          details: "Insira a API key antes de testar",
+        };
+        setConnectionResults((prev) => ({ ...prev, [service.id]: result }));
+        return result;
+      }
+
+      // 2. Prepara o corpo da requisição CORRETO (provider + key)
+      const body: any = {
+        provider: service.id, // 'openai', 'google', etc.
+        key: keyValue,
+      };
+
+      // Adiciona campo secundário se houver (ex: channel ID)
+      if (service.secondaryField) {
+        const secondaryValue = editValues[service.secondaryField] || getKey(service.secondaryField as keyof typeof keys);
+        if (secondaryValue) {
+          body.channelId = secondaryValue;
+        }
+      }
+
+      // 3. Envia para o backend
       const response = await fetch("/api/config/test-key", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ service: service.id }),
+        body: JSON.stringify(body),
       });
 
       const data = await response.json();
 
-      if (data.success) {
+      if (response.ok && data.success) {
         const result: ConnectionResult = {
           status: "success",
           message: data.message || "Conectado com sucesso",
           details: data.details,
         };
         setConnectionResults((prev) => ({ ...prev, [service.id]: result }));
+
+        // Marca como testada e salva se funcionar
+        markKeyTested(service.keyField as keyof typeof keys, true);
+        if (service.secondaryField) {
+          markKeyTested(service.secondaryField as keyof typeof keys, true);
+        }
+
         return result;
       } else {
         const result: ConnectionResult = {
@@ -150,6 +186,7 @@ export default function ConnectApisModal() {
           details: data.details,
         };
         setConnectionResults((prev) => ({ ...prev, [service.id]: result }));
+        markKeyTested(service.keyField as keyof typeof keys, false);
         return result;
       }
     } catch (error) {
