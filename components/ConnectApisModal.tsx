@@ -5,7 +5,6 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription 
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { CheckCircle2, XCircle, Loader2, Key } from 'lucide-react';
 
 interface ApiStatus {
@@ -16,7 +15,6 @@ export function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean; onClose
   const [loading, setLoading] = useState(true);
   const [serverKeys, setServerKeys] = useState<ApiStatus>({});
 
-  // Verifica as chaves no servidor assim que abre
   useEffect(() => {
     if (isOpen) {
       checkServerKeys();
@@ -42,25 +40,24 @@ export function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean; onClose
   };
 
   const getStatusText = (keyName: string) => {
-    if (serverKeys[keyName]) return <span className="text-green-500 text-sm">Conectado via Variável de Ambiente</span>;
-    return <span className="text-red-500 text-sm">Chave ausente no Servidor</span>;
+    if (serverKeys[keyName]) return <span className="text-green-500 text-sm">Conectado (Servidor)</span>;
+    return <span className="text-red-500 text-sm">Ausente no Vercel</span>;
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl bg-zinc-950 border-zinc-800 text-white">
         <DialogHeader>
-          <DialogTitle>Status das Conexões (Server-Side)</DialogTitle>
+          <DialogTitle>Status das Conexões</DialogTitle>
           <DialogDescription>
-            O sistema verifica automaticamente se as chaves estão configuradas no Vercel.
+            Verificação automática das chaves no servidor Vercel.
           </DialogDescription>
         </DialogHeader>
 
         {loading ? (
           <div className="flex justify-center p-8"><Loader2 className="animate-spin" /></div>
         ) : (
-          <div className="grid gap-4 py-4">
-            {/* Lista de APIs */}
+          <div className="grid gap-4 py-4 max-h-[60vh] overflow-y-auto">
             {[
               { id: 'openai', label: 'OpenAI (GPT-4)' },
               { id: 'gemini', label: 'Google Gemini' },
@@ -87,8 +84,8 @@ export function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean; onClose
         )}
         
         <div className="flex justify-end gap-2">
-           <Button variant="outline" onClick={checkServerKeys}>Recarregar Status</Button>
-           <Button onClick={onClose}>Fechar</Button>
+           <Button variant="outline" onClick={checkServerKeys} className="text-black bg-white hover:bg-gray-200">Recarregar</Button>
+           <Button onClick={onClose} variant="secondary">Fechar</Button>
         </div>
       </DialogContent>
     </Dialog>
