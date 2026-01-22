@@ -11,6 +11,7 @@ import Badge from "@/components/ui/Badge";
 import AIModelSelector from "@/components/AIModelSelector";
 import { useWorkflowStore, useGuidelinesStore } from "@/lib/store";
 import { checkAPIKeys } from "@/lib/api-keys";
+import { useAPIKeysStore, getAPIKeyHeaders } from "@/lib/api-keys-store";
 import { AIProvider, APIKeyStatus, ResearchData } from "@/types";
 import {
   Brain,
@@ -31,6 +32,7 @@ export default function Step2Research() {
   const router = useRouter();
   const { context, research, setResearch, setStep } = useWorkflowStore();
   const { getActiveDiretrizes } = useGuidelinesStore();
+  const { keys } = useAPIKeysStore();
 
   const [apiKeyStatus, setApiKeyStatus] = useState<APIKeyStatus | null>(null);
   const [isLoadingKeys, setIsLoadingKeys] = useState(true);
@@ -78,10 +80,14 @@ export default function Step2Research() {
 
     try {
       const activeDiretrizes = getActiveDiretrizes();
+      const apiKeyHeaders = getAPIKeyHeaders(keys);
 
       const response = await fetch("/api/research", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...apiKeyHeaders,
+        },
         body: JSON.stringify({
           contextId: context.id,
           theme: context.theme,
