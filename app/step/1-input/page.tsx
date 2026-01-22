@@ -46,6 +46,22 @@ function CardSkeleton() {
   );
 }
 
+// Função auxiliar para limpar números formatados (ex: "1,234" -> 1234)
+const parseCleanNumber = (value: string | undefined, isFloat = false): number => {
+  if (!value) return 0;
+  // Remove tudo que não é dígito, ponto ou vírgula
+  const cleanStr = value.replace(/[^0-9.,]/g, "");
+  
+  if (isFloat) {
+    // Tenta normalizar separadores decimais (substitui vírgula por ponto se for o último separador)
+    const normalized = cleanStr.replace(/,/g, ".");
+    return parseFloat(normalized) || 0;
+  }
+  
+  // Para inteiros, removemos tudo que não é dígito
+  return parseInt(cleanStr.replace(/\D/g, "") || "0", 10);
+};
+
 export default function Step1Input() {
   const router = useRouter();
   const { setContext, setStep, context } = useWorkflowStore();
@@ -106,15 +122,15 @@ export default function Step1Input() {
               return {
                 videoId: r["Video"] || r["video_id"] || "",
                 title: r["Title"] || r["title"] || r["Video title"] || "",
-                views: parseInt(r["Views"] || r["views"] || "0"),
-                likes: parseInt(r["Likes"] || r["likes"] || "0"),
-                comments: parseInt(r["Comments"] || r["comments"] || "0"),
-                watchTime: parseFloat(r["Watch time (hours)"] || r["watch_time"] || "0"),
-                averageViewDuration: parseFloat(
-                  r["Average view duration"] || r["avg_duration"] || "0"
+                views: parseCleanNumber(r["Views"] || r["views"]),
+                likes: parseCleanNumber(r["Likes"] || r["likes"]),
+                comments: parseCleanNumber(r["Comments"] || r["comments"]),
+                watchTime: parseCleanNumber(r["Watch time (hours)"] || r["watch_time"], true),
+                averageViewDuration: parseCleanNumber(
+                  r["Average view duration"] || r["avg_duration"], true
                 ),
-                ctr: parseFloat(r["Impressions click-through rate (%)"] || r["ctr"] || "0"),
-                impressions: parseInt(r["Impressions"] || r["impressions"] || "0"),
+                ctr: parseCleanNumber(r["Impressions click-through rate (%)"] || r["ctr"], true),
+                impressions: parseCleanNumber(r["Impressions"] || r["impressions"]),
                 publishedAt: r["Published"] || r["published_at"] || "",
               };
             });
