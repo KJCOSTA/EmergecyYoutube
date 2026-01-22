@@ -5,26 +5,22 @@ import { useRouter } from "next/navigation";
 import Layout from "@/components/Layout";
 import GuidelinesModal from "@/components/GuidelinesModal";
 import ApiKeysModal from "@/components/ApiKeysModal";
-import Card, { CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/Card";
+import Card, { CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
-import Select from "@/components/ui/Select";
 import Input from "@/components/ui/Input";
 import { useWorkflowStore } from "@/lib/store";
 import { checkAPIKeys } from "@/lib/api-keys";
-import { APIKeyStatus, StoryboardData, StoryboardScene, MediaItem, MediaSource } from "@/types";
+import { APIKeyStatus, StoryboardData, MediaItem, MediaSource } from "@/types";
 import { formatDuration } from "@/lib/utils";
 import {
   Film,
   ArrowRight,
   ArrowLeft,
-  Loader2,
   AlertCircle,
-  Check,
   Play,
   Image,
   Search,
-  RefreshCw,
   GripVertical,
   Trash2,
   Plus,
@@ -37,7 +33,7 @@ export default function Step5Studio() {
     useWorkflowStore();
 
   const [apiKeyStatus, setApiKeyStatus] = useState<APIKeyStatus | null>(null);
-  const [isLoadingKeys, setIsLoadingKeys] = useState(true);
+  const [, setIsLoadingKeys] = useState(true);
   const [isGeneratingStoryboard, setIsGeneratingStoryboard] = useState(false);
   const [isSearchingMedia, setIsSearchingMedia] = useState<string | null>(null);
   const [isRendering, setIsRendering] = useState(false);
@@ -139,6 +135,7 @@ export default function Step5Studio() {
     });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const updateSceneOrder = (fromIndex: number, toIndex: number) => {
     if (!storyboard) return;
 
@@ -558,7 +555,7 @@ export default function Step5Studio() {
 
 // Search Media Button Component
 function SearchMediaButton({
-  sceneId,
+  sceneId: _sceneId,
   sceneText,
   isSearching,
   onSearch,

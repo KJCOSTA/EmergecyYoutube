@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import Button from "@/components/ui/Button";
 import { useUIStore } from "@/lib/store";
-import { useAPIKeysStore, getAPIKeyHeaders } from "@/lib/api-keys-store";
+import { useAPIKeysStore } from "@/lib/api-keys-store";
 
 interface APIService {
   id: string;

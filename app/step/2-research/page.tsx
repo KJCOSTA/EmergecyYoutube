@@ -25,7 +25,6 @@ import {
   Users,
   Lightbulb,
   Globe,
-  RefreshCw,
 } from "lucide-react";
 
 export default function Step2Research() {

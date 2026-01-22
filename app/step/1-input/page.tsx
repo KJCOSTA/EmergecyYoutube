@@ -26,7 +26,6 @@ import {
   ArrowRight,
   Check,
   AlertCircle,
-  Loader2,
   RefreshCw,
   Eye,
   TrendingUp,

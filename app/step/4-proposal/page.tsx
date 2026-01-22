@@ -5,15 +5,13 @@ import { useRouter } from "next/navigation";
 import Layout from "@/components/Layout";
 import GuidelinesModal from "@/components/GuidelinesModal";
 import ApiKeysModal from "@/components/ApiKeysModal";
-import Card, { CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/Card";
+import Card, { CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
-import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
 import Select from "@/components/ui/Select";
 import Toggle from "@/components/ui/Toggle";
 import AssetCard from "@/components/AssetCard";
-import AIModelSelector from "@/components/AIModelSelector";
 import { useWorkflowStore, useGuidelinesStore } from "@/lib/store";
 import { checkAPIKeys } from "@/lib/api-keys";
 import {
@@ -32,30 +30,24 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { formatDuration } from "@/lib/utils";
 import {
-  FileVideo,
   ArrowRight,
   ArrowLeft,
   Loader2,
   AlertCircle,
   Check,
   Sparkles,
-  FileText,
-  Music,
-  Tag,
   Image,
   Settings,
-  Play,
   Volume2,
 } from "lucide-react";
 
 export default function Step4Proposal() {
   const router = useRouter();
   const { context, research, proposal, setProposal, updateProposal, setStep } = useWorkflowStore();
-  const { getActiveDiretrizes, getDiretrizesForScope } = useGuidelinesStore();
+  const { getDiretrizesForScope } = useGuidelinesStore();
 
   const [apiKeyStatus, setApiKeyStatus] = useState<APIKeyStatus | null>(null);
-  const [isLoadingKeys, setIsLoadingKeys] = useState(true);
-  const [isGeneratingAll, setIsGeneratingAll] = useState(false);
+  const [, setIsLoadingKeys] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   // Individual generation states
@@ -156,6 +148,7 @@ export default function Step4Proposal() {
       };
       setProposal(initialProposal);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context, research, proposal, setProposal]);
 
   const generateScript = async (provider: AIProvider, model: string) => {
@@ -503,7 +496,7 @@ export default function Step4Proposal() {
                 <span>Seções: {proposal.script.sections.length}</span>
               </div>
               <div className="space-y-3 max-h-96 overflow-auto">
-                {proposal.script.sections.map((section, i) => (
+                {proposal.script.sections.map((section) => (
                   <div key={section.id} className="p-3 bg-gray-800/50 rounded-lg">
                     <div className="flex items-center gap-2 mb-2">
                       <Badge variant="info">{section.type}</Badge>

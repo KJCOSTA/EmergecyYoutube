@@ -19,7 +19,6 @@ import {
   Save,
   TestTube,
   Trash2,
-  RefreshCw,
 } from "lucide-react";
 
 interface KeyConfig {
@@ -146,7 +145,7 @@ export default function ApiKeysModal() {
     useAPIKeysStore();
 
   const [serverStatus, setServerStatus] = useState<APIKeyStatus | null>(null);
-  const [isLoadingServer, setIsLoadingServer] = useState(true);
+  const [, setIsLoadingServer] = useState(true);
   const [testingKey, setTestingKey] = useState<string | null>(null);
   const [testingAll, setTestingAll] = useState(false);
   const [showPassword, setShowPassword] = useState<Record<string, boolean>>({});
@@ -191,7 +190,7 @@ export default function ApiKeysModal() {
         [config.key]: { success: result.success, message: result.message },
       }));
       markKeyTested(config.key, result.success);
-    } catch (error) {
+    } catch {
       setTestResults((prev) => ({
         ...prev,
         [config.key]: { success: false, message: "Erro ao testar" },

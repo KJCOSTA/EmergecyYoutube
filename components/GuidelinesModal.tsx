@@ -10,7 +10,7 @@ import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import { useGuidelinesStore, useUIStore } from "@/lib/store";
 import { Diretriz, DiretrizScope } from "@/types";
-import { Plus, Pencil, Trash2, X, Check } from "lucide-react";
+import { Plus, Pencil, Trash2, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const SCOPE_OPTIONS: { value: DiretrizScope; label: string }[] = [
