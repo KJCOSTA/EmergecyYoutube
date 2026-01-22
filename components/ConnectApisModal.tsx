@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { useState, useEffect, useCallback } from 'react';
 import { X, Check, AlertCircle, RefreshCw, Key, Save, Server, Monitor, Trash2 } from 'lucide-react';
 import { useAPIKeysStore } from '@/lib/api-keys-store';
 
@@ -35,22 +34,21 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
   const [serverKeys, setServerKeys] = useState<Record<string, boolean>>({});
   const [showEdit, setShowEdit] = useState<string | null>(null);
   const [manualInput, setManualInput] = useState("");
-  const [mounted, setMounted] = useState(false); // Para corrigir erro de hidratação
+  const [mounted, setMounted] = useState(false);
   
   const { keys: localKeys, setKey, clearKey } = useAPIKeysStore();
 
-  // Espera o navegador carregar antes de tentar ler as chaves
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (isOpen) checkServerKeys();
+    if (isOpen) {
+      checkServerKeys();
+    }
   }, [isOpen]);
-  }, [isOpen, checkServerKeys]);
 
   const checkServerKeys = async () => {
-  const checkServerKeys = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch('/api/status');
@@ -62,7 +60,6 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
       setLoading(false);
     }
   };
-  }, []);
 
   const handleSaveKey = (visualKey: string) => {
     const storeKeyName = KEY_MAP[visualKey];
@@ -95,7 +92,6 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
             <p className="text-zinc-400 text-sm">Gerencie chaves do Servidor (.env) ou Locais (Navegador).</p>
           </div>
           <button onClick={onClose} className="p-2 hover:bg-zinc-800 rounded-full transition-colors cursor-pointer">
-          <button type="button" onClick={onClose} className="p-2 hover:bg-zinc-800 rounded-full transition-colors cursor-pointer">
             <X className="w-6 h-6 text-zinc-400 hover:text-white" />
           </button>
         </div>
@@ -110,12 +106,8 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
             Object.keys(API_NAMES).map((key) => {
               const storeKeyName = KEY_MAP[key];
               const isServerConnected = serverKeys[key];
-              const isServerConnected = serverKeys[key] || (storeKeyName ? serverKeys[storeKeyName] : false);
-              
-              // Só verifica chave local se o componente já montou (evita erros)
               const hasLocalKey = mounted && !!localKeys[storeKeyName as any];
               const isLocalConnected = hasLocalKey;
-              
               const isConnected = isServerConnected || isLocalConnected;
               const isEditing = showEdit === key;
 
@@ -147,13 +139,11 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
                     <div className="flex items-center gap-2">
                       {isLocalConnected && !isServerConnected && (
                          <button onClick={() => handleClearKey(key)} className="p-2 text-zinc-500 hover:text-red-400 transition-colors" title="Remover">
-                         <button type="button" onClick={() => handleClearKey(key)} className="p-2 text-zinc-500 hover:text-red-400 transition-colors" title="Remover">
                            <Trash2 className="w-4 h-4" />
                          </button>
                       )}
                       {!isServerConnected && (
                         <button 
-                          type="button"
                           onClick={() => {
                             setShowEdit(isEditing ? null : key);
                             setManualInput(localKeys[storeKeyName as any] || "");
@@ -178,7 +168,6 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
                           onChange={(e) => setManualInput(e.target.value)}
                         />
                         <button 
-                          type="button"
                           onClick={() => handleSaveKey(key)}
                           disabled={!manualInput}
                           className="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white px-4 py-2 rounded-md text-sm font-medium flex items-center gap-2 cursor-pointer shadow-lg shadow-indigo-500/20"
@@ -196,11 +185,9 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
         
         <div className="p-6 border-t border-zinc-800 bg-zinc-900/50 rounded-b-xl flex justify-between items-center">
           <button onClick={checkServerKeys} className="text-zinc-400 hover:text-white text-sm flex items-center gap-2 transition-colors cursor-pointer">
-          <button type="button" onClick={checkServerKeys} className="text-zinc-400 hover:text-white text-sm flex items-center gap-2 transition-colors cursor-pointer">
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} /> Verificar
           </button>
           <button onClick={onClose} className="px-6 py-2.5 bg-white hover:bg-zinc-200 text-black font-bold rounded-lg transition-colors cursor-pointer shadow-lg shadow-white/5">
-          <button type="button" onClick={onClose} className="px-6 py-2.5 bg-white hover:bg-zinc-200 text-black font-bold rounded-lg transition-colors cursor-pointer shadow-lg shadow-white/5">
             Concluir
           </button>
         </div>
