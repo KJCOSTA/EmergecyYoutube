@@ -1,30 +1,25 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { CheckCircle2, XCircle, Loader2, Key, X } from 'lucide-react';
-
-interface ApiStatus {
-  [key: string]: boolean;
-}
+import { X, Check, AlertCircle, RefreshCw } from 'lucide-react';
 
 export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [loading, setLoading] = useState(true);
-  const [serverKeys, setServerKeys] = useState<ApiStatus>({});
+  const [keys, setKeys] = useState<any>({});
 
+  // Verifica chaves ao abrir
   useEffect(() => {
-    if (isOpen) {
-      checkServerKeys();
-    }
+    if (isOpen) checkKeys();
   }, [isOpen]);
 
-  const checkServerKeys = async () => {
+  const checkKeys = async () => {
     setLoading(true);
     try {
       const res = await fetch('/api/status');
       const data = await res.json();
-      setServerKeys(data);
-    } catch (error) {
-      console.error("Erro ao verificar chaves:", error);
+      setKeys(data);
+    } catch (e) {
+      console.error(e);
     } finally {
       setLoading(false);
     }
@@ -33,71 +28,48 @@ export default function ConnectApisModal({ isOpen, onClose }: { isOpen: boolean;
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-in fade-in duration-200">
-      <div className="w-full max-w-2xl bg-zinc-950 border border-zinc-800 rounded-xl text-white shadow-2xl relative">
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
+      <div className="w-full max-w-2xl bg-[#09090b] border border-zinc-800 rounded-xl text-white shadow-2xl">
         <div className="flex items-center justify-between p-6 border-b border-zinc-800">
-          <div>
-            <h2 className="text-xl font-semibold text-white">Central de Conexões</h2>
-            <p className="text-sm text-zinc-400 mt-1">Verificação em Tempo Real (Servidor Vercel)</p>
-          </div>
-          <button 
-            onClick={onClose} 
-            className="p-2 hover:bg-zinc-800 rounded-full transition-colors cursor-pointer text-white"
-          >
+          <h2 className="text-xl font-bold">Conexões de API (Servidor)</h2>
+          <button onClick={onClose} className="p-2 hover:bg-zinc-800 rounded-full text-white cursor-pointer">
             <X className="w-6 h-6" />
           </button>
         </div>
 
-        <div className="p-6">
+        <div className="p-6 space-y-3 max-h-[60vh] overflow-y-auto">
           {loading ? (
-            <div className="flex justify-center p-8"><Loader2 className="animate-spin text-purple-500 w-8 h-8" /></div>
+             <div className="text-center py-10 text-zinc-500 flex flex-col items-center gap-2">
+               <RefreshCw className="animate-spin w-8 h-8" />
+               <p>Verificando Vercel...</p>
+             </div>
           ) : (
-            <div className="grid gap-3 max-h-[50vh] overflow-y-auto pr-2">
-              {[
-                { id: 'openai', label: 'OpenAI (GPT-4)' },
-                { id: 'gemini', label: 'Google Gemini' },
-                { id: 'anthropic', label: 'Anthropic Claude' },
-                { id: 'tavily', label: 'Tavily (Pesquisa)' },
-                { id: 'youtube', label: 'YouTube API' },
-                { id: 'pexels', label: 'Pexels Media' },
-                { id: 'elevenlabs', label: 'ElevenLabs Voz' }
-              ].map((api) => (
-                <div key={api.id} className="flex items-center justify-between p-4 border border-zinc-800 rounded-lg bg-zinc-900/50">
-                  <div className="flex items-center gap-4">
-                    <div className={`p-2 rounded-md ${serverKeys[api.id] ? 'bg-green-500/10' : 'bg-red-500/10'}`}>
-                      <Key className={`w-4 h-4 ${serverKeys[api.id] ? 'text-green-500' : 'text-red-500'}`} />
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-white">{api.label}</h4>
-                      {serverKeys[api.id] 
-                        ? <span className="text-green-500 text-xs font-bold">CONECTADO ✅</span>
-                        : <span className="text-red-500 text-xs font-bold">AUSENTE ❌</span>
-                      }
-                    </div>
-                  </div>
-                  {serverKeys[api.id] 
-                    ? <CheckCircle2 className="w-6 h-6 text-green-500" />
-                    : <XCircle className="w-6 h-6 text-red-500" />
-                  }
+            Object.entries(keys).map(([key, isActive]) => (
+              <div key={key} className="flex items-center justify-between p-4 border border-zinc-800 rounded-lg bg-zinc-900/50">
+                <span className="capitalize font-medium text-zinc-200">{key.replace('_', ' ')}</span>
+                <div className="flex items-center gap-2">
+                  {isActive ? (
+                    <span className="flex items-center gap-1 text-green-500 font-bold text-sm bg-green-500/10 px-3 py-1 rounded-full">
+                      <Check className="w-4 h-4" /> CONECTADO
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-1 text-red-500 font-bold text-sm bg-red-500/10 px-3 py-1 rounded-full">
+                      <AlertCircle className="w-4 h-4" /> AUSENTE
+                    </span>
+                  )}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))
           )}
         </div>
         
-        <div className="flex justify-end gap-3 p-6 border-t border-zinc-800 bg-zinc-900/30 rounded-b-xl">
-           <button 
-             onClick={checkServerKeys} 
-             className="px-4 py-2 text-sm font-medium text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 rounded-md transition-colors border border-zinc-700"
-           >
-             Recarregar
-           </button>
-           <button 
-             onClick={onClose} 
-             className="px-4 py-2 text-sm font-medium text-black bg-white hover:bg-zinc-200 rounded-md transition-colors font-bold"
-           >
-             Fechar
-           </button>
+        <div className="p-6 border-t border-zinc-800 flex justify-end gap-3 bg-zinc-900/30">
+          <button onClick={checkKeys} className="px-4 py-2 text-zinc-300 hover:bg-zinc-800 rounded-md border border-zinc-700 cursor-pointer">
+            Recarregar
+          </button>
+          <button onClick={onClose} className="px-6 py-2 bg-white text-black font-bold rounded-md hover:bg-zinc-200 cursor-pointer">
+            Fechar
+          </button>
         </div>
       </div>
     </div>
