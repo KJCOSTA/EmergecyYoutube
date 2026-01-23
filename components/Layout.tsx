@@ -18,6 +18,7 @@ import {
   ChevronLeft,
   LogOut,
   User,
+  Palette,
 } from "lucide-react";
 import GuidelinesModal from "./GuidelinesModal";
 import ConnectApisModal from "./ConnectApisModal";
@@ -75,6 +76,12 @@ export default function Layout({ children }: LayoutProps) {
       label: "Documentação",
       icon: <FileText className="w-5 h-5" />,
       path: "/documentation",
+      type: "link" as const,
+    },
+    {
+      label: "Design System",
+      icon: <Palette className="w-5 h-5" />,
+      path: "/documentation/design-system",
       type: "link" as const,
     },
     {
