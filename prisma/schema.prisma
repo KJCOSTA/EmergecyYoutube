@@ -1,0 +1,203 @@
+// Prisma Schema for ORION - AI Video Production Workflow
+// Architecture: AI SDK 6 + Inngest + Vercel Postgres
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+// ============================================
+// Main Project Entity
+// ============================================
+
+model Project {
+  id          String        @id @default(cuid())
+  name        String
+  topic       String
+  status      ProjectStatus @default(PENDING)
+  autoMode    Boolean       @default(false)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // Relations
+  research      Research?
+  script        Script?
+  storyboard    Storyboard?
+  render        Render?
+  upload        Upload?
+  workflowState WorkflowState?
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum ProjectStatus {
+  PENDING
+  RESEARCHING
+  SCRIPTING
+  AWAITING_APPROVAL
+  APPROVED
+  STORYBOARDING
+  RENDERING
+  UPLOADING
+  COMPLETED
+  FAILED
+}
+
+// ============================================
+// Research Phase (Gemini 2.0)
+// ============================================
+
+model Research {
+  id        String   @id @default(cuid())
+  projectId String   @unique
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  // Internal Analysis
+  internalAnalysis Json? // { topPerformingTopics, audienceInsights, contentGaps }
+
+  // External Analysis
+  externalAnalysis Json? // { trends, competitors }
+
+  // Full research summary
+  summary   String?  @db.Text
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============================================
+// Script Phase (Claude)
+// ============================================
+
+model Script {
+  id        String   @id @default(cuid())
+  projectId String   @unique
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  title       String?
+  content     String?  @db.Text
+  sections    Json?    // { hook, body[], cta }
+  metadata    Json?    // { wordCount, estimatedDuration, tone }
+
+  // Approval tracking
+  approved    Boolean  @default(false)
+  approvedAt  DateTime?
+  feedback    String?  @db.Text
+
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============================================
+// Storyboard Phase
+// ============================================
+
+model Storyboard {
+  id        String   @id @default(cuid())
+  projectId String   @unique
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  scenes    Json?    // Array of scene objects with visual descriptions
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============================================
+// Render Phase (JSON2VIDEO)
+// ============================================
+
+model Render {
+  id            String   @id @default(cuid())
+  projectId     String   @unique
+  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  externalJobId String?  // JSON2VIDEO job ID
+  videoUrl      String?
+  thumbnailUrl  String?
+  duration      Int?     // in seconds
+  status        String   @default("pending")
+  error         String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============================================
+// Upload Phase (YouTube)
+// ============================================
+
+model Upload {
+  id        String   @id @default(cuid())
+  projectId String   @unique
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  youtubeVideoId String?
+  youtubeUrl     String?
+  title          String?
+  description    String? @db.Text
+  tags           Json?   // Array of tags
+  publishedAt    DateTime?
+  status         String  @default("pending")
+  error          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============================================
+// Workflow State (Inngest)
+// ============================================
+
+model WorkflowState {
+  id        String   @id @default(cuid())
+  projectId String   @unique
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  currentStep   String   @default("init")
+  inngestRunId  String?
+  approvalToken String?  @unique
+
+  // Timestamps for each step
+  researchStartedAt   DateTime?
+  researchCompletedAt DateTime?
+  scriptStartedAt     DateTime?
+  scriptCompletedAt   DateTime?
+  approvalSentAt      DateTime?
+  approvedAt          DateTime?
+  storyboardStartedAt DateTime?
+  storyboardCompletedAt DateTime?
+  renderStartedAt     DateTime?
+  renderCompletedAt   DateTime?
+  uploadStartedAt     DateTime?
+  uploadCompletedAt   DateTime?
+
+  error     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([approvalToken])
+}
+
+// ============================================
+// User Settings (optional future use)
+// ============================================
+
+model UserSettings {
+  id    String @id @default(cuid())
+  email String @unique
+
+  notificationEmail String?
+  autoApprove       Boolean @default(false)
+  maxRetries        Int     @default(3)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
