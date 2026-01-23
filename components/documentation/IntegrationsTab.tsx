@@ -12,7 +12,6 @@ import {
   Lock,
 } from "lucide-react";
 import { CopyMdButtons } from "./CopyButton";
-import { AnimatedSection, AnimatedCard, AnimatedGrid } from "./AnimatedSection";
 
 // API/Service logos as simple text badges (would be real logos in production)
 const ServiceLogo = ({ name, color }: { name: string; color: string }) => (
