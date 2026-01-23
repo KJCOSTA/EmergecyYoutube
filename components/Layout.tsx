@@ -106,11 +106,11 @@ export default function Layout({ children }: LayoutProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#09090b] flex">
+    <div className="min-h-screen bg-layer-0 flex">
       {/* Mobile Menu Button */}
       <button
         onClick={toggleSidebar}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-zinc-900 rounded-lg border border-zinc-800"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-layer-1 rounded-lg border border-default"
       >
         {isSidebarOpen ? (
           <X className="w-5 h-5 text-white" />
@@ -122,16 +122,16 @@ export default function Layout({ children }: LayoutProps) {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed lg:sticky top-0 left-0 z-40 h-screen bg-zinc-900 border-r border-zinc-800 transition-all duration-300",
+          "fixed lg:sticky top-0 left-0 z-40 h-screen bg-layer-1 border-r border-default transition-all duration-300",
           isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
           isCollapsed && !isMobile ? "w-20" : "w-64"
         )}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="p-6 border-b border-zinc-800">
+          <div className="p-6 border-b border-default">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+              <div className="w-8 h-8 bg-gradient-to-br from-orion-400 to-cyan-400 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
                 {logoUrl ? (
                   <img
                     src={logoUrl}
@@ -173,8 +173,8 @@ export default function Layout({ children }: LayoutProps) {
                     className={cn(
                       "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200",
                       isActive
-                        ? "bg-indigo-600/20 text-indigo-400 border border-indigo-500/30"
-                        : "text-zinc-400 hover:bg-zinc-800 hover:text-white",
+                        ? "bg-cyan-500/15 text-cyan-400 border border-cyan-500/30"
+                        : "text-text-secondary hover:bg-surface-elevated hover:text-text-primary",
                       isCollapsed && !isMobile && "justify-center"
                     )}
                     title={isCollapsed && !isMobile ? item.label : undefined}
@@ -183,8 +183,8 @@ export default function Layout({ children }: LayoutProps) {
                       className={cn(
                         "flex items-center justify-center w-8 h-8 rounded-lg flex-shrink-0",
                         isActive
-                          ? "bg-indigo-600/30"
-                          : "bg-zinc-800"
+                          ? "bg-cyan-500/25"
+                          : "bg-surface-default"
                       )}
                     >
                       {item.icon}
@@ -203,12 +203,12 @@ export default function Layout({ children }: LayoutProps) {
                       if (isMobile) toggleSidebar();
                     }}
                     className={cn(
-                      "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-400 hover:bg-zinc-800 hover:text-white transition-all duration-200",
+                      "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary hover:bg-surface-elevated hover:text-text-primary transition-all duration-200",
                       isCollapsed && !isMobile && "justify-center"
                     )}
                     title={isCollapsed && !isMobile ? item.label : undefined}
                   >
-                    <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-800 flex-shrink-0">
+                    <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-surface-default flex-shrink-0">
                       {item.icon}
                     </span>
                     {(!isCollapsed || isMobile) && (
@@ -224,7 +224,7 @@ export default function Layout({ children }: LayoutProps) {
           </nav>
 
           {/* Footer */}
-          <div className="p-4 border-t border-zinc-800 space-y-3">
+          <div className="p-4 border-t border-default space-y-3">
             {/* Settings Link */}
             <Link
               href={settingsItem.path}
@@ -234,8 +234,8 @@ export default function Layout({ children }: LayoutProps) {
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200",
                 pathname === settingsItem.path
-                  ? "bg-green-600/20 text-green-400 border border-green-500/30"
-                  : "text-zinc-400 hover:bg-zinc-800 hover:text-white",
+                  ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
+                  : "text-text-secondary hover:bg-surface-elevated hover:text-text-primary",
                 isCollapsed && !isMobile && "justify-center"
               )}
               title={isCollapsed && !isMobile ? settingsItem.label : undefined}
@@ -244,8 +244,8 @@ export default function Layout({ children }: LayoutProps) {
                 className={cn(
                   "flex items-center justify-center w-8 h-8 rounded-lg flex-shrink-0",
                   pathname === settingsItem.path
-                    ? "bg-green-600/30"
-                    : "bg-zinc-800"
+                    ? "bg-emerald-500/25"
+                    : "bg-surface-default"
                 )}
               >
                 {settingsItem.icon}
@@ -259,7 +259,7 @@ export default function Layout({ children }: LayoutProps) {
             {!isMobile && (
               <button
                 onClick={() => setIsCollapsed(!isCollapsed)}
-                className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-zinc-500 hover:bg-zinc-800 hover:text-zinc-300 transition-all"
+                className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-text-muted hover:bg-surface-elevated hover:text-text-secondary transition-all"
                 title={isCollapsed ? "Expandir sidebar" : "Recolher sidebar"}
               >
                 <ChevronLeft className={cn(
@@ -274,7 +274,7 @@ export default function Layout({ children }: LayoutProps) {
 
             {/* Version */}
             {(!isCollapsed || isMobile) && (
-              <p className="text-xs text-zinc-500 text-center">
+              <p className="text-xs text-text-muted text-center">
                 {systemName} v1.0.0
               </p>
             )}
@@ -293,22 +293,22 @@ export default function Layout({ children }: LayoutProps) {
       {/* Main Content */}
       <main className="flex-1 min-h-screen flex flex-col">
         {/* Header with User Avatar */}
-        <header className="sticky top-0 z-30 bg-zinc-900/95 backdrop-blur-sm border-b border-zinc-800">
+        <header className="sticky top-0 z-30 bg-layer-1/95 backdrop-blur-sm border-b border-default">
           <div className="flex items-center justify-end px-6 py-3">
             {profile && (
               <div className="relative">
                 <button
                   onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-zinc-800 transition-all"
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-elevated transition-all"
                 >
                   <div className="text-right hidden sm:block">
-                    <p className="text-sm font-medium text-white">{profile.name}</p>
-                    <p className="text-xs text-zinc-400">{profile.role}</p>
+                    <p className="text-sm font-medium text-text-primary">{profile.name}</p>
+                    <p className="text-xs text-text-secondary">{profile.role}</p>
                   </div>
                   <img
                     src={profile.avatarUrl}
                     alt={profile.name}
-                    className="w-9 h-9 rounded-full border-2 border-zinc-700"
+                    className="w-9 h-9 rounded-full border-2 border-subtle"
                   />
                 </button>
 
@@ -319,11 +319,11 @@ export default function Layout({ children }: LayoutProps) {
                       className="fixed inset-0 z-40"
                       onClick={() => setShowUserMenu(false)}
                     />
-                    <div className="absolute right-0 mt-2 w-48 bg-zinc-900 border border-zinc-800 rounded-lg shadow-xl z-50 overflow-hidden">
+                    <div className="absolute right-0 mt-2 w-48 bg-layer-2 border border-default rounded-lg shadow-xl z-50 overflow-hidden">
                       <Link
                         href="/settings"
                         onClick={() => setShowUserMenu(false)}
-                        className="flex items-center gap-2 px-4 py-3 hover:bg-zinc-800 transition-colors text-zinc-300 hover:text-white"
+                        className="flex items-center gap-2 px-4 py-3 hover:bg-surface-elevated transition-colors text-text-secondary hover:text-text-primary"
                       >
                         <User className="w-4 h-4" />
                         <span className="text-sm">Meu Perfil</span>
@@ -331,18 +331,18 @@ export default function Layout({ children }: LayoutProps) {
                       <Link
                         href="/settings"
                         onClick={() => setShowUserMenu(false)}
-                        className="flex items-center gap-2 px-4 py-3 hover:bg-zinc-800 transition-colors text-zinc-300 hover:text-white"
+                        className="flex items-center gap-2 px-4 py-3 hover:bg-surface-elevated transition-colors text-text-secondary hover:text-text-primary"
                       >
                         <Settings className="w-4 h-4" />
                         <span className="text-sm">Configurações</span>
                       </Link>
-                      <div className="border-t border-zinc-800" />
+                      <div className="border-t border-default" />
                       <button
                         onClick={() => {
                           setShowUserMenu(false);
                           window.location.reload();
                         }}
-                        className="w-full flex items-center gap-2 px-4 py-3 hover:bg-zinc-800 transition-colors text-red-400 hover:text-red-300"
+                        className="w-full flex items-center gap-2 px-4 py-3 hover:bg-surface-elevated transition-colors text-red-400 hover:text-red-300"
                       >
                         <LogOut className="w-4 h-4" />
                         <span className="text-sm">Sair</span>

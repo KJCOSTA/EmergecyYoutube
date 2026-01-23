@@ -15,11 +15,9 @@ import {
   RefreshCw,
   Rocket,
   Settings,
-  TrendingUp,
   Video,
   Wifi,
   WifiOff,
-  XCircle,
   Zap,
   BarChart3,
   Eye,
@@ -127,15 +125,6 @@ export default function MissionControlPage() {
     setIsRefreshing(true);
     await checkSystemStatus();
     setIsRefreshing(false);
-  };
-
-  const getHealthColor = (health: string) => {
-    switch (health) {
-      case 'healthy': return 'text-success';
-      case 'degraded': return 'text-warning';
-      case 'critical': return 'text-error';
-      default: return 'text-foreground-muted';
-    }
   };
 
   const getHealthBg = (health: string) => {
