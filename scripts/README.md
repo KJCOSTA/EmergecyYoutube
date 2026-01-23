@@ -193,11 +193,12 @@ Found 3 deployments:
 
 ### "Failed to fetch comments: 404"
 - Nem todos os deployments suportam comentários
-- Apenas Preview Deployments têm comentários
-- Production deployments podem não ter a feature habilitada
+- ✅ **ATUALIZADO**: Agora funciona em Preview E Production deployments!
+- Se você configurou o Vercel Toolbar conforme `VERCEL_TOOLBAR_PRODUCTION.md`
 
 ## 🎯 Workflow recomendado
 
+### Workflow Tradicional (Preview Deployments)
 1. **Durante desenvolvimento**:
    - Faça push para branch
    - Vercel cria Preview Deployment
@@ -207,6 +208,23 @@ Found 3 deployments:
    ```bash
    npm run vercel:comments
    ```
+
+### 🆕 Novo Workflow (Produção Direta - HABILITADO!)
+1. **Acesse a aplicação em PRODUÇÃO**
+2. **Pressione `v`** para ativar o Vercel Toolbar
+3. **Adicione comentários** com menções @Claude direto na produção
+4. **Extraia comentários**:
+   ```bash
+   npm run vercel:comments
+   ```
+5. **Claude implementa** as mudanças baseado nos comentários
+6. **Deploy automático** atualiza a produção
+
+📖 **Documentação completa**: Veja `VERCEL_TOOLBAR_PRODUCTION.md` para detalhes sobre:
+- Como usar menções @Claude em produção
+- Configuração de variáveis de ambiente
+- Boas práticas para comentários efetivos
+- Deploy automático para produção
    - Veja todos os comentários estruturados
    - Use para criar todos de tarefas
 

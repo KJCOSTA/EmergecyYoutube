@@ -7,12 +7,12 @@ import { DocsManagerTab } from '@/components/settings/DocsManagerTab';
 import { IntegrationsTab } from '@/components/settings/IntegrationsTab';
 import { LogsTab } from '@/components/settings/LogsTab';
 import { getProfile, getDocs, getTokens } from '@/app/actions/settings';
-import type { UserProfile, DocPage, IntegrationTokens, SettingsTab as TabType } from '@/types';
+import type { UserProfile, DocsData, IntegrationTokens, SettingsTab as TabType } from '@/types';
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<TabType>('profile');
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [docs, setDocs] = useState<DocPage[]>([]);
+  const [docs, setDocs] = useState<DocsData>({ pages: [], updatedAt: new Date().toISOString() });
   const [tokens, setTokens] = useState<IntegrationTokens | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -187,7 +187,7 @@ export default function SettingsPage() {
 
               {activeTab === 'docs' && (
                 <div className="animate-fade-in">
-                  <DocsManagerTab initialDocs={docs} onUpdate={handleDocsUpdate} />
+                  <DocsManagerTab initialDocs={docs.pages} onUpdate={handleDocsUpdate} />
                 </div>
               )}
 

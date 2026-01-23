@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Layout from "@/components/Layout";
+import { VercelToolbar } from "@/components/VercelToolbar";
 
 export const metadata: Metadata = {
   title: "Emergency YouTube",
@@ -19,6 +20,9 @@ export default function RootLayout({
         <Layout>
           {children}
         </Layout>
+        {/* Vercel Toolbar - habilitado em TODOS os ambientes (dev, preview, production) */}
+        {/* Permite menções @Claude e comentários visuais em produção */}
+        <VercelToolbar />
       </body>
     </html>
   );
