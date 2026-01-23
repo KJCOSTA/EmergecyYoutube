@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { CheckCircle2, Circle, Lock, ArrowRight, FileInput, Brain, FileVideo, Film, Wrench, Upload, AlertCircle } from 'lucide-react';
 import { useWorkflowStore } from '@/lib/store';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -56,7 +56,7 @@ const workflowSteps = [
   },
 ];
 
-export default function WorkflowPage() {
+function WorkflowContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const {
@@ -339,5 +339,20 @@ export default function WorkflowPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function WorkflowPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-foreground-muted">Carregando workflow...</p>
+        </div>
+      </div>
+    }>
+      <WorkflowContent />
+    </Suspense>
   );
 }
