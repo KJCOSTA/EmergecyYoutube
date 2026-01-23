@@ -150,7 +150,7 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-full flex items-center justify-center">
         <div className="text-center">
           <Settings className="w-12 h-12 text-zinc-600 mx-auto mb-4 animate-spin" />
           <p className="text-zinc-400">Carregando configurações...</p>
@@ -160,7 +160,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-full">
       {/* Header */}
       <div className="border-b border-zinc-800 bg-zinc-950/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-6 py-6">

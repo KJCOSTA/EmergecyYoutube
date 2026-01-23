@@ -76,7 +76,7 @@ export default function WorkflowPage() {
   };
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="w-full">
       {/* Header */}
       <div className="mb-12">
         <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
