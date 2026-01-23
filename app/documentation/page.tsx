@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Layout from "@/components/Layout";
 import { cn } from "@/lib/utils";
 import {
   exportTabAsMarkdown,
@@ -477,10 +476,8 @@ function DocumentationContent() {
 
 export default function DocumentationPage() {
   return (
-    <Layout>
-      <ShareProvider>
-        <DocumentationContent />
-      </ShareProvider>
-    </Layout>
+    <ShareProvider>
+      <DocumentationContent />
+    </ShareProvider>
   );
 }

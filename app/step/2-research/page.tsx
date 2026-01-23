@@ -2,9 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Layout from "@/components/Layout";
-import GuidelinesModal from "@/components/GuidelinesModal";
-import ApiKeysModal from "@/components/ApiKeysModal";
 import Card, { CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
@@ -124,18 +121,17 @@ export default function Step2Research() {
   }
 
   return (
-    <Layout>
-      <div className="space-y-8">
-        {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Inteligência - Deep Research Agent
-          </h1>
-          <p className="text-gray-400">
-            Análise profunda de dados e pesquisa de tendências para o tema:{" "}
-            <span className="text-white font-medium">{context.theme}</span>
-          </p>
-        </div>
+    <div className="space-y-8">
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-bold text-white mb-2">
+          Inteligência - Deep Research Agent
+        </h1>
+        <p className="text-gray-400">
+          Análise profunda de dados e pesquisa de tendências para o tema:{" "}
+          <span className="text-white font-medium">{context.theme}</span>
+        </p>
+      </div>
 
         {/* Error Alert */}
         {error && (
@@ -362,29 +358,25 @@ export default function Step2Research() {
           </div>
         )}
 
-        {/* Navigation */}
-        <div className="flex justify-between">
-          <Button
-            variant="outline"
-            onClick={() => router.push("/step/1-input")}
-            leftIcon={<ArrowLeft className="w-4 h-4" />}
-          >
-            Voltar
-          </Button>
+      {/* Navigation */}
+      <div className="flex justify-between">
+        <Button
+          variant="outline"
+          onClick={() => router.push("/step/1-input")}
+          leftIcon={<ArrowLeft className="w-4 h-4" />}
+        >
+          Voltar
+        </Button>
 
-          <Button
-            onClick={handleProceed}
-            disabled={!research}
-            rightIcon={<ArrowRight className="w-4 h-4" />}
-            size="lg"
-          >
-            Continuar para Proposta
-          </Button>
-        </div>
+        <Button
+          onClick={handleProceed}
+          disabled={!research}
+          rightIcon={<ArrowRight className="w-4 h-4" />}
+          size="lg"
+        >
+          Continuar para Proposta
+        </Button>
       </div>
-
-      <GuidelinesModal />
-      <ApiKeysModal />
-    </Layout>
+    </div>
   );
 }

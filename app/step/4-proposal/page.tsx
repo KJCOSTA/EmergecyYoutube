@@ -2,9 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Layout from "@/components/Layout";
-import GuidelinesModal from "@/components/GuidelinesModal";
-import ApiKeysModal from "@/components/ApiKeysModal";
 import Card, { CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
@@ -424,17 +421,16 @@ export default function Step4Proposal() {
   const canProceed = proposal.allApproved;
 
   return (
-    <Layout>
-      <div className="space-y-8">
-        {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Proposta de Vídeo - Mesa de Decisão
-          </h1>
-          <p className="text-gray-400">
-            Todos os assets são gerados aqui. Nada avança sem sua aprovação.
-          </p>
-        </div>
+    <div className="space-y-8">
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-bold text-white mb-2">
+          Proposta de Vídeo - Mesa de Decisão
+        </h1>
+        <p className="text-gray-400">
+          Todos os assets são gerados aqui. Nada avança sem sua aprovação.
+        </p>
+      </div>
 
         {/* Error Alert */}
         {error && (
@@ -932,29 +928,25 @@ export default function Step4Proposal() {
           </CardContent>
         </Card>
 
-        {/* Navigation */}
-        <div className="flex justify-between">
-          <Button
-            variant="outline"
-            onClick={() => router.push("/step/2-research")}
-            leftIcon={<ArrowLeft className="w-4 h-4" />}
-          >
-            Voltar
-          </Button>
+      {/* Navigation */}
+      <div className="flex justify-between">
+        <Button
+          variant="outline"
+          onClick={() => router.push("/step/2-research")}
+          leftIcon={<ArrowLeft className="w-4 h-4" />}
+        >
+          Voltar
+        </Button>
 
-          <Button
-            onClick={handleProceed}
-            disabled={!canProceed}
-            rightIcon={<ArrowRight className="w-4 h-4" />}
-            size="lg"
-          >
-            Continuar para Studio
-          </Button>
-        </div>
+        <Button
+          onClick={handleProceed}
+          disabled={!canProceed}
+          rightIcon={<ArrowRight className="w-4 h-4" />}
+          size="lg"
+        >
+          Continuar para Studio
+        </Button>
       </div>
-
-      <GuidelinesModal />
-      <ApiKeysModal />
-    </Layout>
+    </div>
   );
 }

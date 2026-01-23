@@ -2,9 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Layout from "@/components/Layout";
-import GuidelinesModal from "@/components/GuidelinesModal";
-import ApiKeysModal from "@/components/ApiKeysModal";
 import Card, { CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
@@ -118,17 +115,16 @@ export default function Step6Upload() {
   );
 
   return (
-    <Layout>
-      <div className="space-y-8">
-        {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Finalização e Upload
-          </h1>
-          <p className="text-gray-400">
-            Revise seu vídeo e envie para o YouTube.
-          </p>
-        </div>
+    <div className="space-y-8">
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-bold text-white mb-2">
+          Finalização e Upload
+        </h1>
+        <p className="text-gray-400">
+          Revise seu vídeo e envie para o YouTube.
+        </p>
+      </div>
 
         {/* Error Alert */}
         {error && (
@@ -382,29 +378,25 @@ export default function Step6Upload() {
           </CardContent>
         </Card>
 
-        {/* Navigation */}
-        <div className="flex justify-between">
-          <Button
-            variant="outline"
-            onClick={() => router.push("/step/5-studio")}
-            leftIcon={<ArrowLeft className="w-4 h-4" />}
-          >
-            Voltar
-          </Button>
+      {/* Navigation */}
+      <div className="flex justify-between">
+        <Button
+          variant="outline"
+          onClick={() => router.push("/step/5-studio")}
+          leftIcon={<ArrowLeft className="w-4 h-4" />}
+        >
+          Voltar
+        </Button>
 
-          <Button
-            onClick={handleStartNew}
-            variant="secondary"
-            leftIcon={<RefreshCw className="w-4 h-4" />}
-          >
-            Iniciar Novo Projeto
-          </Button>
-        </div>
+        <Button
+          onClick={handleStartNew}
+          variant="secondary"
+          leftIcon={<RefreshCw className="w-4 h-4" />}
+        >
+          Iniciar Novo Projeto
+        </Button>
       </div>
-
-      <GuidelinesModal />
-      <ApiKeysModal />
-    </Layout>
+    </div>
   );
 }
 

@@ -2,9 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Layout from "@/components/Layout";
-import GuidelinesModal from "@/components/GuidelinesModal";
-import ApiKeysModal from "@/components/ApiKeysModal";
 import Card, { CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
@@ -216,17 +213,16 @@ export default function Step5Studio() {
   const canRender = storyboard && allScenesHaveMedia && apiKeyStatus?.json2video;
 
   return (
-    <Layout>
-      <div className="space-y-8">
-        {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Studio de Criação
-          </h1>
-          <p className="text-gray-400">
-            Popule cada cena com mídia, revise e renderize seu vídeo.
-          </p>
-        </div>
+    <div className="space-y-8">
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-bold text-white mb-2">
+          Studio de Criação
+        </h1>
+        <p className="text-gray-400">
+          Popule cada cena com mídia, revise e renderize seu vídeo.
+        </p>
+      </div>
 
         {/* Error Alert */}
         {error && (
@@ -525,30 +521,26 @@ export default function Step5Studio() {
           </Card>
         )}
 
-        {/* Navigation */}
-        <div className="flex justify-between">
-          <Button
-            variant="outline"
-            onClick={() => router.push("/step/4-proposal")}
-            leftIcon={<ArrowLeft className="w-4 h-4" />}
-          >
-            Voltar
-          </Button>
+      {/* Navigation */}
+      <div className="flex justify-between">
+        <Button
+          variant="outline"
+          onClick={() => router.push("/step/4-proposal")}
+          leftIcon={<ArrowLeft className="w-4 h-4" />}
+        >
+          Voltar
+        </Button>
 
-          <Button
-            onClick={handleProceed}
-            disabled={render?.status !== "completed"}
-            rightIcon={<ArrowRight className="w-4 h-4" />}
-            size="lg"
-          >
-            Continuar para Upload
-          </Button>
-        </div>
+        <Button
+          onClick={handleProceed}
+          disabled={render?.status !== "completed"}
+          rightIcon={<ArrowRight className="w-4 h-4" />}
+          size="lg"
+        >
+          Continuar para Upload
+        </Button>
       </div>
-
-      <GuidelinesModal />
-      <ApiKeysModal />
-    </Layout>
+    </div>
   );
 }
 
