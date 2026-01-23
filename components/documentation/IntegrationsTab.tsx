@@ -25,6 +25,30 @@ const ServiceLogo = ({ name, color }: { name: string; color: string }) => (
 export default function IntegrationsTab() {
   const integrations = [
     {
+      name: "Inngest",
+      logo: "I",
+      gradient: "from-emerald-500 to-green-600",
+      function: "Orquestração de workflows duráveis e pipelines de vídeo",
+      criticality: "Crítica",
+      criticalityColor: "bg-red-500/20 text-red-400 font-bold",
+      model: "Event-driven Workflow",
+      use: "Video pipeline, aprovação humana, retries",
+      auth: "API Keys (INNGEST_EVENT_KEY, INNGEST_SIGNING_KEY)",
+      endpoints: ["/api/inngest", "step.run()", "step.waitForEvent()"],
+    },
+    {
+      name: "Resend",
+      logo: "R",
+      gradient: "from-violet-500 to-indigo-600",
+      function: "Envio de emails transacionais e notificações",
+      criticality: "Alta",
+      criticalityColor: "bg-red-500/20 text-red-400",
+      model: "REST API",
+      use: "Aprovação de roteiros, alertas",
+      auth: "API Key (RESEND_API_KEY)",
+      endpoints: ["POST /emails"],
+    },
+    {
       name: "Anthropic Claude",
       logo: "C",
       gradient: "from-amber-500 to-orange-600",
@@ -40,11 +64,11 @@ export default function IntegrationsTab() {
       name: "Google Gemini",
       logo: "G",
       gradient: "from-blue-500 to-indigo-600",
-      function: "Geração de conteúdo alternativa e pesquisa",
-      criticality: "Moderada",
-      criticalityColor: "bg-yellow-500/20 text-yellow-400",
-      model: "Gemini 1.5 Pro",
-      use: "Backup de geração, análise",
+      function: "Deep Research e análise de tendências",
+      criticality: "Alta",
+      criticalityColor: "bg-red-500/20 text-red-400",
+      model: "Gemini 2.0 Flash",
+      use: "Research Agent, análise de canal",
       auth: "API Key (GOOGLE_GENERATIVE_AI_API_KEY)",
       endpoints: [],
     },
@@ -239,7 +263,26 @@ export default function IntegrationsTab() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Orchestration */}
+            <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-5">
+              <h4 className="font-bold text-emerald-400 mb-4 text-center">ORCHESTRATION</h4>
+              <div className="space-y-3">
+                {[
+                  { name: "Inngest", color: "from-emerald-500 to-green-600" },
+                  { name: "Resend Email", color: "from-violet-500 to-indigo-600" },
+                  { name: "Prisma ORM", color: "from-cyan-500 to-blue-600" },
+                ].map((service, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${service.color} flex items-center justify-center text-white text-xs font-bold`}>
+                      {service.name.charAt(0)}
+                    </div>
+                    <span className="text-sm text-zinc-300">{service.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* IA Providers */}
             <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-5">
               <h4 className="font-bold text-amber-400 mb-4 text-center">IA PROVIDERS</h4>
@@ -268,7 +311,7 @@ export default function IntegrationsTab() {
                   { name: "Pexels Images", color: "from-teal-500 to-cyan-600" },
                   { name: "Pixabay Videos", color: "from-lime-500 to-green-600" },
                   { name: "ElevenLabs TTS", color: "from-violet-500 to-purple-600" },
-                  { name: "Replicate Video", color: "from-pink-500 to-rose-600" },
+                  { name: "JSON2VIDEO", color: "from-pink-500 to-rose-600" },
                 ].map((service, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${service.color} flex items-center justify-center text-white text-xs font-bold`}>

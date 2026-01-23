@@ -41,14 +41,14 @@ const PROJECT_CONFIG = {
     authorType: "ai" as const,
   },
   progress: {
-    completed: 68,
+    completed: 82,
     items: [
       { name: "Interface Base", percent: 100, status: "done" },
-      { name: "Documentação", percent: 95, status: "done" },
-      { name: "Integrações API", percent: 45, status: "progress" },
-      { name: "Sistema de Alertas", percent: 30, status: "progress" },
-      { name: "Dashboard Analytics", percent: 60, status: "progress" },
-      { name: "Deploy & Testes", percent: 70, status: "progress" },
+      { name: "Documentação", percent: 100, status: "done" },
+      { name: "AI Agents (Inngest)", percent: 100, status: "done" },
+      { name: "Prisma Database", percent: 100, status: "done" },
+      { name: "Sistema de Aprovação", percent: 100, status: "done" },
+      { name: "Deploy & Testes", percent: 90, status: "progress" },
     ],
   },
 };
