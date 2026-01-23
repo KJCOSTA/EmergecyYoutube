@@ -58,11 +58,38 @@ const workflowSteps = [
 
 export default function WorkflowPage() {
   const router = useRouter();
-  const { currentStep, canNavigateToStep } = useWorkflowStore();
+  const {
+    currentStep,
+    canNavigateToStep,
+    context,
+    research,
+    proposal,
+    storyboard,
+    upload
+  } = useWorkflowStore();
   const [hoveredStep, setHoveredStep] = useState<number | null>(null);
 
+  // Verifica se um step foi realmente completado baseado nos dados
+  const isStepCompleted = (step: 1 | 2 | 4 | 5 | 6): boolean => {
+    switch (step) {
+      case 1:
+        return context !== null;
+      case 2:
+        return research !== null;
+      case 4:
+        return proposal !== null && proposal.allApproved === true;
+      case 5:
+        return storyboard !== null;
+      case 6:
+        return upload !== null;
+      default:
+        return false;
+    }
+  };
+
   const getStepStatus = (step: 1 | 2 | 4 | 5 | 6) => {
-    if (step < currentStep) return "completed";
+    // Primeiro verifica se o step foi completado com dados reais
+    if (isStepCompleted(step) && step < currentStep) return "completed";
     if (step === currentStep) return "current";
     if (canNavigateToStep(step)) return "available";
     return "locked";
