@@ -699,7 +699,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .spinner-lg {
-  @apply w-8 h-8 border-3;
+  @apply w-8 h-8;
+  border-width: 3px;
 }
 
 /* Skeleton loader */
