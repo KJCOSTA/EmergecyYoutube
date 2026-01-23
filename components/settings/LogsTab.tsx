@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Terminal, GitCommit, Globe, Search, Trash2, RefreshCw, AlertCircle, CheckCircle2, Info, AlertTriangle } from 'lucide-react';
 import { getLogs, clearLogs, searchSystemLogs } from '@/app/actions/settings';
 import { fetchGitHubCommits } from '@/app/actions/github';
@@ -18,11 +18,7 @@ export function LogsTab() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadData();
-  }, [activeView]);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -51,7 +47,11 @@ export function LogsTab() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeView]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const handleSearch = async () => {
     if (!searchQuery.trim() || activeView !== 'system') return;
