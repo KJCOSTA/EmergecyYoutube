@@ -405,7 +405,7 @@ model WorkflowState {
           <div className="mb-6">
             <h4 className="text-lg font-medium text-violet-400 mb-3">Contexto</h4>
             <p className="text-zinc-300 text-sm leading-relaxed">
-              Decisão de renomear o projeto de "Emergency YouTube" para <strong className="text-white">ORION</strong>,
+              Decisão de renomear o projeto de &quot;Emergency YouTube&quot; para <strong className="text-white">ORION</strong>,
               visando uma identidade de marca mais profissional, escalável e alinhada com a visão de um sistema
               de automação inteligente de classe enterprise.
             </p>
@@ -417,8 +417,8 @@ model WorkflowState {
             <div className="space-y-3">
               <div className="bg-blue-950/30 border border-blue-800/50 rounded-lg p-4">
                 <p className="text-blue-300 font-medium mb-1">1. Identidade Profissional</p>
-                <p className="text-zinc-400 text-sm">
-                  Nome "ORION" transmite inovação, tecnologia e navegação (guia/orientação),
+<p className="text-zinc-400 text-sm">
+                  Nome &quot;ORION&quot; transmite inovação, tecnologia e navegação (guia/orientação),
                   alinhado com a proposta de guiar criadores de conteúdo.
                 </p>
               </div>
@@ -470,11 +470,11 @@ model WorkflowState {
             <div className="space-y-2 text-sm">
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5" />
-                <span className="text-zinc-300">Substituição global: "Emergency YouTube" → "ORION" (17 arquivos)</span>
+                <span className="text-zinc-300">Substituição global: &quot;Emergency YouTube&quot; → &quot;ORION&quot; (17 arquivos)</span>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5" />
-                <span className="text-zinc-300">package.json: "emergecy-youtube" → "orion"</span>
+                <span className="text-zinc-300">package.json: &quot;emergecy-youtube&quot; → &quot;orion&quot;</span>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5" />
@@ -482,7 +482,7 @@ model WorkflowState {
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5" />
-                <span className="text-zinc-300">Blob Storage "orion-storage" criado na Vercel</span>
+                <span className="text-zinc-300">Blob Storage &quot;orion-storage&quot; criado na Vercel</span>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5" />
