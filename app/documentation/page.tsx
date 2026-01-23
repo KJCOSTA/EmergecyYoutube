@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Layout from "@/components/Layout";
 import { cn } from "@/lib/utils";
 import {
   exportTabAsMarkdown,
@@ -111,8 +110,8 @@ export default function DocumentationPage() {
   };
 
   return (
-    <Layout>
-      <div className="min-h-screen">
+    <>
+      <div className="min-h-full">
         {/* Header */}
         <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 px-8 py-12">
           <div className="max-w-7xl mx-auto">
@@ -214,6 +213,6 @@ export default function DocumentationPage() {
           scrollbar-width: none;
         }
       `}</style>
-    </Layout>
+    </>
   );
 }
