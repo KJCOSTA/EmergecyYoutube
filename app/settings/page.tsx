@@ -1,11 +1,14 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { User, FileText, Globe, Terminal, Settings } from 'lucide-react';
+import { User, FileText, Globe, Terminal, Settings, Palette, Activity, HardDrive } from 'lucide-react';
 import { ProfileTab } from '@/components/settings/ProfileTab';
 import { DocsManagerTab } from '@/components/settings/DocsManagerTab';
 import { IntegrationsTab } from '@/components/settings/IntegrationsTab';
 import { LogsTab } from '@/components/settings/LogsTab';
+import { AppearanceTab } from '@/components/settings/AppearanceTab';
+import { SystemMonitorTab } from '@/components/settings/SystemMonitorTab';
+import { FilesTab } from '@/components/settings/FilesTab';
 import { getProfile, getDocs, getTokens } from '@/app/actions/settings';
 import type { UserProfile, DocsData, IntegrationTokens, SettingsTab as TabType } from '@/types';
 
@@ -66,6 +69,24 @@ export default function SettingsPage() {
       color: 'indigo',
     },
     {
+      id: 'appearance' as TabType,
+      label: 'Aparência',
+      icon: Palette,
+      color: 'purple',
+    },
+    {
+      id: 'monitor' as TabType,
+      label: 'Monitor',
+      icon: Activity,
+      color: 'cyan',
+    },
+    {
+      id: 'files' as TabType,
+      label: 'Arquivos',
+      icon: HardDrive,
+      color: 'orange',
+    },
+    {
       id: 'docs' as TabType,
       label: 'Documentação',
       icon: FileText,
@@ -91,6 +112,21 @@ export default function SettingsPage() {
         active: 'text-indigo-400 bg-indigo-500/10',
         inactive: 'text-zinc-400 hover:text-white hover:bg-zinc-800/50',
         indicator: 'bg-indigo-500',
+      },
+      purple: {
+        active: 'text-purple-400 bg-purple-500/10',
+        inactive: 'text-zinc-400 hover:text-white hover:bg-zinc-800/50',
+        indicator: 'bg-purple-500',
+      },
+      cyan: {
+        active: 'text-cyan-400 bg-cyan-500/10',
+        inactive: 'text-zinc-400 hover:text-white hover:bg-zinc-800/50',
+        indicator: 'bg-cyan-500',
+      },
+      orange: {
+        active: 'text-orange-400 bg-orange-500/10',
+        inactive: 'text-zinc-400 hover:text-white hover:bg-zinc-800/50',
+        indicator: 'bg-orange-500',
       },
       amber: {
         active: 'text-amber-400 bg-amber-500/10',
@@ -182,6 +218,24 @@ export default function SettingsPage() {
               {activeTab === 'profile' && profile && (
                 <div className="animate-fade-in">
                   <ProfileTab initialProfile={profile} />
+                </div>
+              )}
+
+              {activeTab === 'appearance' && (
+                <div className="animate-fade-in">
+                  <AppearanceTab />
+                </div>
+              )}
+
+              {activeTab === 'monitor' && (
+                <div className="animate-fade-in">
+                  <SystemMonitorTab />
+                </div>
+              )}
+
+              {activeTab === 'files' && (
+                <div className="animate-fade-in">
+                  <FilesTab />
                 </div>
               )}
 

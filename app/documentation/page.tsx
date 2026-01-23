@@ -30,8 +30,8 @@ import Image from "next/image";
 
 // Configuração do projeto
 const PROJECT_CONFIG = {
-  name: "Emergency YouTube",
-  subtitle: "Sistema de Monitoramento de Emergências via YouTube",
+  name: "ORION",
+  subtitle: "AI Video Production Workflow - White Label SaaS Platform",
   launchDate: new Date("2025-03-15T00:00:00"),
   lastUpdate: {
     date: "23/01/2026",

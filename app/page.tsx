@@ -17,7 +17,7 @@ import {
   Settings,
   Play,
 } from 'lucide-react';
-import { useUIStore } from '@/lib/store';
+import { useUIStore, useBrandingStore } from '@/lib/store';
 
 interface APIStatus {
   name: string;
@@ -49,6 +49,7 @@ const API_LIST = [
 export default function HomePage() {
   const router = useRouter();
   const { openApiKeyModal } = useUIStore();
+  const { systemName } = useBrandingStore();
   const [bootStage, setBootStage] = useState<'initializing' | 'checking' | 'complete'>('initializing');
   const [apiStatuses, setApiStatuses] = useState<APIStatus[]>([]);
   const [currentCheckingIndex, setCurrentCheckingIndex] = useState(0);
@@ -187,7 +188,7 @@ export default function HomePage() {
             </div>
           </div>
           <h1 className="text-5xl font-bold mb-3 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-            Emergency YouTube
+            {systemName}
           </h1>
           <p className="text-xl text-zinc-400">Produção Automática de Vídeos com IA</p>
         </div>

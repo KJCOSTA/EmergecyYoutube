@@ -2,11 +2,16 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Layout from "@/components/Layout";
 import { VercelToolbar } from "@/components/VercelToolbar";
+import { getBrandingConfig } from "@/lib/branding";
 
-export const metadata: Metadata = {
-  title: "Emergency YouTube",
-  description: "AI Video Production Workflow",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const branding = await getBrandingConfig();
+
+  return {
+    title: branding.systemName,
+    description: "AI Video Production Workflow - White Label SaaS Platform",
+  };
+}
 
 export default function RootLayout({
   children,
