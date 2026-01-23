@@ -2,12 +2,7 @@
 
 import { useState } from "react";
 import Modal from "@/components/ui/Modal";
-import Button from "@/components/ui/Button";
-import Input from "@/components/ui/Input";
-import Textarea from "@/components/ui/Textarea";
 import Toggle from "@/components/ui/Toggle";
-import Card from "@/components/ui/Card";
-import Badge from "@/components/ui/Badge";
 import { useGuidelinesStore, useUIStore } from "@/lib/store";
 import { Diretriz, DiretrizScope } from "@/types";
 import {

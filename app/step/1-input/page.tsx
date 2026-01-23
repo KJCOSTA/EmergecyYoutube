@@ -41,7 +41,7 @@ export default function InputPage() {
   // Pega as chaves que você salvou no navegador
   const { keys: localKeys } = useAPIKeysStore();
   const { openApiKeyModal } = useUIStore();
-  const { setContext, currentStep, advanceToStep } = useWorkflowStore();
+  const { setContext, setStep } = useWorkflowStore();
 
   useEffect(() => {
     setMounted(true);
@@ -143,8 +143,25 @@ export default function InputPage() {
 
   const handleAdvance = () => {
     if (canAdvance) {
-      setContext({ theme: theme.trim() });
-      advanceToStep(2);
+      const now = new Date().toISOString();
+      setContext({
+        id: crypto.randomUUID(),
+        createdAt: now,
+        updatedAt: now,
+        theme: theme.trim(),
+        autoMode: false,
+        metrics: [],
+        channelData: channelInfo ? {
+          channelId: "user-channel",
+          title: channelInfo.name,
+          description: "",
+          subscriberCount: parseInt(channelInfo.subscribers.replace(/[^0-9]/g, "")) || 0,
+          videoCount: parseInt(channelInfo.videos.replace(/[^0-9]/g, "")) || 0,
+          viewCount: parseInt(channelInfo.views.replace(/[^0-9]/g, "")) || 0,
+          recentVideos: [],
+        } : null,
+      });
+      setStep(2);
       router.push('/step/2-research');
     }
   };
