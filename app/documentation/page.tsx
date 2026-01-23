@@ -23,6 +23,7 @@ import {
   Clock,
   Rocket,
   TrendingUp,
+  GitBranch,
 } from "lucide-react";
 import { ShareProvider, useShare } from "@/lib/share-context";
 import ShareButtons from "@/components/documentation/ShareButtons";
@@ -58,6 +59,7 @@ import SystemVisionTab from "@/components/documentation/SystemVisionTab";
 import IntegrationsTab from "@/components/documentation/IntegrationsTab";
 import TechStackTab from "@/components/documentation/TechStackTab";
 import CurrentStateTab from "@/components/documentation/CurrentStateTab";
+import DecisionsTab from "@/components/documentation/DecisionsTab";
 
 // Tab content for export
 import {
@@ -66,6 +68,7 @@ import {
   integrationsContent,
   techStackContent,
   currentStateContent,
+  decisionsContent,
 } from "@/components/documentation/content";
 
 const tabs = [
@@ -108,6 +111,14 @@ const tabs = [
     description: "Status do projeto e próximos passos",
     component: CurrentStateTab,
     gradient: "from-rose-500 to-pink-600",
+  },
+  {
+    id: "decisions",
+    label: "Decisoes Claude",
+    icon: GitBranch,
+    description: "Registro de decisoes arquiteturais e debates tecnicas",
+    component: DecisionsTab,
+    gradient: "from-violet-500 to-purple-600",
   },
 ];
 
@@ -265,6 +276,7 @@ function DocumentationContent() {
     { id: "integrations", title: "Arquitetura de Integrações & APIs", icon: "🔌", content: integrationsContent },
     { id: "tech-stack", title: "Stack Tecnológica & Linguagens", icon: "🧱", content: techStackContent },
     { id: "current-state", title: "Estado Atual & Próximos Passos", icon: "🧭", content: currentStateContent },
+    { id: "decisions", title: "Decisoes Arquiteturais - Claude Code", icon: "🔀", content: decisionsContent },
   ];
 
   const handleExportMarkdown = () => {
