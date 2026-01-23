@@ -28,13 +28,19 @@ export default function CurrentStateTab() {
     { name: "Sistema de diretrizes", priority: "Média", impact: "Alto" },
     { name: "Configuração de API Keys", priority: "Crítica", impact: "Crítico" },
     { name: "Persistência de estado", priority: "Alta", impact: "Alto" },
+    { name: "Prisma Schema + Database", priority: "Crítica", impact: "Crítico" },
+    { name: "Inngest Video Pipeline", priority: "Crítica", impact: "Crítico" },
+    { name: "AI Agents (Research + Script)", priority: "Alta", impact: "Alto" },
+    { name: "Sistema de Aprovação Humana", priority: "Alta", impact: "Alto" },
+    { name: "Notificações por Email (Resend)", priority: "Média", impact: "Alto" },
   ];
 
   const partialFeatures = [
-    { name: "Upload YouTube", progress: 80, blocker: "OAuth config", priority: "Alta" },
-    { name: "Render de vídeo", progress: 70, blocker: "Integração FFmpeg", priority: "Alta" },
+    { name: "Upload YouTube", progress: 85, blocker: "OAuth final config", priority: "Alta" },
+    { name: "Render de vídeo (JSON2VIDEO)", progress: 75, blocker: "Integração API", priority: "Alta" },
     { name: "TTS (ElevenLabs)", progress: 60, blocker: "API quota", priority: "Média" },
     { name: "Storyboard editor", progress: 50, blocker: "UX refinement", priority: "Média" },
+    { name: "Migração localStorage → Prisma", progress: 40, blocker: "Refatoração frontend", priority: "Alta" },
   ];
 
   const notStartedFeatures = [
@@ -128,9 +134,9 @@ export default function CurrentStateTab() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
             {[
-              { label: "Versão", value: "1.0.0", icon: Target },
+              { label: "Versão", value: "2.0.0", icon: Target },
               { label: "Status", value: "Em Produção", icon: CheckCircle2 },
-              { label: "Última Atualização", value: "Janeiro 2025", icon: Calendar },
+              { label: "Última Atualização", value: "Janeiro 2026", icon: Calendar },
               { label: "Uptime", value: "99.9%", icon: Gauge },
             ].map((stat, i) => (
               <div

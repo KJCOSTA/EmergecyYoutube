@@ -459,18 +459,22 @@ export interface SystemMonitorData {
   apis: APIHealthStatus[];
 }
 
-// File Vault System
+// File Vault System (Vercel Blob)
 export interface FileEntry {
   name: string;
   path: string;
   type: "file" | "directory";
   size?: number;
   modifiedAt?: string;
+  url?: string; // Vercel Blob URL
 }
 
 export interface DirectoryListing {
   path: string;
   entries: FileEntry[];
+  totalSize?: number;
+  totalFiles?: number;
+  message?: string; // For error messages or status
 }
 
 // Settings Tabs
