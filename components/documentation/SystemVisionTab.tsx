@@ -18,6 +18,7 @@ import {
   GraduationCap,
   Building,
 } from "lucide-react";
+import { CopyMdButtons } from "./CopyButton";
 
 export default function SystemVisionTab() {
   const workflowSteps = [
@@ -106,10 +107,17 @@ export default function SystemVisionTab() {
 
       {/* Target Audience */}
       <section>
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <Users className="w-6 h-6 text-cyan-400" />
-          Para Quem Foi Projetado
-        </h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <Users className="w-6 h-6 text-cyan-400" />
+            Para Quem Foi Projetado
+          </h3>
+          <CopyMdButtons
+            content="Público-alvo: Criadores Solo (empreendedores, educadores), Pequenas Empresas (marketing, comunicação), Agências (produção em escala, prototipagem)"
+            markdownContent={`## Para Quem Foi Projetado\n\n### Criadores de Conteúdo Solo\n- Empreendedores digitais\n- Educadores e professores\n- Profissionais liberais\n\n### Pequenas Empresas\n- Marketing digital interno\n- Comunicação institucional\n- Treinamento corporativo\n\n### Agências e Produtoras\n- Produção em escala\n- Prototipagem rápida\n- Testes de conceito`}
+            filename="publico-alvo.md"
+          />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             {
@@ -152,10 +160,17 @@ export default function SystemVisionTab() {
 
       {/* Workflow Steps */}
       <section>
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <Play className="w-6 h-6 text-green-400" />
-          Fluxo Principal de Funcionamento
-        </h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <Play className="w-6 h-6 text-green-400" />
+            Fluxo Principal de Funcionamento
+          </h3>
+          <CopyMdButtons
+            content="Workflow: 1) Input (Tema, Configurações) → 2) Research (Pesquisa) → 3) Proposal (Roteiro) → 4) Studio (Storyboard) → 5) Render (Vídeo) → 6) Upload (YouTube)"
+            markdownContent={`## Fluxo Principal de Funcionamento\n\n### 1. Input - Entrada de Dados\n- **Entradas:** Tema principal, Configurações de formato, Público-alvo, Diretrizes\n- **Saídas:** Objeto de contexto, Parâmetros validados\n\n### 2. Research - Pesquisa\n- **Entradas:** Contexto estruturado\n- **Saídas:** Dados de pesquisa, Referências, Sugestões\n\n### 3. Proposal - Proposta Criativa\n- **Entradas:** Pesquisa consolidada\n- **Saídas:** Roteiro, Títulos, Descrição, Tags\n\n### 4. Studio - Produção Visual\n- **Entradas:** Roteiro aprovado\n- **Saídas:** Storyboard, Mídias selecionadas\n\n### 5. Render - Composição\n- **Entradas:** Storyboard completo\n- **Saídas:** Vídeo renderizado, Preview\n\n### 6. Upload - Publicação\n- **Entradas:** Vídeo final\n- **Saídas:** URL do vídeo, Estatísticas`}
+            filename="workflow.md"
+          />
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {workflowSteps.map((step) => {
@@ -210,10 +225,17 @@ export default function SystemVisionTab() {
 
       {/* Human vs Automation */}
       <section>
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <Users className="w-6 h-6 text-purple-400" />
-          Interação entre Automação e Decisão Humana
-        </h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <Users className="w-6 h-6 text-purple-400" />
+            Interação entre Automação e Decisão Humana
+          </h3>
+          <CopyMdButtons
+            content="Filosofia: O sistema sugere, o humano decide. Cada etapa gera proposta, usuário pode aceitar/modificar/regenerar, histórico permite rollback."
+            markdownContent={`## Interação entre Automação e Decisão Humana\n\n| Etapa | Decisão Humana | Automação |\n|-------|----------------|----------|\n| Input | Define tema e parâmetros | Valida e estrutura |\n| Research | Aprova abordagem | Pesquisa e sintetiza |\n| Proposal | Revisa e edita roteiro | Gera todas as versões |\n| Studio | Ajusta mídias | Seleciona e compõe |\n| Render | Aprova preview | Renderiza vídeo |\n| Upload | Confirma publicação | Executa upload |\n\n### Filosofia de Controle\n**"O sistema sugere, o humano decide"**\n\n- Cada etapa gera uma proposta completa\n- O usuário pode aceitar, modificar ou regenerar\n- Nenhuma ação destrutiva sem confirmação\n- Histórico de versões permite rollback`}
+            filename="automacao-humano.md"
+          />
+        </div>
 
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
           <div className="grid grid-cols-3 gap-0 border-b border-zinc-800 bg-zinc-800/50">
@@ -265,10 +287,17 @@ export default function SystemVisionTab() {
 
       {/* Architecture Components */}
       <section>
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <Server className="w-6 h-6 text-orange-400" />
-          Componentes Principais e Responsabilidades
-        </h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <Server className="w-6 h-6 text-orange-400" />
+            Componentes Principais e Responsabilidades
+          </h3>
+          <CopyMdButtons
+            content="Componentes: Frontend (Next.js, React, Tailwind, Zustand), Backend (API Routes, integração IAs), Estado Global (Zustand Stores com localStorage)"
+            markdownContent={`## Componentes Principais\n\n### Frontend (Next.js App Router)\n**Responsabilidades:**\n- Interface de usuário\n- Navegação por workflow\n- Estado local e persistência\n- Comunicação com APIs\n\n**Tecnologias:** React 19, Tailwind, Framer Motion, Zustand\n\n### Backend (API Routes)\n**Responsabilidades:**\n- Integração com IAs\n- Comunicação externa\n- Processamento de dados\n- Validação e segurança\n\n**Endpoints:** /api/proposal/*, /api/images/*, /api/youtube/*\n\n### Estado Global (Zustand Stores)\n**Stores:**\n- WorkflowStore - Dados e navegação\n- GuidelinesStore - Diretrizes\n- UIStore - Estado de interface\n\n**Persistência:** localStorage`}
+            filename="componentes.md"
+          />
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Frontend */}

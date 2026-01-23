@@ -8,6 +8,7 @@ import {
   Package,
   CheckCircle2,
 } from "lucide-react";
+import { CopyMdButtons } from "./CopyButton";
 
 // Tech logo component
 const TechLogo = ({
@@ -83,10 +84,17 @@ export default function TechStackTab() {
 
       {/* Languages */}
       <section>
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <Code className="w-6 h-6 text-blue-400" />
-          Linguagens de Programação
-        </h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <Code className="w-6 h-6 text-blue-400" />
+            Linguagens de Programação
+          </h3>
+          <CopyMdButtons
+            content="TypeScript 5.7: 100% do código frontend e backend. Strict mode, Path aliases, Type inference, Utility types."
+            markdownContent={`## Linguagens de Programação\n\n### TypeScript 5.7\n- 100% do código frontend e backend\n- Strict mode habilitado\n- Path aliases (@/components, @/lib)\n- Type inference avançado\n- Utility types (Partial, Pick, Omit)\n\n**Benefícios:**\n- Detecção de erros em desenvolvimento\n- Autocomplete inteligente\n- Refatoração segura\n- Documentação inline via tipos`}
+            filename="linguagens.md"
+          />
+        </div>
 
         <div className="bg-gradient-to-r from-blue-900/30 to-indigo-900/30 border border-blue-500/20 rounded-xl p-6">
           <div className="flex items-start gap-6">
@@ -154,10 +162,17 @@ export default function TechStackTab() {
 
       {/* Frameworks */}
       <section>
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <Package className="w-6 h-6 text-purple-400" />
-          Frameworks e Bibliotecas
-        </h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <Package className="w-6 h-6 text-purple-400" />
+            Frameworks e Bibliotecas
+          </h3>
+          <CopyMdButtons
+            content="Next.js 15.1.11, React 19, Tailwind CSS 3.4.17, Zustand 5.0, Framer Motion 11.15, Lucide React 0.469"
+            markdownContent={`## Frameworks e Bibliotecas\n\n### Next.js 15.1.11\n- App Router para roteamento\n- Server Components para performance\n- API Routes para backend\n- Image Optimization\n\n### React 19\n- Hooks: useState, useEffect, useCallback, useMemo, useRef\n- Functional Components, Custom Hooks\n\n### Tailwind CSS 3.4.17\n- Framework CSS utility-first\n\n### Zustand 5.0\n- State Management\n- Stores: WorkflowStore, GuidelinesStore, UIStore\n\n### Framer Motion 11.15\n- Animações e transições\n\n### Lucide React 0.469\n- Biblioteca de ícones`}
+            filename="frameworks.md"
+          />
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Next.js */}
@@ -323,10 +338,17 @@ export default function TechStackTab() {
 
       {/* Infrastructure */}
       <section>
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <Cloud className="w-6 h-6 text-green-400" />
-          Tecnologias de Infraestrutura
-        </h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <Cloud className="w-6 h-6 text-green-400" />
+            Tecnologias de Infraestrutura
+          </h3>
+          <CopyMdButtons
+            content="Vercel: Deploy automático, Edge Functions, CDN Global. GitHub: Versionamento, CI/CD automático."
+            markdownContent={`## Infraestrutura\n\n### Vercel\n- Hospedagem e Deploy\n- Automatic deployments\n- Edge Functions\n- Environment Variables\n- Analytics\n- Preview deployments\n- CDN Global\n\n### GitHub\n- Versionamento\n- CI/CD automático\n- push main → Deploy production\n- push feature/* → Preview deploy\n- pull request → Checks automáticos`}
+            filename="infraestrutura.md"
+          />
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Vercel */}
@@ -406,10 +428,17 @@ export default function TechStackTab() {
 
       {/* Architecture Diagram */}
       <section>
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <Cpu className="w-6 h-6 text-violet-400" />
-          Diagrama por Camadas
-        </h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <Cpu className="w-6 h-6 text-violet-400" />
+            Diagrama por Camadas
+          </h3>
+          <CopyMdButtons
+            content="Camadas: Frontend (React, Tailwind, Framer, Zustand, Lucide) → Framework (Next.js 15) → Backend (Vercel AI, Zod) → IA (Anthropic, Google, OpenAI) → Infraestrutura (Vercel)"
+            markdownContent={`## Arquitetura por Camadas\n\n### FRONTEND\nReact 19, Tailwind, Framer Motion, Zustand, Lucide\n\n### FRAMEWORK\nNext.js 15 (App Router, Server Components, API Routes)\n\n### BACKEND\nVercel AI SDK, Zod, node-fetch\n\n### IA LAYER\nAnthropic Claude, Google AI, OpenAI\n\n### INFRAESTRUTURA\nVercel (Edge Functions, CDN Global, Env Vars)`}
+            filename="arquitetura-camadas.md"
+          />
+        </div>
 
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 overflow-x-auto">
           <div className="min-w-[600px] space-y-4">
