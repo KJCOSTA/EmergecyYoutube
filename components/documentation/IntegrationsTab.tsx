@@ -164,7 +164,7 @@ export default function IntegrationsTab() {
             </div>
           </div>
           <p className="text-lg text-zinc-300 leading-relaxed max-w-3xl">
-            O Emergency YouTube integra-se com{" "}
+            O ORION integra-se com{" "}
             <span className="text-green-400 font-semibold">múltiplos serviços externos</span>{" "}
             para fornecer suas funcionalidades. Cada integração tem um propósito
             específico e nível de criticidade definido.
@@ -539,7 +539,7 @@ export default function IntegrationsTab() {
       {/* Footer Note */}
       <div className="p-4 bg-green-900/20 border border-green-500/20 rounded-xl">
         <p className="text-sm text-green-300 italic text-center">
-          Este documento detalha todas as integrações do Emergency YouTube, seus fluxos de dados
+          Este documento detalha todas as integrações do ORION, seus fluxos de dados
           e considerações de segurança.
         </p>
       </div>

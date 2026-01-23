@@ -75,7 +75,7 @@ export default function TechStackTab() {
             </div>
           </div>
           <p className="text-lg text-zinc-300 leading-relaxed max-w-3xl">
-            O Emergency YouTube utiliza uma{" "}
+            O ORION utiliza uma{" "}
             <span className="text-orange-400 font-semibold">
               stack moderna e otimizada
             </span>{" "}
@@ -577,7 +577,7 @@ export default function TechStackTab() {
       {/* Footer Note */}
       <div className="p-4 bg-orange-900/20 border border-orange-500/20 rounded-xl">
         <p className="text-sm text-orange-300 italic text-center">
-          Este documento cataloga todas as tecnologias utilizadas no Emergency YouTube,
+          Este documento cataloga todas as tecnologias utilizadas no ORION,
           sua função e posição na arquitetura.
         </p>
       </div>

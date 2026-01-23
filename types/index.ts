@@ -1,5 +1,5 @@
 // ============================================
-// Core Types for ORION (formerly Emergency YouTube)
+// Core Types for ORION (formerly ORION)
 // ============================================
 
 // AI Provider Types

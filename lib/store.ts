@@ -145,7 +145,7 @@ export const useWorkflowStore = create<WorkflowStore>()(
         }),
     }),
     {
-      name: "emergency-youtube-workflow",
+      name: "orion-workflow",
       storage: createJSONStorage(() => localStorage),
     }
   )
@@ -238,7 +238,7 @@ export const useGuidelinesStore = create<GuidelinesStore>()(
       },
     }),
     {
-      name: "emergency-youtube-guidelines",
+      name: "orion-guidelines",
       storage: createJSONStorage(() => localStorage),
     }
   )

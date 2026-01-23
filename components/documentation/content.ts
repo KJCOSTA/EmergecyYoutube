@@ -5,7 +5,7 @@ export const genesisContent = `# Gênese & Intenção do Sistema
 
 ## Por Que Este Sistema Foi Criado
 
-O **Emergency YouTube** nasceu de uma necessidade real e urgente: **democratizar a produção de vídeos profissionais para YouTube**, eliminando as barreiras técnicas, financeiras e de tempo que impedem criadores de conteúdo de manter uma presença consistente na plataforma.
+O **ORION** nasceu de uma necessidade real e urgente: **democratizar a produção de vídeos profissionais para YouTube**, eliminando as barreiras técnicas, financeiras e de tempo que impedem criadores de conteúdo de manter uma presença consistente na plataforma.
 
 ### O Problema Fundamental
 
@@ -19,7 +19,7 @@ Essa barreira exclui milhões de potenciais criadores que têm conhecimento vali
 
 ### A Solução Proposta
 
-O Emergency YouTube é um **sistema de automação inteligente** que:
+O ORION é um **sistema de automação inteligente** que:
 1. Recebe apenas o tema/tópico do vídeo
 2. Pesquisa e estrutura o conteúdo automaticamente
 3. Gera roteiro, trilha sonora, thumbnail e descrição
@@ -116,14 +116,14 @@ Este próprio módulo é parte do sistema, não um documento externo que envelhe
 
 ---
 
-*Este documento representa a intenção fundacional do sistema Emergency YouTube, servindo como referência para decisões futuras e transferência de contexto entre IAs.*
+*Este documento representa a intenção fundacional do sistema ORION, servindo como referência para decisões futuras e transferência de contexto entre IAs.*
 `;
 
 export const systemVisionContent = `# Visão Sistêmica & Funcionamento
 
 ## O Que o Sistema Faz
 
-O **Emergency YouTube** é uma plataforma de automação de produção de vídeos que transforma um simples tema em um vídeo completo publicado no YouTube. O sistema orquestra múltiplas IAs e serviços para executar cada etapa do processo de produção.
+O **ORION** é uma plataforma de automação de produção de vídeos que transforma um simples tema em um vídeo completo publicado no YouTube. O sistema orquestra múltiplas IAs e serviços para executar cada etapa do processo de produção.
 
 ## Para Quem Foi Projetado
 
@@ -353,14 +353,14 @@ O **Emergency YouTube** é uma plataforma de automação de produção de vídeo
 
 ---
 
-*Este documento descreve a visão sistêmica do Emergency YouTube, detalhando seu funcionamento e a interação entre componentes automatizados e decisões humanas.*
+*Este documento descreve a visão sistêmica do ORION, detalhando seu funcionamento e a interação entre componentes automatizados e decisões humanas.*
 `;
 
 export const integrationsContent = `# Arquitetura de Integrações & APIs
 
 ## Visão Geral das Integrações
 
-O Emergency YouTube integra-se com múltiplos serviços externos para fornecer suas funcionalidades. Cada integração tem um propósito específico e nível de criticidade definido.
+O ORION integra-se com múltiplos serviços externos para fornecer suas funcionalidades. Cada integração tem um propósito específico e nível de criticidade definido.
 
 ## APIs e Serviços Integrados
 
@@ -614,14 +614,14 @@ Vídeo Renderizado ──▶ API /youtube/upload
 
 ---
 
-*Este documento detalha todas as integrações do Emergency YouTube, seus fluxos de dados e considerações de segurança.*
+*Este documento detalha todas as integrações do ORION, seus fluxos de dados e considerações de segurança.*
 `;
 
 export const techStackContent = `# Stack Tecnológica & Linguagens
 
 ## Visão Geral da Stack
 
-O Emergency YouTube utiliza uma stack moderna e otimizada para aplicações web de alta performance, com foco em Developer Experience (DX) e User Experience (UX).
+O ORION utiliza uma stack moderna e otimizada para aplicações web de alta performance, com foco em Developer Experience (DX) e User Experience (UX).
 
 ## Linguagens de Programação
 
@@ -853,7 +853,7 @@ import { IconName } from "lucide-react";
 
 ---
 
-*Este documento cataloga todas as tecnologias utilizadas no Emergency YouTube, sua função e posição na arquitetura.*
+*Este documento cataloga todas as tecnologias utilizadas no ORION, sua função e posição na arquitetura.*
 `;
 
 export const currentStateContent = `# Estado Atual & Próximos Passos
@@ -1048,7 +1048,7 @@ export const currentStateContent = `# Estado Atual & Próximos Passos
 
 ## Conclusão
 
-O Emergency YouTube está em estágio de **produção funcional** com as principais features de geração de conteúdo operacionais. Os próximos passos críticos são:
+O ORION está em estágio de **produção funcional** com as principais features de geração de conteúdo operacionais. Os próximos passos críticos são:
 
 1. Completar a integração de upload YouTube
 2. Implementar render de vídeo completo
@@ -1059,7 +1059,7 @@ O sistema está preparado para escalar e evoluir conforme as necessidades dos us
 
 ---
 
-*Este documento reflete o estado atual do Emergency YouTube e serve como roadmap para decisões de desenvolvimento futuro.*
+*Este documento reflete o estado atual do ORION e serve como roadmap para decisões de desenvolvimento futuro.*
 `;
 
 export const decisionsContent = `# Decisoes Arquiteturais - Claude Code

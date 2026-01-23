@@ -553,7 +553,7 @@ export default function CurrentStateTab() {
       <section className="bg-gradient-to-r from-indigo-900/30 via-purple-900/30 to-pink-900/30 border border-purple-500/20 rounded-xl p-6">
         <h3 className="text-xl font-bold text-white mb-4">Conclusão</h3>
         <p className="text-zinc-300 mb-4">
-          O Emergency YouTube está em estágio de{" "}
+          O ORION está em estágio de{" "}
           <span className="text-green-400 font-semibold">produção funcional</span> com
           as principais features de geração de conteúdo operacionais. Os próximos
           passos críticos são:
@@ -582,7 +582,7 @@ export default function CurrentStateTab() {
       {/* Footer Note */}
       <div className="p-4 bg-rose-900/20 border border-rose-500/20 rounded-xl">
         <p className="text-sm text-rose-300 italic text-center">
-          Este documento reflete o estado atual do Emergency YouTube e serve como
+          Este documento reflete o estado atual do ORION e serve como
           roadmap para decisões de desenvolvimento futuro.
         </p>
       </div>

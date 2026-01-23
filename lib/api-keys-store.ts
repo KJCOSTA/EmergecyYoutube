@@ -107,7 +107,7 @@ export const useAPIKeysStore = create<APIKeysStore>()(
       hasKey: (key) => !!get().keys[key],
     }),
     {
-      name: "emergency-youtube-api-keys",
+      name: "orion-api-keys",
       storage: createJSONStorage(() => sessionStorage), // Usar sessionStorage para segurança
     }
   )

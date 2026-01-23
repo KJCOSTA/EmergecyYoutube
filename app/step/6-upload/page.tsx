@@ -96,7 +96,7 @@ export default function Step6Upload() {
       upload,
       exportedAt: new Date().toISOString(),
     };
-    downloadJSON(exportData, `emergency-youtube-export-${Date.now()}.json`);
+    downloadJSON(exportData, `orion-export-${Date.now()}.json`);
   };
 
   const handleStartNew = () => {

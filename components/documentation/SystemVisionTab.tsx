@@ -95,7 +95,7 @@ export default function SystemVisionTab() {
         <div className="relative">
           <h2 className="text-2xl font-bold text-white mb-4">O Que o Sistema Faz</h2>
           <p className="text-lg text-zinc-300 leading-relaxed max-w-3xl">
-            O <strong className="text-white">Emergency YouTube</strong> é uma plataforma de automação
+            O <strong className="text-white">ORION</strong> é uma plataforma de automação
             de produção de vídeos que transforma um simples tema em um{" "}
             <span className="text-cyan-400 font-semibold">
               vídeo completo publicado no YouTube
@@ -429,7 +429,7 @@ export default function SystemVisionTab() {
       {/* Footer Note */}
       <div className="p-4 bg-blue-900/20 border border-blue-500/20 rounded-xl">
         <p className="text-sm text-blue-300 italic text-center">
-          Este documento descreve a visão sistêmica do Emergency YouTube, detalhando seu
+          Este documento descreve a visão sistêmica do ORION, detalhando seu
           funcionamento e a interação entre componentes automatizados e decisões humanas.
         </p>
       </div>
