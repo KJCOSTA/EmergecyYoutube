@@ -71,14 +71,8 @@ export default function InputPage() {
     serverStatus.gemini || (mounted && !!localKeys.google_api_key) ||
     serverStatus.anthropic || (mounted && !!localKeys.anthropic_api_key);
 
-  // Carregar informações do canal quando conectado
-  useEffect(() => {
-    if (isYoutubeConnected && !channelInfo && !loadingChannel) {
-      fetchChannelInfo();
-    }
-  }, [isYoutubeConnected]);
-
-  const fetchChannelInfo = async () => {
+  // Carregar informações do canal
+  const fetchChannelInfo = useCallback(async () => {
     setLoadingChannel(true);
     try {
       // Buscar dados reais da API do YouTube
@@ -132,7 +126,14 @@ export default function InputPage() {
     } finally {
       setLoadingChannel(false);
     }
-  };
+  }, [localKeys.youtube_api_key, localKeys.youtube_channel_id]);
+
+  // Carregar informações do canal quando conectado
+  useEffect(() => {
+    if (isYoutubeConnected && !channelInfo && !loadingChannel) {
+      fetchChannelInfo();
+    }
+  }, [isYoutubeConnected, channelInfo, loadingChannel, fetchChannelInfo]);
 
   // Upload de arquivo
   const handleFileSelect = useCallback((file: File) => {
