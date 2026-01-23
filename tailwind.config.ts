@@ -219,21 +219,13 @@ const config: Config = {
       },
 
       // ========================================
-      // ESPAÇAMENTO (from design-tokens.ts)
+      // ESPAÇAMENTO
       // ========================================
       spacing: {
         "4.5": "1.125rem",
         "5.5": "1.375rem",
         "18": "4.5rem",
         "22": "5.5rem",
-        // Design token spacing values
-        xs: designSpacing.xs,
-        sm: designSpacing.sm,
-        md: designSpacing.md,
-        lg: designSpacing.lg,
-        xl: designSpacing.xl,
-        "2xl": designSpacing["2xl"],
-        "3xl": designSpacing["3xl"],
       },
 
       // ========================================
@@ -254,15 +246,15 @@ const config: Config = {
         xl: designShadows.xl,
         "2xl": designShadows["2xl"],
         inner: designShadows.inner,
-        "glow-sm": designShadows.glowSm,
-        "glow-md": designShadows.glowMd,
-        "glow-lg": designShadows.glowLg,
-        "glow-blue-sm": `0 0 10px 0 ${brand.blue[400]}40`,
-        "glow-blue-md": `0 0 20px 0 ${brand.blue[400]}60`,
-        "glow-blue-lg": `0 0 30px 0 ${brand.blue[400]}80`,
-        "glow-violet-sm": `0 0 10px 0 ${accent.violet[400]}40`,
-        "glow-violet-md": `0 0 20px 0 ${accent.violet[400]}60`,
-        "glow-violet-lg": `0 0 30px 0 ${accent.violet[400]}80`,
+        "glow-sm": "0 0 10px 0 rgba(6, 182, 212, 0.3)",
+        "glow-md": "0 0 20px 0 rgba(6, 182, 212, 0.3)",
+        "glow-lg": "0 0 30px 0 rgba(6, 182, 212, 0.4)",
+        "glow-blue-sm": "0 0 10px 0 rgba(59, 130, 246, 0.3)",
+        "glow-blue-md": designShadows.glowBlue,
+        "glow-blue-lg": "0 0 30px 0 rgba(59, 130, 246, 0.4)",
+        "glow-violet-sm": "0 0 10px 0 rgba(139, 92, 246, 0.3)",
+        "glow-violet-md": designShadows.glowViolet,
+        "glow-violet-lg": "0 0 30px 0 rgba(139, 92, 246, 0.4)",
         card: designShadows.card,
         "card-hover": designShadows.cardHover,
         "card-elevated": designShadows.cardElevated,
@@ -280,10 +272,10 @@ const config: Config = {
         "gradient-violet-blue": gradients.violetBlue,
         "gradient-cyan-glow": gradients.cyanGlow,
         "gradient-blue-glow": gradients.blueGlow,
-        "gradient-card": gradients.card,
+        "gradient-card": gradients.cardSubtle,
         "gradient-card-hover": gradients.cardHover,
-        "gradient-mesh": gradients.mesh,
-        "gradient-border": gradients.border,
+        "gradient-mesh": gradients.meshBackground,
+        "gradient-border": gradients.borderGradient,
       },
 
       // ========================================

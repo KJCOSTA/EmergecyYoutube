@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Activity,
   ArrowRight,
@@ -25,6 +25,18 @@ import {
   Server,
   Brain,
 } from 'lucide-react';
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  RadialBarChart,
+  RadialBar,
+  PolarAngleAxis,
+} from 'recharts';
 import { useUIStore, useBrandingStore } from '@/lib/store';
 
 interface APIStatus {
@@ -56,6 +68,25 @@ const API_LIST: Omit<APIStatus, 'status'>[] = [
   { name: 'Vercel', key: 'vercel', icon: '▲', category: 'infra' },
 ];
 
+// Mock chart data for API availability trends (last 7 checks)
+const generateChartData = (currentPercentage: number) => {
+  const data = [];
+  const now = new Date();
+
+  for (let i = 6; i >= 0; i--) {
+    const time = new Date(now.getTime() - i * 10 * 60 * 1000); // 10 min intervals
+    const variance = Math.random() * 20 - 10; // ±10%
+    const availability = Math.max(60, Math.min(100, currentPercentage + variance));
+
+    data.push({
+      time: time.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+      availability: Math.round(availability),
+    });
+  }
+
+  return data;
+};
+
 export default function DashboardPage() {
   const router = useRouter();
   const { openApiKeyModal } = useUIStore();
@@ -69,6 +100,7 @@ export default function DashboardPage() {
     totalAPIs: API_LIST.length,
     lastCheck: new Date(),
   });
+  const [chartData, setChartData] = useState<Array<{ time: string; availability: number }>>([]);
 
   useEffect(() => {
     checkSystemStatus();
@@ -105,6 +137,10 @@ export default function DashboardPage() {
         totalAPIs: API_LIST.length,
         lastCheck: new Date(),
       });
+
+      // Generate chart data based on current availability
+      const currentAvailability = Math.round((onlineCount / API_LIST.length) * 100);
+      setChartData(generateChartData(currentAvailability));
     } catch {
       const errorStatuses: APIStatus[] = API_LIST.map(api => ({
         ...api,
@@ -188,7 +224,7 @@ export default function DashboardPage() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => router.push('/workflow')}
-            className="relative px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-shadow overflow-hidden group"
+            className="relative px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-shadow overflow-hidden group active:scale-95"
           >
             <span className="relative z-10 flex items-center gap-2">
               <Rocket className="w-5 h-5" />
@@ -371,7 +407,7 @@ export default function DashboardPage() {
           color="amber"
         />
 
-        {/* Statistics - Wide Card */}
+        {/* Statistics with Chart - Wide Card */}
         <motion.div
           variants={itemVariants}
           className="col-span-12 lg:col-span-6"
@@ -380,32 +416,95 @@ export default function DashboardPage() {
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-green-500/20 border border-emerald-500/30 flex items-center justify-center">
-                  <BarChart3 className="w-5 h-5 text-emerald-400" />
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-green-500/20 border border-emerald-500/30 flex items-center justify-center">
+                    <BarChart3 className="w-5 h-5 text-emerald-400" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold text-white">Disponibilidade</h2>
+                    <p className="text-xs text-foreground-muted">Últimos 60 minutos</p>
+                  </div>
                 </div>
-                <h2 className="text-lg font-semibold text-white">Estatísticas</h2>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-emerald-400">
+                    {Math.round((systemHealth.onlineAPIs / systemHealth.totalAPIs) * 100)}%
+                  </div>
+                  <div className="text-xs text-foreground-muted">Uptime</div>
+                </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
-                <div className="text-center p-4 rounded-xl bg-layer-2/50 border border-border-subtle">
-                  <div className="text-3xl font-bold text-white mb-1">0</div>
-                  <div className="text-xs text-foreground-muted">Vídeos Criados</div>
-                </div>
-                <div className="text-center p-4 rounded-xl bg-layer-2/50 border border-border-subtle">
-                  <div className="text-3xl font-bold text-white mb-1">0</div>
-                  <div className="text-xs text-foreground-muted">Em Progresso</div>
-                </div>
-                <div className="text-center p-4 rounded-xl bg-layer-2/50 border border-border-subtle">
-                  <div className="text-3xl font-bold text-white mb-1">0h</div>
-                  <div className="text-xs text-foreground-muted">Tempo Economizado</div>
-                </div>
-              </div>
+              <AnimatePresence mode="wait">
+                {isLoading ? (
+                  <motion.div
+                    key="loading"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="flex items-center justify-center h-48"
+                  >
+                    <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="chart"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
+                    className="h-48"
+                  >
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={chartData}>
+                        <defs>
+                          <linearGradient id="availabilityGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#10b981" stopOpacity={0.4} />
+                            <stop offset="100%" stopColor="#10b981" stopOpacity={0.0} />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.3} />
+                        <XAxis
+                          dataKey="time"
+                          stroke="#64748b"
+                          fontSize={11}
+                          tickLine={false}
+                          axisLine={{ stroke: '#334155' }}
+                        />
+                        <YAxis
+                          stroke="#64748b"
+                          fontSize={11}
+                          tickLine={false}
+                          axisLine={{ stroke: '#334155' }}
+                          domain={[0, 100]}
+                          ticks={[0, 25, 50, 75, 100]}
+                        />
+                        <Tooltip
+                          contentStyle={{
+                            backgroundColor: '#0f172a',
+                            border: '1px solid #334155',
+                            borderRadius: '8px',
+                            fontSize: '12px',
+                          }}
+                          labelStyle={{ color: '#94a3b8' }}
+                          itemStyle={{ color: '#10b981' }}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="availability"
+                          stroke="#10b981"
+                          strokeWidth={2}
+                          fill="url(#availabilityGradient)"
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </motion.div>
 
-        {/* System Info */}
+        {/* System Health with Radial Chart */}
         <motion.div
           variants={itemVariants}
           className="col-span-12 lg:col-span-6"
@@ -418,13 +517,73 @@ export default function DashboardPage() {
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30 flex items-center justify-center">
                   <Code2 className="w-5 h-5 text-blue-400" />
                 </div>
-                <h2 className="text-lg font-semibold text-white">Sistema</h2>
+                <div>
+                  <h2 className="text-lg font-semibold text-white">Saúde do Sistema</h2>
+                  <p className="text-xs text-foreground-muted">Status atual das APIs</p>
+                </div>
               </div>
 
-              <div className="space-y-3">
-                <InfoRow label="Versão" value="v1.0.0" />
-                <InfoRow label="Ambiente" value="Production" />
-                <InfoRow label="Build" value="2026.01.23" />
+              <AnimatePresence mode="wait">
+                {isLoading ? (
+                  <motion.div
+                    key="loading"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="flex items-center justify-center h-48"
+                  >
+                    <Loader2 className="w-8 h-8 text-cyan-500 animate-spin" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="radial"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
+                    className="h-48 flex items-center"
+                  >
+                    <ResponsiveContainer width="100%" height="100%">
+                      <RadialBarChart
+                        cx="50%"
+                        cy="50%"
+                        innerRadius="60%"
+                        outerRadius="100%"
+                        data={[
+                          {
+                            name: 'Disponibilidade',
+                            value: Math.round((systemHealth.onlineAPIs / systemHealth.totalAPIs) * 100),
+                            fill: systemHealth.overall === 'healthy' ? '#10b981' :
+                                  systemHealth.overall === 'degraded' ? '#f59e0b' : '#ef4444',
+                          },
+                        ]}
+                        startAngle={90}
+                        endAngle={-270}
+                      >
+                        <PolarAngleAxis type="number" domain={[0, 100]} tick={false} />
+                        <RadialBar
+                          background={{ fill: '#1e293b' }}
+                          dataKey="value"
+                          cornerRadius={10}
+                        />
+                        <text
+                          x="50%"
+                          y="50%"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          className="fill-white text-4xl font-bold"
+                        >
+                          {Math.round((systemHealth.onlineAPIs / systemHealth.totalAPIs) * 100)}%
+                        </text>
+                      </RadialBarChart>
+                    </ResponsiveContainer>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <div className="grid grid-cols-2 gap-3 mt-4">
+                <InfoRow label="Online" value={`${systemHealth.onlineAPIs}/${systemHealth.totalAPIs}`} />
+                <InfoRow label="Status" value={systemHealth.overall === 'healthy' ? '✅ OK' : systemHealth.overall === 'degraded' ? '⚠️ Degradado' : '❌ Crítico'} />
               </div>
             </div>
           </div>
@@ -461,7 +620,7 @@ export default function DashboardPage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => router.push('/workflow')}
-                  className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-shadow flex items-center gap-2"
+                  className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-shadow flex items-center gap-2 active:scale-95"
                 >
                   <Rocket className="w-5 h-5" />
                   Iniciar Produção
@@ -517,7 +676,7 @@ function ActionButton({ icon, label, description, onClick, gradient }: {
       whileHover={{ x: 4 }}
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
-      className="w-full flex items-center gap-3 p-3 rounded-xl bg-layer-2/50 border border-border-subtle hover:border-cyan-500/30 transition-all duration-200 group text-left"
+      className="w-full flex items-center gap-3 p-3 rounded-xl bg-layer-2/50 border border-border-subtle hover:border-cyan-500/30 transition-all duration-200 group text-left active:scale-95"
     >
       <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center flex-shrink-0 shadow-lg`}>
         <div className="text-white">{icon}</div>
