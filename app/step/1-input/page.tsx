@@ -76,6 +76,7 @@ export default function InputPage() {
     if (isYoutubeConnected && !channelInfo && !loadingChannel) {
       fetchChannelInfo();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isYoutubeConnected]);
 
   const fetchChannelInfo = async () => {
