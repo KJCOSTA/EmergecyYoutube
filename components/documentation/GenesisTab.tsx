@@ -38,7 +38,7 @@ export default function GenesisTab() {
             </div>
           </div>
           <p className="text-lg text-zinc-300 leading-relaxed max-w-3xl">
-            O <strong className="text-white">Emergency YouTube</strong> nasceu de uma necessidade
+            O <strong className="text-white">ORION</strong> (anteriormente ORION) nasceu de uma necessidade
             real e urgente: <span className="text-purple-400 font-semibold">democratizar a produção
             de vídeos profissionais para YouTube</span>, eliminando as barreiras técnicas, financeiras
             e de tempo que impedem criadores de conteúdo de manter uma presença consistente na plataforma.
@@ -123,14 +123,14 @@ export default function GenesisTab() {
             A Solução Proposta
           </h3>
           <CopyMdButtons
-            content="Emergency YouTube: 1) Recebe tema, 2) Pesquisa conteúdo, 3) Gera roteiro/trilha/thumbnail/descrição, 4) Cria storyboard, 5) Renderiza vídeo, 6) Publica no YouTube"
-            markdownContent={`## A Solução Proposta\n\nO Emergency YouTube é um sistema de automação inteligente que:\n\n1. Recebe apenas o tema/tópico do vídeo\n2. Pesquisa e estrutura o conteúdo automaticamente\n3. Gera roteiro, trilha sonora, thumbnail e descrição\n4. Cria o storyboard com seleção de mídias\n5. Renderiza o vídeo final\n6. Publica diretamente no YouTube`}
+            content="ORION: 1) Recebe tema, 2) Pesquisa conteúdo, 3) Gera roteiro/trilha/thumbnail/descrição, 4) Cria storyboard, 5) Renderiza vídeo, 6) Publica no YouTube"
+            markdownContent={`## A Solução Proposta\n\nO ORION é um sistema de automação inteligente que:\n\n1. Recebe apenas o tema/tópico do vídeo\n2. Pesquisa e estrutura o conteúdo automaticamente\n3. Gera roteiro, trilha sonora, thumbnail e descrição\n4. Cria o storyboard com seleção de mídias\n5. Renderiza o vídeo final\n6. Publica diretamente no YouTube`}
             filename="solucao.md"
           />
         </div>
         <div className="bg-gradient-to-r from-green-900/30 to-emerald-900/30 border border-green-500/20 rounded-xl p-6">
           <p className="text-zinc-300 mb-6">
-            O Emergency YouTube é um <strong className="text-green-400">sistema de automação inteligente</strong> que:
+            O ORION é um <strong className="text-green-400">sistema de automação inteligente</strong> que:
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
@@ -390,7 +390,7 @@ export default function GenesisTab() {
       {/* Footer Note */}
       <div className="p-4 bg-purple-900/20 border border-purple-500/20 rounded-xl">
         <p className="text-sm text-purple-300 italic text-center">
-          Este documento representa a intenção fundacional do sistema Emergency YouTube,
+          Este documento representa a intenção fundacional do sistema ORION,
           servindo como referência para decisões futuras e transferência de contexto entre IAs.
         </p>
       </div>

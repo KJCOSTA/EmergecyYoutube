@@ -79,7 +79,7 @@ export async function checkAPIKeys(): Promise<APIKeyStatus> {
 
   if (typeof window !== "undefined") {
     try {
-      const stored = sessionStorage.getItem("emergency-youtube-api-keys");
+      const stored = sessionStorage.getItem("orion-api-keys");
       if (stored) {
         const parsed = JSON.parse(stored);
         if (parsed.state?.keys) {

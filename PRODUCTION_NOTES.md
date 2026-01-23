@@ -1,4 +1,4 @@
-# Production Notes - EmergencyYoutube
+# Production Notes - ORION
 
 ## ⚠️ Known Limitations & Incomplete Features
 
@@ -50,6 +50,61 @@ The following environment variables MUST be set for the application to work:
 1. Copy `.env.example` to `.env`
 2. Add your API keys
 3. Never commit `.env` to version control
+
+---
+
+#### 3.1. Vercel Blob Storage (File Upload System)
+**Status:** ✅ Configurado (23/01/2026)
+
+**O que é:**
+O Vercel Blob é um sistema de armazenamento de arquivos na nuvem integrado à Vercel, usado para uploads dinâmicos (avatares, thumbnails, assets gerados).
+
+**Configuração Necessária:**
+1. Acesse: https://vercel.com/dashboard → Storage → Create Database → Blob
+2. Nome sugerido: `orion-storage`
+3. Região: Washington DC (iad1) - mesma do projeto
+4. Copie o token: `BLOB_READ_WRITE_TOKEN`
+5. Adicione nas variáveis de ambiente da Vercel (Production, Preview, Development)
+
+**Uso no Código:**
+```typescript
+// Upload de arquivo
+import { put } from '@vercel/blob';
+const { url } = await put('avatars/user-123.png', file, { access: 'public' });
+// Resultado: https://8myt2syx...vercel-storage.com/avatars/user-123.png
+
+// Listar arquivos
+import { list } from '@vercel/blob';
+const { blobs } = await list({ prefix: 'avatars/' });
+```
+
+**Rotas implementadas:**
+- `POST /api/upload` - Upload de arquivos (max 5MB, tipos: JPEG, PNG, GIF, WebP)
+- `GET /api/files/list?path=avatars` - Listar arquivos por pasta
+
+**Localização dos arquivos:**
+- **Código estático** (logos, favicon): `/public/assets/` - visível no Git
+- **Uploads dinâmicos** (avatares, thumbnails): Vercel Blob - na nuvem
+
+**Diferenças importantes:**
+
+| Característica | `/public` | Vercel Blob |
+|----------------|-----------|-------------|
+| Onde fica | No Git/Servidor | Nuvem Vercel |
+| Visível no VS Code | ✅ Sim | ❌ Não (só via API) |
+| Uso ideal | Assets estáticos | Uploads de usuários |
+| Custo | Grátis ilimitado | 1GB grátis |
+| Acesso | URL direto | Via API + URL gerada |
+
+**Limitações:**
+- Limite de 5MB por arquivo (configurável em `/app/api/upload/route.ts:33`)
+- 1GB de armazenamento grátis no plano atual
+- Tipos permitidos: JPEG, PNG, GIF, WebP (configurável)
+
+**Como visualizar arquivos:**
+1. Via API: `GET /api/files/list`
+2. Dashboard Vercel: Storage → orion-storage → Browser
+3. Settings do ORION: Menu lateral → Files (quando BLOB_READ_WRITE_TOKEN estiver configurado)
 
 ---
 
@@ -182,4 +237,4 @@ npm run dev
 
 ---
 
-**Last Updated:** 2026-01-22
+**Last Updated:** 2026-01-23 (Rebranding para ORION + Vercel Blob configurado)

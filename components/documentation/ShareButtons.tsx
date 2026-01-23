@@ -30,15 +30,15 @@ export default function ShareButtons() {
 
   const shareViaWhatsApp = () => {
     const text = encodeURIComponent(
-      `Confira a documentação do Emergency YouTube: ${shareUrl}`
+      `Confira a documentação do ORION: ${shareUrl}`
     );
     window.open(`https://wa.me/?text=${text}`, "_blank");
   };
 
   const shareViaEmail = () => {
-    const subject = encodeURIComponent("Documentação Emergency YouTube");
+    const subject = encodeURIComponent("Documentação ORION");
     const body = encodeURIComponent(
-      `Olá!\n\nConfira a documentação do Emergency YouTube:\n${shareUrl}\n\nAtenciosamente.`
+      `Olá!\n\nConfira a documentação do ORION:\n${shareUrl}\n\nAtenciosamente.`
     );
     window.open(`mailto:?subject=${subject}&body=${body}`, "_blank");
   };

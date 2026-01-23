@@ -97,7 +97,7 @@ export function exportTabAsMarkdown(tab: DocumentationTab): void {
 
 // Export all tabs as consolidated Markdown
 export function exportAllTabsAsMarkdown(tabs: DocumentationTab[]): void {
-  let consolidatedMarkdown = `# Documentação Viva do Sistema - Emergency YouTube
+  let consolidatedMarkdown = `# Documentação Viva do Sistema - ORION
 
 *Sistema de Automação de Produção de Vídeos para YouTube*
 
@@ -127,9 +127,9 @@ ${tabs.map((tab, index) => `${index + 1}. [${tab.title}](#${tab.id})`).join('\n'
     consolidatedMarkdown += '\n\n';
   });
 
-  consolidatedMarkdown += `\n---\n\n*Documento gerado automaticamente pelo módulo de Documentação Viva do Emergency YouTube*`;
+  consolidatedMarkdown += `\n---\n\n*Documento gerado automaticamente pelo módulo de Documentação Viva do ORION*`;
 
-  const filename = `documentacao-completa-emergency-youtube-${new Date().toISOString().split('T')[0]}.md`;
+  const filename = `documentacao-completa-orion-${new Date().toISOString().split('T')[0]}.md`;
   downloadFile(consolidatedMarkdown, filename, 'text/markdown;charset=utf-8');
 }
 
@@ -148,7 +148,7 @@ export function exportTabAsPDF(tabId: string, tabTitle: string): void {
     <!DOCTYPE html>
     <html>
     <head>
-      <title>${tabTitle} - Documentação Emergency YouTube</title>
+      <title>${tabTitle} - Documentação ORION</title>
       <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
@@ -283,7 +283,7 @@ export function exportTabAsPDF(tabId: string, tabTitle: string): void {
     <body>
       <h1>${tabTitle}</h1>
       <p style="color: #666; font-size: 14px; margin-bottom: 24px;">
-        Emergency YouTube - Documentação Viva do Sistema<br>
+        ORION - Documentação Viva do Sistema<br>
         Exportado em: ${new Date().toLocaleDateString('pt-BR', {
           day: '2-digit',
           month: 'long',
@@ -294,7 +294,7 @@ export function exportTabAsPDF(tabId: string, tabTitle: string): void {
       </p>
       ${content.innerHTML}
       <div class="footer">
-        Documento gerado pelo módulo de Documentação Viva - Emergency YouTube
+        Documento gerado pelo módulo de Documentação Viva - ORION
       </div>
     </body>
     </html>
