@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FolderOpen, File, Download, RefreshCw, ChevronRight, HardDrive, FileText, FolderClosed } from 'lucide-react';
 import type { DirectoryListing, FileEntry } from '@/types';
 
@@ -91,7 +91,7 @@ export function FilesTab() {
     }
 
     const ext = entry.name.split('.').pop()?.toLowerCase();
-    const iconMap: Record<string, JSX.Element> = {
+    const iconMap: Record<string, React.ReactElement> = {
       json: <FileText className="w-5 h-5 text-blue-400" />,
       txt: <FileText className="w-5 h-5 text-zinc-400" />,
       csv: <FileText className="w-5 h-5 text-green-400" />,
