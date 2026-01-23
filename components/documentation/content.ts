@@ -1061,3 +1061,164 @@ O sistema está preparado para escalar e evoluir conforme as necessidades dos us
 
 *Este documento reflete o estado atual do Emergency YouTube e serve como roadmap para decisões de desenvolvimento futuro.*
 `;
+
+export const decisionsContent = `# Decisoes Arquiteturais - Claude Code
+
+## Registro de Decisoes de Desenvolvimento
+
+Este documento registra todas as decisoes arquiteturais importantes tomadas durante o desenvolvimento do ORION, incluindo debates, consensos e justificativas tecnicas.
+
+---
+
+## Sessao 1: O Grande Debate Arquitetural (Janeiro 2026)
+
+### Contexto
+
+Necessidade de migrar de localStorage para persistencia real em banco de dados, implementar workflows duraveis para processos longos (renderizacao de video, deep research), e criar sistema de aprovacao humana (human-in-the-loop).
+
+### Participantes do Debate
+
+1. **Claude (Anthropic)** - Posicao: Conservadora e battle-tested. Priorizou estabilidade.
+2. **Gemini (Google)** - Posicao: Bleeding edge. Descobriu ToolLoopAgent no AI SDK 6.
+3. **ChatGPT (OpenAI)** - Posicao: Validador critico. Confirmou existencia do SDK 6.
+
+### Pontos Criticos Identificados
+
+#### 1. Vercel Functions Timeout
+- Limite de 300s (5 min) no Vercel Pro
+- Processos como renderizacao podem levar minutos/horas
+- Solucao: workflows duraveis externos
+
+#### 2. Vercel Workflow DevKit em Beta
+- Embora exista, ainda esta em Public Beta
+- Risco de bugs criticos em producao
+
+#### 3. AI SDK Versao Atual
+- Projeto usa AI SDK 4.3.19
+- Para usar ToolLoopAgent, precisa migrar para v6
+
+### Consenso Unanime: OPCAO B - Arquitetura Hibrida
+
+Apos debate intenso, as tres IAs chegaram a um consenso:
+
+| Camada | Tecnologia | Justificativa |
+|--------|------------|---------------|
+| Intelligence | AI SDK 6 + ToolLoopAgent | Agentes autonomos com loop de ferramentas |
+| Orchestration | Inngest | Durabilidade, retries, sleep nativo |
+| Persistence | Vercel Postgres + Prisma | Estado persistente cross-device |
+| Storage | Vercel Blob | 1GB incluido no Pro |
+| Notifications | Resend | 10K emails/mes gratis |
+
+**Custo Total: $20/mes (Vercel Pro)**
+
+---
+
+## Arquitetura do Pipeline de Video
+
+\`\`\`
+┌─────────────────────────────────────────────────────────────────┐
+│  AI SDK 6 (ToolLoopAgent)          Inngest                      │
+│  ┌─────────────────────┐           ┌─────────────────────┐      │
+│  │ Research Agent      │──────────>│ step.run()          │      │
+│  │ (Gemini 2.0)        │           │ step.sleep()        │      │
+│  └─────────────────────┘           │ step.waitForEvent() │      │
+│  ┌─────────────────────┐           │ Retry automatico    │      │
+│  │ Script Agent        │──────────>│                     │      │
+│  │ (Claude 3.5)        │           └─────────────────────┘      │
+│  └─────────────────────┘                    │                   │
+│                                             ▼                   │
+│                        ┌────────────────────────────────────┐   │
+│                        │ Vercel Postgres + Blob             │   │
+│                        └────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
+\`\`\`
+
+### Fluxo do Workflow
+
+1. **Deep Research (Gemini)** → Pesquisa trends e referencias
+2. **Script Generation (Claude)** → Gera roteiro otimizado
+3. **AGUARDAR APROVACAO** → Email + step.waitForEvent('7d')
+4. **Storyboard Generation** → Cria cenas com prompts visuais
+5. **Render (JSON2VIDEO)** → step.sleep() enquanto renderiza
+6. **Upload YouTube** → Com retry automatico
+
+---
+
+## Modelo de Dados (Prisma Schema)
+
+\`\`\`prisma
+model Project {
+  id          String         @id @default(cuid())
+  name        String
+  status      ProjectStatus  @default(DRAFT)
+  createdAt   DateTime       @default(now())
+
+  // Relacionamentos
+  context     Context?
+  research    Research?
+  script      Script?
+  storyboard  Storyboard?
+  render      Render?
+  upload      Upload?
+  workflow    WorkflowState?
+}
+
+enum ProjectStatus {
+  DRAFT
+  RESEARCHING
+  SCRIPTING
+  AWAITING_APPROVAL
+  APPROVED
+  RENDERING
+  UPLOADING
+  COMPLETED
+  FAILED
+}
+
+model WorkflowState {
+  inngestRunId     String?
+  currentStep      String
+  awaitingApproval Boolean   @default(false)
+  approvalToken    String?   @unique
+}
+\`\`\`
+
+---
+
+## Fases de Implementacao
+
+### FASE 1: Setup & Dependencias
+- Ajustar package.json para AI SDK 6
+- Instalar inngest, prisma, @prisma/client, resend
+
+### FASE 2: Banco de Dados (Prisma)
+- Gerar prisma/schema.prisma completo
+- Executar migration inicial
+
+### FASE 3: Configuracao Inngest
+- Criar client (lib/inngest/client.ts)
+- Criar API route (app/api/inngest/route.ts)
+
+### FASE 4: Agentes AI SDK 6
+- Implementar agentes em lib/agents/
+- Usar ToolLoopAgent real do SDK 6
+- Conectar agentes dentro dos Steps do Inngest
+
+### FASE 5: Sistema de Aprovacao
+- Implementar notificacoes por email (Resend)
+- Criar pagina de aprovacao /approve/[token]
+
+---
+
+## Referencias e Fontes
+
+- [AI SDK 6 - ToolLoopAgent](https://ai-sdk.dev/docs/reference/ai-sdk-core/tool-loop-agent)
+- [Vercel Workflow Documentation](https://vercel.com/docs/workflow)
+- [Inngest Vercel Integration](https://inngest.com/docs/guides/vercel)
+- [Workflow DevKit GitHub](https://github.com/vercel/workflow-devkit)
+
+---
+
+*Documento gerado em: 23/01/2026*
+*Participantes: Claude (Anthropic), Gemini (Google), ChatGPT (OpenAI)*
+`;
