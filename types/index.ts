@@ -329,3 +329,109 @@ export interface APIResponse<T> {
   data?: T;
   error?: string;
 }
+
+// ============================================
+// Settings & Profile System
+// ============================================
+
+// User Profile (Mock - Single Tenant)
+export interface UserProfile {
+  id: string;
+  name: string;
+  role: string;
+  avatarUrl: string;
+  bio: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Documentation CMS
+export type DocCategory = "getting-started" | "features" | "api" | "changelog" | "guides";
+
+export interface DocPage {
+  id: string;
+  title: string;
+  category: DocCategory;
+  content: string;
+  visible: boolean;
+  order: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface DocsData {
+  pages: DocPage[];
+  updatedAt: string;
+}
+
+// Integration Tokens
+export interface IntegrationTokens {
+  github: {
+    token: string;
+    owner: string;
+    repo: string;
+  } | null;
+  vercel: {
+    token: string;
+    projectId: string;
+  } | null;
+  updatedAt: string;
+}
+
+// System Logs
+export type LogLevel = "info" | "warning" | "error" | "success";
+export type LogSource = "system" | "workflow" | "api" | "user";
+
+export interface SystemLog {
+  id: string;
+  timestamp: string;
+  level: LogLevel;
+  source: LogSource;
+  message: string;
+  details?: Record<string, unknown>;
+}
+
+export interface LogsData {
+  logs: SystemLog[];
+}
+
+// GitHub API Types
+export interface GitHubCommit {
+  sha: string;
+  message: string;
+  author: string;
+  date: string;
+  url: string;
+}
+
+export interface GitHubCommitsResponse {
+  commits: GitHubCommit[];
+  error?: string;
+}
+
+// Vercel API Types
+export type VercelDeploymentState = "READY" | "ERROR" | "BUILDING" | "QUEUED" | "CANCELED";
+
+export interface VercelDeployment {
+  uid: string;
+  name: string;
+  url: string;
+  state: VercelDeploymentState;
+  createdAt: number;
+  readyState: string;
+}
+
+export interface VercelDeploymentsResponse {
+  deployments: VercelDeployment[];
+  error?: string;
+}
+
+// Settings Tabs
+export type SettingsTab = "profile" | "docs" | "integrations" | "logs";
+
+export interface SettingsState {
+  activeTab: SettingsTab;
+  profile: UserProfile;
+  docs: DocsData;
+  integrations: IntegrationTokens;
+}
