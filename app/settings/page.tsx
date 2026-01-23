@@ -85,7 +85,7 @@ export default function SettingsPage() {
     },
   ];
 
-  const getTabColorClasses = (color: string, isActive: boolean) => {
+  const getTabColorClasses = (color: string) => {
     const colors = {
       indigo: {
         active: 'text-indigo-400 bg-indigo-500/10',
@@ -148,7 +148,7 @@ export default function SettingsPage() {
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
-              const colorClasses = getTabColorClasses(tab.color, isActive);
+              const colorClasses = getTabColorClasses(tab.color);
 
               return (
                 <button

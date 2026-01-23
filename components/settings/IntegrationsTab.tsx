@@ -95,7 +95,7 @@ export function IntegrationsTab({ initialTokens, onUpdate }: IntegrationsTabProp
     try {
       const result = await testGitHubConnection();
       setTestResults({ ...testResults, github: result });
-    } catch (error) {
+    } catch (_error) {
       setTestResults({
         ...testResults,
         github: { success: false, error: 'Erro ao testar conexão' },
@@ -110,7 +110,7 @@ export function IntegrationsTab({ initialTokens, onUpdate }: IntegrationsTabProp
     try {
       const result = await testVercelConnection();
       setTestResults({ ...testResults, vercel: result });
-    } catch (error) {
+    } catch (_error) {
       setTestResults({
         ...testResults,
         vercel: { success: false, error: 'Erro ao testar conexão' },
