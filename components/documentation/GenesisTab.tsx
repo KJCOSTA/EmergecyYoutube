@@ -17,6 +17,7 @@ import {
   Clock,
   DollarSign,
 } from "lucide-react";
+import { CopyMdButtons } from "./CopyButton";
 
 export default function GenesisTab() {
   return (
@@ -47,10 +48,17 @@ export default function GenesisTab() {
 
       {/* The Problem */}
       <section>
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <Target className="w-6 h-6 text-red-400" />
-          O Problema Fundamental
-        </h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <Target className="w-6 h-6 text-red-400" />
+            O Problema Fundamental
+          </h3>
+          <CopyMdButtons
+            content="Barreiras para criar vídeos: 1) Habilidades técnicas (edição, design, áudio), 2) Investimento (equipamentos, software), 3) Tempo extensivo (8-20h por vídeo), 4) Conhecimento SEO"
+            markdownContent={`## O Problema Fundamental\n\nCriar vídeos de qualidade para YouTube tradicionalmente exige:\n\n1. **Habilidades Técnicas** - Edição de vídeo, design gráfico e produção de áudio\n2. **Investimento** - Equipamentos, software e possivelmente equipe\n3. **Tempo Extensivo** - Um vídeo de 10 min pode levar 8-20 horas de produção\n4. **Conhecimento SEO** - Otimização e descoberta do conteúdo\n\n> Esta barreira exclui milhões de potenciais criadores que têm conhecimento valioso mas não os recursos para transformá-lo em conteúdo visual.`}
+            filename="problema.md"
+          />
+        </div>
         <p className="text-zinc-400 mb-6">
           Criar vídeos de qualidade para YouTube tradicionalmente exige:
         </p>
@@ -109,10 +117,17 @@ export default function GenesisTab() {
 
       {/* The Solution */}
       <section>
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <Zap className="w-6 h-6 text-green-400" />
-          A Solução Proposta
-        </h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <Zap className="w-6 h-6 text-green-400" />
+            A Solução Proposta
+          </h3>
+          <CopyMdButtons
+            content="Emergency YouTube: 1) Recebe tema, 2) Pesquisa conteúdo, 3) Gera roteiro/trilha/thumbnail/descrição, 4) Cria storyboard, 5) Renderiza vídeo, 6) Publica no YouTube"
+            markdownContent={`## A Solução Proposta\n\nO Emergency YouTube é um sistema de automação inteligente que:\n\n1. Recebe apenas o tema/tópico do vídeo\n2. Pesquisa e estrutura o conteúdo automaticamente\n3. Gera roteiro, trilha sonora, thumbnail e descrição\n4. Cria o storyboard com seleção de mídias\n5. Renderiza o vídeo final\n6. Publica diretamente no YouTube`}
+            filename="solucao.md"
+          />
+        </div>
         <div className="bg-gradient-to-r from-green-900/30 to-emerald-900/30 border border-green-500/20 rounded-xl p-6">
           <p className="text-zinc-300 mb-6">
             O Emergency YouTube é um <strong className="text-green-400">sistema de automação inteligente</strong> que:
@@ -142,10 +157,17 @@ export default function GenesisTab() {
 
       {/* Design Guidelines */}
       <section>
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <FileText className="w-6 h-6 text-blue-400" />
-          Diretrizes de Design (Prompts Fundacionais)
-        </h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <FileText className="w-6 h-6 text-blue-400" />
+            Diretrizes de Design (Prompts Fundacionais)
+          </h3>
+          <CopyMdButtons
+            content="Diretrizes: 1) Automação Máxima com Controle Humano, 2) Qualidade Profissional, 3) Interface Intuitiva, 4) Escalabilidade"
+            markdownContent={`## Diretrizes de Design\n\n### 1. Automação Máxima, Controle Humano\n- O sistema automatiza tarefas repetitivas e técnicas\n- O humano mantém controle sobre decisões criativas e editoriais\n- Cada etapa pode ser revisada e modificada antes de avançar\n\n### 2. Qualidade de Produção Profissional\n- Outputs devem ser indistinguíveis de produções manuais\n- Padrões de YouTube Creator Academy são referência\n- SEO e engagement são prioridades arquiteturais\n\n### 3. Interface Intuitiva\n- Zero curva de aprendizado para operações básicas\n- Interface guiada por workflow linear\n- Feedback visual claro em cada etapa\n\n### 4. Escalabilidade\n- Suportar múltiplos vídeos em paralelo\n- Funcionar com diferentes nichos de conteúdo\n- Permitir personalização de diretrizes por projeto`}
+            filename="diretrizes-design.md"
+          />
+        </div>
         <div className="space-y-4">
           {[
             {
@@ -216,10 +238,17 @@ export default function GenesisTab() {
 
       {/* Architectural Decisions */}
       <section>
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <Puzzle className="w-6 h-6 text-amber-400" />
-          Decisões Arquiteturais Derivadas
-        </h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <Puzzle className="w-6 h-6 text-amber-400" />
+            Decisões Arquiteturais Derivadas
+          </h3>
+          <CopyMdButtons
+            content="Por que Next.js 15? App Router, Server Components, API Routes, Vercel nativo. Por que Zustand? Simplicidade, persistência localStorage, TypeScript first. Por que 6 Etapas? Espelha produção real, validação humana, rollback."
+            markdownContent={`## Decisões Arquiteturais\n\n### Por que Next.js 15?\n- App Router para roteamento moderno\n- Server Components para performance\n- API Routes para backend integrado\n- Vercel como deploy nativo\n\n### Por que Zustand?\n- Simplicidade sobre complexidade\n- Persistência nativa com localStorage\n- TypeScript first\n- Minimal boilerplate\n\n### Por que 6 Etapas?\n- Espelha produção real de vídeo\n- Validação humana em cada transição\n- Rollback para etapas anteriores\n- Clareza sobre status atual`}
+            filename="decisoes-arquiteturais.md"
+          />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
             <div className="w-12 h-12 bg-gradient-to-br from-zinc-700 to-zinc-800 rounded-xl flex items-center justify-center mb-4">

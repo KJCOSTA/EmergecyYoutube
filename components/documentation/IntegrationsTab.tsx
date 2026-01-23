@@ -11,6 +11,8 @@ import {
   RefreshCw,
   Lock,
 } from "lucide-react";
+import { CopyMdButtons } from "./CopyButton";
+import { AnimatedSection, AnimatedCard, AnimatedGrid } from "./AnimatedSection";
 
 // API/Service logos as simple text badges (would be real logos in production)
 const ServiceLogo = ({ name, color }: { name: string; color: string }) => (
@@ -149,10 +151,19 @@ export default function IntegrationsTab() {
 
       {/* Integration Cards */}
       <section>
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <Server className="w-6 h-6 text-emerald-400" />
-          APIs e Serviços Integrados
-        </h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <Server className="w-6 h-6 text-emerald-400" />
+            APIs e Serviços Integrados
+          </h3>
+          <CopyMdButtons
+            content={integrations.map(api => `${api.name}: ${api.function}`).join('\n')}
+            markdownContent={`## APIs e Serviços Integrados\n\n${integrations.map(api =>
+              `### ${api.name}\n- **Função:** ${api.function}\n- **Criticidade:** ${api.criticality}\n- **Modelo:** ${api.model}\n- **Uso:** ${api.use}\n- **Auth:** ${api.auth}`
+            ).join('\n\n')}`}
+            filename="apis-integradas.md"
+          />
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {integrations.map((api, index) => (
@@ -209,10 +220,17 @@ export default function IntegrationsTab() {
 
       {/* Connection Diagram */}
       <section>
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <Plug className="w-6 h-6 text-cyan-400" />
-          Diagrama de Conexões
-        </h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <Plug className="w-6 h-6 text-cyan-400" />
+            Diagrama de Conexões
+          </h3>
+          <CopyMdButtons
+            content="Diagrama de Conexões: IA Providers (Anthropic, Google Gemini, OpenAI, Replicate), Media Services (Pexels, Pixabay, ElevenLabs, Replicate Video), Video Platform (YouTube Data API)"
+            markdownContent={`## Diagrama de Conexões\n\n### IA PROVIDERS\n- Anthropic Claude\n- Google Gemini\n- OpenAI GPT-4\n- Replicate\n\n### MEDIA SERVICES\n- Pexels Images\n- Pixabay Videos\n- ElevenLabs TTS\n- Replicate Video\n\n### VIDEO PLATFORM\n- YouTube Data API v3`}
+            filename="diagrama-conexoes.md"
+          />
+        </div>
 
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8">
           <div className="text-center mb-8">
@@ -280,10 +298,17 @@ export default function IntegrationsTab() {
 
       {/* Data Flow */}
       <section>
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <ArrowRight className="w-6 h-6 text-blue-400" />
-          Fluxo Real de Dados
-        </h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <ArrowRight className="w-6 h-6 text-blue-400" />
+            Fluxo Real de Dados
+          </h3>
+          <CopyMdButtons
+            content="Fluxos: 1) Geração de Roteiro (Usuário → API → Anthropic → Roteiro → UI), 2) Geração de Thumbnail (Roteiro → API → Replicate/DALL-E → Imagem → Preview), 3) Upload YouTube (Vídeo → API → OAuth → YouTube → URL)"
+            markdownContent={`## Fluxo Real de Dados\n\n### 1. Geração de Roteiro\nUsuário (Input tema) → API (/proposal/script) → Anthropic (Claude API) → Roteiro (Estruturado) → Frontend (UI)\n\n### 2. Geração de Thumbnail\nRoteiro (Contexto) → API (/images/generate) → Replicate/DALL-E → Imagem (Base64) → Frontend (Preview)\n\n### 3. Upload para YouTube\nVídeo (Renderizado) → API (/youtube/upload) → OAuth 2.0 (Auth) → YouTube (Data API) → Publicado (URL)`}
+            filename="fluxo-dados.md"
+          />
+        </div>
 
         <div className="space-y-6">
           {/* Script Generation Flow */}
@@ -356,10 +381,17 @@ export default function IntegrationsTab() {
 
       {/* Security */}
       <section>
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <Shield className="w-6 h-6 text-violet-400" />
-          Observações de Autenticação e Segurança
-        </h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <Shield className="w-6 h-6 text-violet-400" />
+            Observações de Autenticação e Segurança
+          </h3>
+          <CopyMdButtons
+            content="Segurança: API Keys Sistema (Variáveis ambiente Vercel), API Keys Usuário (localStorage criptografado), OAuth Tokens (Cookie httpOnly). Fallbacks: Anthropic→Gemini, Pexels→Pixabay, ElevenLabs→TTS alternativo"
+            markdownContent={`## Autenticação e Segurança\n\n### Armazenamento de Credenciais\n- **API Keys (Sistema):** Variáveis de ambiente (Vercel) - Não expostas ao cliente\n- **API Keys (Usuário):** localStorage (browser) - Criptografadas localmente\n- **OAuth Tokens:** Cookie httpOnly - Sessão segura\n\n### Fallback e Redundância\n- Anthropic → Google Gemini\n- Pexels → Pixabay\n- ElevenLabs → TTS alternativo`}
+            filename="seguranca.md"
+          />
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Credential Storage */}
@@ -430,10 +462,17 @@ export default function IntegrationsTab() {
 
       {/* OAuth Flow */}
       <section>
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <Key className="w-6 h-6 text-red-400" />
-          Fluxo OAuth (YouTube)
-        </h3>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+            <Key className="w-6 h-6 text-red-400" />
+            Fluxo OAuth (YouTube)
+          </h3>
+          <CopyMdButtons
+            content="Fluxo OAuth: 1) Usuário clica Conectar → 2) Redirect Google OAuth → 3) Autoriza escopos → 4) Callback com código → 5) Tokens armazenados"
+            markdownContent={`## Fluxo OAuth (YouTube)\n\n1. Usuário clica em Conectar YouTube\n2. Redirect para Google OAuth\n3. Usuário autoriza escopos\n4. Callback com código\n5. Tokens armazenados`}
+            filename="oauth-flow.md"
+          />
+        </div>
 
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
