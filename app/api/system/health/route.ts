@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
  * GET /api/system/health
  * Returns system health metrics and API status
  */
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // System Health Metrics
     const memoryUsage = process.memoryUsage();
