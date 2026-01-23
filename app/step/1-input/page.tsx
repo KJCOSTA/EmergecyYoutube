@@ -24,6 +24,8 @@ interface ChannelInfo {
   videos: string;
   views: string;
   thumbnail?: string;
+  channelId?: string;
+  channelUrl?: string;
 }
 
 export default function InputPage() {
@@ -79,15 +81,51 @@ export default function InputPage() {
   const fetchChannelInfo = async () => {
     setLoadingChannel(true);
     try {
-      // Simular dados do canal (em produção, seria uma chamada real à API do YouTube)
-      // Para demonstração, usando dados mockados
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Buscar dados reais da API do YouTube
+      const headers: HeadersInit = {};
+      if (localKeys.youtube_api_key) {
+        headers['x-youtube-api-key'] = localKeys.youtube_api_key;
+      }
+      if (localKeys.youtube_channel_id) {
+        headers['x-youtube-channel-id'] = localKeys.youtube_channel_id;
+      }
+
+      const response = await fetch('/api/youtube/channel', { headers });
+
+      if (!response.ok) {
+        throw new Error(`Erro ao buscar dados do canal: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      // Formatar números para exibição amigável
+      const formatNumber = (num: number): string => {
+        if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
+        if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
+        return num.toString();
+      };
+
+      // Buscar thumbnail do canal
+      const channelResponse = await fetch(
+        `https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${data.channelId}&key=${localKeys.youtube_api_key}`
+      );
+
+      let thumbnailUrl = undefined;
+      if (channelResponse.ok) {
+        const channelData = await channelResponse.json();
+        if (channelData.items && channelData.items.length > 0) {
+          thumbnailUrl = channelData.items[0].snippet.thumbnails.default.url;
+        }
+      }
+
       setChannelInfo({
-        name: "Meu Canal YouTube",
-        subscribers: "12.5K",
-        videos: "142",
-        views: "1.2M",
-        thumbnail: undefined
+        name: data.title,
+        subscribers: formatNumber(data.subscriberCount),
+        videos: formatNumber(data.videoCount),
+        views: formatNumber(data.viewCount),
+        thumbnail: thumbnailUrl,
+        channelId: data.channelId,
+        channelUrl: `https://www.youtube.com/channel/${data.channelId}`
       });
     } catch (error) {
       console.error("Erro ao buscar info do canal:", error);
@@ -281,9 +319,17 @@ export default function InputPage() {
               ) : channelInfo ? (
                 <div className="z-10 w-full animate-in slide-in-from-bottom-2">
                   <div className="flex items-center gap-3 mb-3 sm:mb-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center text-white font-bold text-base sm:text-lg flex-shrink-0">
-                      {channelInfo.name.charAt(0)}
-                    </div>
+                    {channelInfo.thumbnail ? (
+                      <img
+                        src={channelInfo.thumbnail}
+                        alt={channelInfo.name}
+                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex-shrink-0 object-cover"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center text-white font-bold text-base sm:text-lg flex-shrink-0">
+                        {channelInfo.name.charAt(0)}
+                      </div>
+                    )}
                     <div className="text-left min-w-0">
                       <p className="font-semibold text-white text-sm sm:text-base truncate">{channelInfo.name}</p>
                       <p className="text-green-400 text-xs">Canal Conectado</p>
@@ -306,6 +352,20 @@ export default function InputPage() {
                       <p className="text-zinc-500 text-[10px] sm:text-xs">Views</p>
                     </div>
                   </div>
+                  {channelInfo.channelUrl && (
+                    <div className="mt-3 pt-3 border-t border-zinc-800">
+                      <p className="text-zinc-500 text-[10px] sm:text-xs mb-1">Canal no YouTube:</p>
+                      <a
+                        href={channelInfo.channelUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-400 hover:text-blue-300 text-xs sm:text-sm break-all transition-colors"
+                      >
+                        {channelInfo.channelUrl}
+                      </a>
+                      <p className="text-zinc-600 text-[10px] mt-1">ID: {channelInfo.channelId}</p>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="z-10 flex flex-col items-center gap-3 animate-in slide-in-from-bottom-2">
