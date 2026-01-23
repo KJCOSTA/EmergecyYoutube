@@ -33,7 +33,7 @@ export default function SettingsPage() {
       ]);
 
       setProfile(profileData);
-      setDocs(docsData.pages);
+      setDocs(docsData);
       setTokens(tokensData);
     } catch (error) {
       console.error('Failed to load settings data:', error);
@@ -46,7 +46,7 @@ export default function SettingsPage() {
   const handleDocsUpdate = async () => {
     try {
       const docsData = await getDocs();
-      setDocs(docsData.pages);
+      setDocs(docsData);
     } catch (error) {
       console.error('Failed to reload docs:', error);
     }
