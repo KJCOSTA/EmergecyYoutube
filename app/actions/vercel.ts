@@ -1,7 +1,7 @@
 'use server';
 
 import { getIntegrationTokens } from '@/lib/integration-tokens';
-import type { VercelDeployment, VercelDeploymentsResponse } from '@/types';
+import type { VercelDeployment, VercelDeploymentsResponse, VercelDeploymentState } from '@/types';
 
 /**
  * Fetch recent deployments from Vercel
@@ -55,7 +55,7 @@ export async function fetchVercelDeployments(limit: number = 20): Promise<Vercel
       uid: deployment.uid,
       name: deployment.name,
       url: deployment.url,
-      state: deployment.state,
+      state: deployment.state as VercelDeploymentState,
       createdAt: deployment.createdAt,
       readyState: deployment.readyState,
     }));
