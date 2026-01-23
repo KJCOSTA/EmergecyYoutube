@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from 'react';
-import { CheckCircle2, Circle, Lock, ArrowRight, FileInput, Brain, FileVideo, Film, Wrench, Upload } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { CheckCircle2, Circle, Lock, ArrowRight, FileInput, Brain, FileVideo, Film, Wrench, Upload, AlertCircle } from 'lucide-react';
 import { useWorkflowStore } from '@/lib/store';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const workflowSteps = [
   {
@@ -58,9 +58,11 @@ const workflowSteps = [
 
 export default function WorkflowPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const {
     currentStep,
     canNavigateToStep,
+    resetWorkflow,
     context,
     research,
     proposal,
@@ -68,6 +70,24 @@ export default function WorkflowPage() {
     upload
   } = useWorkflowStore();
   const [hoveredStep, setHoveredStep] = useState<number | null>(null);
+  const [showResetDialog, setShowResetDialog] = useState(false);
+
+  // Reset workflow state on mount (unless continuing)
+  useEffect(() => {
+    const continueParam = searchParams.get('continue');
+    const hasData = context !== null || research !== null || proposal !== null;
+
+    // Se NÃO está continuando explicitamente E tem dados antigos, mostrar dialog
+    if (!continueParam && hasData) {
+      setShowResetDialog(true);
+    }
+
+    // Se parâmetro continue=false foi passado, resetar imediatamente
+    if (continueParam === 'false') {
+      resetWorkflow();
+      setShowResetDialog(false);
+    }
+  }, [searchParams]); // Removido resetWorkflow, context, etc pra evitar loops
 
   // Verifica se um step foi realmente completado baseado nos dados
   const isStepCompleted = (step: 1 | 2 | 4 | 5 | 6): boolean => {
@@ -104,6 +124,46 @@ export default function WorkflowPage() {
 
   return (
     <div className="w-full">
+      {/* Reset Dialog */}
+      {showResetDialog && (
+        <>
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50" onClick={() => setShowResetDialog(false)} />
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md p-6 bg-layer-2 border border-warning/30 rounded-2xl shadow-2xl">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-12 h-12 rounded-xl bg-warning/10 border border-warning/20 flex items-center justify-center flex-shrink-0">
+                <AlertCircle className="w-6 h-6 text-warning" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-2">Workflow em Andamento</h3>
+                <p className="text-sm text-zinc-400">
+                  Detectamos um workflow anterior. Deseja continuar de onde parou ou iniciar um novo?
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowResetDialog(false);
+                }}
+                className="flex-1 px-4 py-2.5 rounded-lg bg-layer-1 border border-default hover:bg-surface-elevated text-text-primary transition-all"
+              >
+                Continuar
+              </button>
+              <button
+                onClick={() => {
+                  resetWorkflow();
+                  setShowResetDialog(false);
+                  router.push('/workflow?continue=false');
+                }}
+                className="flex-1 px-4 py-2.5 rounded-lg bg-warning/10 border border-warning/30 hover:bg-warning/20 text-warning transition-all"
+              >
+                Iniciar Novo
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
       {/* Header */}
       <div className="mb-12">
         <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
