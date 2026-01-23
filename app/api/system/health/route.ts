@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import type { SystemMonitorData, SystemHealth, APIHealthStatus } from '@/types';
 
 export const dynamic = 'force-dynamic';
