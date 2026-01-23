@@ -39,7 +39,19 @@ export async function fetchGitHubCommits(limit: number = 20): Promise<GitHubComm
 
     const data = await response.json();
 
-    const commits: GitHubCommit[] = data.map((commit: any) => ({
+    interface GitHubAPICommit {
+      sha: string;
+      html_url: string;
+      commit: {
+        message: string;
+        author: {
+          name: string;
+          date: string;
+        };
+      };
+    }
+
+    const commits: GitHubCommit[] = (data as GitHubAPICommit[]).map((commit) => ({
       sha: commit.sha.substring(0, 7),
       message: commit.commit.message,
       author: commit.commit.author.name,

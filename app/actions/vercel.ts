@@ -38,7 +38,20 @@ export async function fetchVercelDeployments(limit: number = 20): Promise<Vercel
 
     const data = await response.json();
 
-    const deployments: VercelDeployment[] = data.deployments.map((deployment: any) => ({
+    interface VercelAPIDeployment {
+      uid: string;
+      name: string;
+      url: string;
+      state: string;
+      createdAt: number;
+      readyState: string;
+    }
+
+    interface VercelAPIResponse {
+      deployments: VercelAPIDeployment[];
+    }
+
+    const deployments: VercelDeployment[] = (data as VercelAPIResponse).deployments.map((deployment) => ({
       uid: deployment.uid,
       name: deployment.name,
       url: deployment.url,
