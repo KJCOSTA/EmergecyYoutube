@@ -29,7 +29,12 @@ import {
   getLogsByLevel,
   getLogsBySource,
 } from '@/lib/logger';
-import type { UserProfile, DocPage, DocCategory, IntegrationTokens, SystemLog, LogLevel, LogSource } from '@/types';
+import {
+  getBrandingConfig as getBrandingLib,
+  updateBrandingConfig as updateBrandingLib,
+  resetBrandingConfig as resetBrandingLib,
+} from '@/lib/branding';
+import type { UserProfile, DocPage, DocCategory, IntegrationTokens, SystemLog, LogLevel, LogSource, BrandingConfig } from '@/types';
 
 // ============================================
 // User Profile Actions
@@ -170,4 +175,26 @@ export async function addLog(
   details?: Record<string, unknown>
 ): Promise<void> {
   await logSystemEvent(level, source, message, details);
+}
+
+// ============================================
+// Branding Actions (White Label)
+// ============================================
+
+export async function getBranding(): Promise<BrandingConfig> {
+  return getBrandingLib();
+}
+
+export async function updateBranding(
+  updates: Partial<Omit<BrandingConfig, 'updatedAt'>>
+): Promise<BrandingConfig> {
+  const config = await updateBrandingLib(updates);
+  await logSystemEvent('success', 'system', `Configuração de branding atualizada: ${config.systemName}`);
+  return config;
+}
+
+export async function resetBranding(): Promise<BrandingConfig> {
+  const config = await resetBrandingLib();
+  await logSystemEvent('info', 'system', 'Branding resetado para padrão ORION');
+  return config;
 }

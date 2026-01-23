@@ -19,7 +19,7 @@ export async function getUserProfile(): Promise<UserProfile> {
       name: 'Admin',
       role: 'System Administrator',
       avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin',
-      bio: 'Emergency YouTube System Administrator',
+      bio: 'ORION System Administrator',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

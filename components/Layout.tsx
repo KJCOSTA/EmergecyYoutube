@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { useUIStore } from "@/lib/store";
+import { useUIStore, useBrandingStore } from "@/lib/store";
 import {
   Menu,
   X,
@@ -31,6 +31,7 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   const pathname = usePathname();
   const { isSidebarOpen, toggleSidebar, openGuidelinesModal, openApiKeyModal } = useUIStore();
+  const { systemName, logoUrl } = useBrandingStore();
   const [isMobile, setIsMobile] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -123,11 +124,26 @@ export default function Layout({ children }: LayoutProps) {
           {/* Logo */}
           <div className="p-6 border-b border-zinc-800">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                <span className="text-white font-bold text-sm">EY</span>
+              <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                {logoUrl ? (
+                  <img
+                    src={logoUrl}
+                    alt={systemName}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                ) : (
+                  <span className="text-white font-bold text-sm">
+                    {systemName.substring(0, 2).toUpperCase()}
+                  </span>
+                )}
               </div>
               {(!isCollapsed || isMobile) && (
-                <span className="text-lg font-bold text-white whitespace-nowrap overflow-hidden">Emergency YT</span>
+                <span className="text-lg font-bold text-white whitespace-nowrap overflow-hidden">
+                  {systemName}
+                </span>
               )}
             </Link>
           </div>
@@ -252,7 +268,7 @@ export default function Layout({ children }: LayoutProps) {
             {/* Version */}
             {(!isCollapsed || isMobile) && (
               <p className="text-xs text-zinc-500 text-center">
-                Emergency YouTube v1.0.0
+                {systemName} v1.0.0
               </p>
             )}
           </div>

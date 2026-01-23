@@ -1,5 +1,5 @@
 // ============================================
-// Core Types for Emergency YouTube
+// Core Types for ORION (formerly Emergency YouTube)
 // ============================================
 
 // AI Provider Types
@@ -426,8 +426,55 @@ export interface VercelDeploymentsResponse {
   error?: string;
 }
 
+// Branding System (White Label)
+export interface BrandingConfig {
+  systemName: string;
+  logoUrl: string | null;
+  updatedAt: string;
+}
+
+// System Health Monitoring
+export interface SystemHealth {
+  memory: {
+    rss: number;
+    heapTotal: number;
+    heapUsed: number;
+    external: number;
+  };
+  uptime: number;
+  nodeVersion: string;
+  platform: string;
+  timestamp: string;
+}
+
+export interface APIHealthStatus {
+  name: string;
+  status: "online" | "offline" | "unknown";
+  responseTime?: number;
+  error?: string;
+}
+
+export interface SystemMonitorData {
+  system: SystemHealth;
+  apis: APIHealthStatus[];
+}
+
+// File Vault System
+export interface FileEntry {
+  name: string;
+  path: string;
+  type: "file" | "directory";
+  size?: number;
+  modifiedAt?: string;
+}
+
+export interface DirectoryListing {
+  path: string;
+  entries: FileEntry[];
+}
+
 // Settings Tabs
-export type SettingsTab = "profile" | "docs" | "integrations" | "logs";
+export type SettingsTab = "profile" | "docs" | "integrations" | "logs" | "appearance" | "monitor" | "files";
 
 export interface SettingsState {
   activeTab: SettingsTab;

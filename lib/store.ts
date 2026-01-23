@@ -10,6 +10,7 @@ import {
   UploadData,
   GuidelinesData,
   Diretriz,
+  BrandingConfig,
 } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 
@@ -280,3 +281,38 @@ export const useUIStore = create<UIStore>()((set) => ({
   setConnectApisModalOpen: (open) => set({ isConnectApisModalOpen: open }),
   setActiveModal: (modal) => set({ activeModal: modal }),
 }));
+
+// ============================================
+// Branding Store (White Label System)
+// ============================================
+interface BrandingStore {
+  systemName: string;
+  logoUrl: string | null;
+  setSystemName: (name: string) => void;
+  setLogoUrl: (url: string | null) => void;
+  setBranding: (systemName: string, logoUrl: string | null) => void;
+  resetBranding: () => void;
+}
+
+const defaultBranding = {
+  systemName: "ORION",
+  logoUrl: null,
+};
+
+export const useBrandingStore = create<BrandingStore>()(
+  persist(
+    (set) => ({
+      systemName: defaultBranding.systemName,
+      logoUrl: defaultBranding.logoUrl,
+
+      setSystemName: (name) => set({ systemName: name }),
+      setLogoUrl: (url) => set({ logoUrl: url }),
+      setBranding: (systemName, logoUrl) => set({ systemName, logoUrl }),
+      resetBranding: () => set(defaultBranding),
+    }),
+    {
+      name: "orion-branding",
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);
