@@ -315,7 +315,7 @@ model WorkflowState {
         <div className="bg-gradient-to-r from-green-600/20 to-emerald-600/20 border border-green-500/30 rounded-xl p-6">
           <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
             <CheckCircle2 className="w-6 h-6 text-green-400" />
-            Fases Implementadas (Concluido em 23/01/2026)
+            Fases Implementadas
           </h3>
           <div className="space-y-3">
             <div className="flex items-center gap-3">
@@ -343,23 +343,49 @@ model WorkflowState {
               <span className="text-amber-300">Refatoracao Frontend + Migracao localStorage</span>
               <span className="text-amber-400 text-xs">(Em progresso)</span>
             </div>
+            <div className="flex items-center gap-3">
+              <span className="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">FASE 6</span>
+              <span className="text-green-300 line-through">Design System ORION - Tokens, CSS e Documentacao</span>
+              <CheckCircle2 className="w-4 h-4 text-green-400" />
+            </div>
           </div>
 
-          <div className="mt-6 p-4 bg-zinc-900/50 rounded-lg">
-            <h4 className="text-sm font-semibold text-white mb-2">Arquivos Criados:</h4>
+          {/* Fase 6 - Design System Details */}
+          <div className="mt-6 p-4 bg-cyan-950/30 border border-cyan-800/50 rounded-lg">
+            <h4 className="text-sm font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+              🎨 Fase 6: Design System ORION (23/01/2026)
+            </h4>
+            <p className="text-zinc-400 text-sm mb-3">
+              Sistema de design completo com paleta ORION (azul profundo + vermelho acento),
+              glassmorphism, motion funcional e documentacao visual interativa.
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs font-mono">
-              <div className="text-cyan-400">prisma/schema.prisma</div>
-              <div className="text-cyan-400">lib/db/prisma.ts</div>
-              <div className="text-cyan-400">lib/inngest/client.ts</div>
-              <div className="text-cyan-400">lib/inngest/functions/video-pipeline.ts</div>
-              <div className="text-cyan-400">lib/agents/research-agent.ts</div>
-              <div className="text-cyan-400">lib/agents/script-agent.ts</div>
-              <div className="text-cyan-400">lib/services/research.service.ts</div>
-              <div className="text-cyan-400">lib/services/script.service.ts</div>
-              <div className="text-cyan-400">lib/services/notification.service.ts</div>
-              <div className="text-cyan-400">app/api/inngest/route.ts</div>
-              <div className="text-cyan-400">app/api/approve/route.ts</div>
-              <div className="text-cyan-400">app/approve/[token]/page.tsx</div>
+              <div className="text-cyan-400">lib/design-tokens.ts</div>
+              <div className="text-cyan-400">app/globals.css (atualizado)</div>
+              <div className="text-cyan-400">tailwind.config.ts (atualizado)</div>
+              <div className="text-cyan-400">components/design-system/ColorSwatch.tsx</div>
+              <div className="text-cyan-400">components/design-system/GradientCard.tsx</div>
+              <div className="text-cyan-400">components/design-system/TypographySample.tsx</div>
+              <div className="text-cyan-400">components/design-system/ComponentPreview.tsx</div>
+              <div className="text-cyan-400">app/documentation/design-system/page.tsx</div>
+            </div>
+          </div>
+
+          <div className="mt-4 p-4 bg-zinc-900/50 rounded-lg">
+            <h4 className="text-sm font-semibold text-white mb-2">Arquivos Anteriores (Fases 1-4):</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs font-mono">
+              <div className="text-zinc-500">prisma/schema.prisma</div>
+              <div className="text-zinc-500">lib/db/prisma.ts</div>
+              <div className="text-zinc-500">lib/inngest/client.ts</div>
+              <div className="text-zinc-500">lib/inngest/functions/video-pipeline.ts</div>
+              <div className="text-zinc-500">lib/agents/research-agent.ts</div>
+              <div className="text-zinc-500">lib/agents/script-agent.ts</div>
+              <div className="text-zinc-500">lib/services/research.service.ts</div>
+              <div className="text-zinc-500">lib/services/script.service.ts</div>
+              <div className="text-zinc-500">lib/services/notification.service.ts</div>
+              <div className="text-zinc-500">app/api/inngest/route.ts</div>
+              <div className="text-zinc-500">app/api/approve/route.ts</div>
+              <div className="text-zinc-500">app/approve/[token]/page.tsx</div>
             </div>
           </div>
         </div>
@@ -369,7 +395,7 @@ model WorkflowState {
       <AnimatedSection delay={0.6}>
         <div className="bg-zinc-800/30 rounded-xl p-4 text-center">
           <p className="text-zinc-500 text-sm">
-            Documento gerado em: 23/01/2026 | Implementacao concluida: 23/01/2026
+            Documento atualizado em: 23/01/2026 | Ultima fase: Design System ORION
           </p>
           <p className="text-zinc-600 text-xs mt-1">
             Participantes: Claude (Anthropic), Gemini (Google), ChatGPT (OpenAI) | Deploy: Vercel Pro
