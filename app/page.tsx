@@ -3,19 +3,27 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  Rocket,
-  Zap,
-  CheckCircle2,
-  XCircle,
-  Loader2,
-  AlertTriangle,
+  Activity,
+  AlertCircle,
   ArrowRight,
-  Sparkles,
+  CheckCircle2,
+  Clock,
   Film,
-  Brain,
-  RefreshCw,
-  Settings,
+  Loader2,
   Play,
+  Plus,
+  RefreshCw,
+  Rocket,
+  Settings,
+  TrendingUp,
+  Video,
+  Wifi,
+  WifiOff,
+  XCircle,
+  Zap,
+  BarChart3,
+  Eye,
+  Calendar,
 } from 'lucide-react';
 import { useUIStore, useBrandingStore } from '@/lib/store';
 
@@ -23,424 +31,440 @@ interface APIStatus {
   name: string;
   key: string;
   status: 'checking' | 'online' | 'offline' | 'error';
-  responseTime?: number;
-  error?: string;
-  testResult?: {
-    success: boolean;
-    message: string;
-    details?: string;
-    responseTime: number;
-  };
-  isTesting?: boolean;
+  icon: string;
+  category: 'ai' | 'media' | 'output' | 'infra';
 }
 
-const API_LIST = [
-  { name: 'GEMINI', key: 'gemini', icon: '🧠' },
-  { name: 'OPENAI', key: 'openai', icon: '🤖' },
-  { name: 'ANTHROPIC', key: 'anthropic', icon: '🔮' },
-  { name: 'YOUTUBE', key: 'youtube', icon: '📺' },
-  { name: 'PEXELS', key: 'pexels', icon: '📷' },
-  { name: 'PIXABAY', key: 'pixabay', icon: '🖼️' },
-  { name: 'ELEVENLABS', key: 'elevenlabs', icon: '🎤' },
-  { name: 'TAVILY', key: 'tavily', icon: '🔍' },
-  { name: 'JSON2VIDEO', key: 'json2video', icon: '🎬' },
-  { name: 'GITHUB', key: 'github', icon: '🐙' },
-  { name: 'VERCEL', key: 'vercel', icon: '▲' },
+interface SystemHealth {
+  overall: 'healthy' | 'degraded' | 'critical';
+  onlineAPIs: number;
+  totalAPIs: number;
+  lastCheck: Date;
+}
+
+const API_LIST: Omit<APIStatus, 'status'>[] = [
+  { name: 'Gemini', key: 'gemini', icon: '🧠', category: 'ai' },
+  { name: 'OpenAI', key: 'openai', icon: '🤖', category: 'ai' },
+  { name: 'Anthropic', key: 'anthropic', icon: '🔮', category: 'ai' },
+  { name: 'YouTube', key: 'youtube', icon: '📺', category: 'output' },
+  { name: 'Pexels', key: 'pexels', icon: '📷', category: 'media' },
+  { name: 'Pixabay', key: 'pixabay', icon: '🖼️', category: 'media' },
+  { name: 'ElevenLabs', key: 'elevenlabs', icon: '🎤', category: 'media' },
+  { name: 'Tavily', key: 'tavily', icon: '🔍', category: 'ai' },
+  { name: 'JSON2Video', key: 'json2video', icon: '🎬', category: 'output' },
+  { name: 'GitHub', key: 'github', icon: '🐙', category: 'infra' },
+  { name: 'Vercel', key: 'vercel', icon: '▲', category: 'infra' },
 ];
 
-export default function HomePage() {
+export default function MissionControlPage() {
   const router = useRouter();
   const { openApiKeyModal } = useUIStore();
   const { systemName } = useBrandingStore();
-  const [bootStage, setBootStage] = useState<'initializing' | 'checking' | 'complete'>('initializing');
+
+  const [isLoading, setIsLoading] = useState(true);
   const [apiStatuses, setApiStatuses] = useState<APIStatus[]>([]);
-  const [currentCheckingIndex, setCurrentCheckingIndex] = useState(0);
-  const [systemReady, setSystemReady] = useState(false);
+  const [systemHealth, setSystemHealth] = useState<SystemHealth>({
+    overall: 'healthy',
+    onlineAPIs: 0,
+    totalAPIs: API_LIST.length,
+    lastCheck: new Date(),
+  });
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
-    startBootSequence();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    checkSystemStatus();
   }, []);
 
-  const startBootSequence = async () => {
-    // Stage 1: Initializing
-    setBootStage('initializing');
-    await new Promise(resolve => setTimeout(resolve, 1500));
+  const checkSystemStatus = async () => {
+    setIsLoading(true);
 
-    // Stage 2: Checking APIs
-    setBootStage('checking');
-    await checkAPIs();
-
-    // Stage 3: Complete
-    setBootStage('complete');
-    setSystemReady(true);
-  };
-
-  const checkAPIs = async () => {
     const statuses: APIStatus[] = API_LIST.map(api => ({
-      name: api.name,
-      key: api.key,
+      ...api,
       status: 'checking' as const,
     }));
     setApiStatuses(statuses);
 
     try {
-      const startTime = Date.now();
       const response = await fetch('/api/status');
       const data = await response.json();
-      const endTime = Date.now();
 
-      const updatedStatuses: APIStatus[] = API_LIST.map((api) => {
-        const isOnline = data[api.key] === true;
-        const status: 'online' | 'offline' = isOnline ? 'online' : 'offline';
-        return {
-          name: api.name,
-          key: api.key,
-          status,
-          responseTime: isOnline ? endTime - startTime + Math.random() * 200 : undefined,
-        };
+      const updatedStatuses: APIStatus[] = API_LIST.map((api) => ({
+        ...api,
+        status: data[api.key] === true ? 'online' : 'offline',
+      }));
+
+      setApiStatuses(updatedStatuses);
+
+      const onlineCount = updatedStatuses.filter(s => s.status === 'online').length;
+      const healthStatus: 'healthy' | 'degraded' | 'critical' =
+        onlineCount === API_LIST.length ? 'healthy' :
+        onlineCount >= API_LIST.length * 0.5 ? 'degraded' : 'critical';
+
+      setSystemHealth({
+        overall: healthStatus,
+        onlineAPIs: onlineCount,
+        totalAPIs: API_LIST.length,
+        lastCheck: new Date(),
       });
-
-      // Animate checking one by one
-      for (let i = 0; i < updatedStatuses.length; i++) {
-        setCurrentCheckingIndex(i);
-        setApiStatuses(prev => {
-          const newStatuses = [...prev];
-          newStatuses[i] = updatedStatuses[i];
-          return newStatuses;
-        });
-        await new Promise(resolve => setTimeout(resolve, 300));
-      }
     } catch {
       const errorStatuses: APIStatus[] = API_LIST.map(api => ({
-        name: api.name,
-        key: api.key,
+        ...api,
         status: 'error' as const,
-        error: 'Failed to check API status',
       }));
       setApiStatuses(errorStatuses);
-    }
-  };
-
-  const recheckAPIs = () => {
-    setBootStage('checking');
-    setSystemReady(false);
-    setCurrentCheckingIndex(0);
-    checkAPIs().then(() => {
-      setBootStage('complete');
-      setSystemReady(true);
-    });
-  };
-
-  const testAPIConnection = async (apiKey: string) => {
-    // Marcar como testando
-    setApiStatuses(prev => prev.map(api =>
-      api.key === apiKey ? { ...api, isTesting: true, testResult: undefined } : api
-    ));
-
-    try {
-      const response = await fetch('/api/test-connection', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ provider: apiKey })
+      setSystemHealth({
+        overall: 'critical',
+        onlineAPIs: 0,
+        totalAPIs: API_LIST.length,
+        lastCheck: new Date(),
       });
-
-      const result = await response.json();
-
-      setApiStatuses(prev => prev.map(api =>
-        api.key === apiKey ? {
-          ...api,
-          isTesting: false,
-          testResult: {
-            success: result.success,
-            message: result.message,
-            details: result.details,
-            responseTime: result.responseTime
-          }
-        } : api
-      ));
-    } catch {
-      setApiStatuses(prev => prev.map(api =>
-        api.key === apiKey ? {
-          ...api,
-          isTesting: false,
-          testResult: {
-            success: false,
-            message: 'Erro ao testar conexão',
-            responseTime: 0
-          }
-        } : api
-      ));
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const onlineCount = apiStatuses.filter(api => api.status === 'online').length;
-  const offlineCount = apiStatuses.filter(api => api.status === 'offline').length;
-  const errorCount = apiStatuses.filter(api => api.status === 'error').length;
-  const totalCount = API_LIST.length;
+  const refreshStatus = async () => {
+    setIsRefreshing(true);
+    await checkSystemStatus();
+    setIsRefreshing(false);
+  };
+
+  const getHealthColor = (health: string) => {
+    switch (health) {
+      case 'healthy': return 'text-success';
+      case 'degraded': return 'text-warning';
+      case 'critical': return 'text-error';
+      default: return 'text-foreground-muted';
+    }
+  };
+
+  const getHealthBg = (health: string) => {
+    switch (health) {
+      case 'healthy': return 'bg-success/10 border-success/30';
+      case 'degraded': return 'bg-warning/10 border-warning/30';
+      case 'critical': return 'bg-error/10 border-error/30';
+      default: return 'bg-layer-2 border-border-subtle';
+    }
+  };
+
+  const categorizedAPIs = {
+    ai: apiStatuses.filter(a => a.category === 'ai'),
+    media: apiStatuses.filter(a => a.category === 'media'),
+    output: apiStatuses.filter(a => a.category === 'output'),
+    infra: apiStatuses.filter(a => a.category === 'infra'),
+  };
 
   return (
-    <div className="min-h-full bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-3 mb-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center animate-pulse">
-              <Rocket className="w-8 h-8 text-white" />
+    <div className="min-h-full">
+      {/* Header */}
+      <header className="mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-xl bg-gradient-cyan-blue flex items-center justify-center shadow-glow-sm">
+                <Rocket className="w-5 h-5 text-white" />
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
+                {systemName}
+              </h1>
             </div>
+            <p className="text-foreground-muted">
+              Mission Control — Centro de Comando
+            </p>
           </div>
-          <h1 className="text-5xl font-bold mb-3 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-            {systemName}
-          </h1>
-          <p className="text-xl text-zinc-400">Produção Automática de Vídeos com IA</p>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={refreshStatus}
+              disabled={isRefreshing}
+              className="btn-secondary btn-sm"
+            >
+              <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+              Atualizar
+            </button>
+            <button
+              onClick={() => router.push('/workflow')}
+              className="btn-primary"
+            >
+              <Plus className="w-4 h-4" />
+              Nova Produção
+            </button>
+          </div>
         </div>
+      </header>
 
-        {/* Boot Sequence */}
-        {bootStage === 'initializing' && (
-          <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-12 text-center backdrop-blur-sm">
-            <Loader2 className="w-16 h-16 text-indigo-500 animate-spin mx-auto mb-6" />
-            <h2 className="text-2xl font-bold text-white mb-2">Inicializando Sistemas...</h2>
-            <p className="text-zinc-400">Preparando motores para decolagem 🚀</p>
-          </div>
-        )}
-
-        {/* API Status Grid */}
-        {bootStage !== 'initializing' && (
-          <div className="space-y-6">
-            {/* Status Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="bg-gradient-to-br from-green-900/20 to-emerald-900/20 border border-green-500/30 rounded-xl p-6">
-                <div className="flex items-center gap-3 mb-2">
-                  <CheckCircle2 className="w-6 h-6 text-green-400" />
-                  <h3 className="text-sm font-medium text-green-400">ONLINE</h3>
-                </div>
-                <p className="text-4xl font-bold text-white">{onlineCount}</p>
-                <p className="text-sm text-zinc-400 mt-1">APIs conectadas</p>
+      {/* Main Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Column - System Health + APIs */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* System Health Card */}
+          <div className={`card p-6 border ${getHealthBg(systemHealth.overall)}`}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className={`w-3 h-3 rounded-full ${
+                  systemHealth.overall === 'healthy' ? 'bg-success status-dot-pulse' :
+                  systemHealth.overall === 'degraded' ? 'bg-warning' : 'bg-error'
+                }`} />
+                <h2 className="text-lg font-semibold text-foreground">
+                  Status do Sistema
+                </h2>
               </div>
-
-              <div className="bg-gradient-to-br from-red-900/20 to-orange-900/20 border border-red-500/30 rounded-xl p-6">
-                <div className="flex items-center gap-3 mb-2">
-                  <XCircle className="w-6 h-6 text-red-400" />
-                  <h3 className="text-sm font-medium text-red-400">OFFLINE</h3>
-                </div>
-                <p className="text-4xl font-bold text-white">{offlineCount + errorCount}</p>
-                <p className="text-sm text-zinc-400 mt-1">APIs desconectadas</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-indigo-900/20 to-purple-900/20 border border-indigo-500/30 rounded-xl p-6">
-                <div className="flex items-center gap-3 mb-2">
-                  <Zap className="w-6 h-6 text-indigo-400" />
-                  <h3 className="text-sm font-medium text-indigo-400">SISTEMA</h3>
-                </div>
-                <p className="text-4xl font-bold text-white">
-                  {Math.round((onlineCount / totalCount) * 100)}%
-                </p>
-                <p className="text-sm text-zinc-400 mt-1">Operacional</p>
-              </div>
+              <span className={`badge ${
+                systemHealth.overall === 'healthy' ? 'badge-success' :
+                systemHealth.overall === 'degraded' ? 'badge-warning' : 'badge-error'
+              }`}>
+                {systemHealth.overall === 'healthy' ? 'Operacional' :
+                 systemHealth.overall === 'degraded' ? 'Degradado' : 'Crítico'}
+              </span>
             </div>
 
-            {/* API Connection Status */}
-            <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-8 backdrop-blur-sm">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-white flex items-center gap-3">
-                  <Rocket className="w-6 h-6 text-indigo-400" />
-                  {bootStage === 'checking' ? 'Ligando Turbinas...' : 'Status das Conexões'}
-                </h2>
-                <button
-                  onClick={recheckAPIs}
-                  disabled={bootStage === 'checking'}
-                  className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <RefreshCw className={`w-4 h-4 ${bootStage === 'checking' ? 'animate-spin' : ''}`} />
-                  Verificar Novamente
-                </button>
+            {isLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="w-8 h-8 text-cyan-500 animate-spin" />
               </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {apiStatuses.map((api, index) => (
-                  <div
-                    key={api.key}
-                    className={`
-                      border rounded-xl p-4 transition-all duration-300
-                      ${api.status === 'online'
-                        ? 'bg-green-900/10 border-green-500/30'
-                        : api.status === 'offline'
-                        ? 'bg-red-900/10 border-red-500/30'
-                        : api.status === 'error'
-                        ? 'bg-orange-900/10 border-orange-500/30'
-                        : 'bg-zinc-800/50 border-zinc-700'
-                      }
-                      ${bootStage === 'checking' && index === currentCheckingIndex ? 'ring-2 ring-indigo-500' : ''}
-                    `}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl">{API_LIST[index].icon}</span>
-                        <span className="font-medium text-white">{api.name}</span>
-                      </div>
-                      {api.status === 'checking' && (
-                        <Loader2 className="w-4 h-4 text-indigo-400 animate-spin" />
-                      )}
-                      {api.status === 'online' && (
-                        <CheckCircle2 className="w-5 h-5 text-green-400" />
-                      )}
-                      {api.status === 'offline' && (
-                        <XCircle className="w-5 h-5 text-red-400" />
-                      )}
-                      {api.status === 'error' && (
-                        <AlertTriangle className="w-5 h-5 text-orange-400" />
-                      )}
-                    </div>
-
-                    <div className="flex items-center justify-between text-sm">
-                      <span
-                        className={`
-                          font-medium
-                          ${api.status === 'online' ? 'text-green-400' : ''}
-                          ${api.status === 'offline' ? 'text-red-400' : ''}
-                          ${api.status === 'error' ? 'text-orange-400' : ''}
-                          ${api.status === 'checking' ? 'text-zinc-400' : ''}
-                        `}
-                      >
-                        {api.status === 'checking' && 'Verificando...'}
-                        {api.status === 'online' && 'Online'}
-                        {api.status === 'offline' && 'Offline'}
-                        {api.status === 'error' && 'Erro'}
-                      </span>
-                      {api.responseTime && (
-                        <span className="text-xs text-zinc-500">{Math.round(api.responseTime)}ms</span>
-                      )}
-                    </div>
-
-                    {api.status === 'offline' && (
-                      <button
-                        onClick={openApiKeyModal}
-                        className="mt-3 w-full px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-xs text-zinc-300 rounded transition-colors"
-                      >
-                        Configurar
-                      </button>
-                    )}
-
-                    {/* Botão de Micro Teste para APIs Online */}
-                    {api.status === 'online' && (
-                      <div className="mt-3 space-y-2">
-                        <button
-                          onClick={() => testAPIConnection(api.key)}
-                          disabled={api.isTesting}
-                          className="w-full px-3 py-2 bg-indigo-600/20 hover:bg-indigo-600/40 border border-indigo-500/30 text-indigo-300 text-xs rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-                        >
-                          {api.isTesting ? (
-                            <>
-                              <Loader2 className="w-3 h-3 animate-spin" />
-                              Testando...
-                            </>
-                          ) : (
-                            <>
-                              <Play className="w-3 h-3" />
-                              Micro Teste
-                            </>
-                          )}
-                        </button>
-
-                        {/* Resultado do Teste */}
-                        {api.testResult && (
-                          <div className={`p-2 rounded-lg text-xs ${
-                            api.testResult.success
-                              ? 'bg-green-900/20 border border-green-500/30'
-                              : 'bg-red-900/20 border border-red-500/30'
-                          }`}>
-                            <div className="flex items-center gap-1">
-                              {api.testResult.success ? (
-                                <CheckCircle2 className="w-3 h-3 text-green-400" />
-                              ) : (
-                                <XCircle className="w-3 h-3 text-red-400" />
-                              )}
-                              <span className={api.testResult.success ? 'text-green-300' : 'text-red-300'}>
-                                {api.testResult.message}
-                              </span>
-                            </div>
-                            {api.testResult.details && (
-                              <p className="text-zinc-400 mt-1 pl-4">{api.testResult.details}</p>
-                            )}
-                            <p className="text-zinc-500 mt-1 pl-4">
-                              Tempo: {api.testResult.responseTime}ms
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    )}
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="text-center p-4 bg-layer-1 rounded-xl">
+                  <div className="text-3xl font-bold text-foreground">
+                    {systemHealth.onlineAPIs}
                   </div>
+                  <div className="text-xs text-foreground-muted mt-1">APIs Online</div>
+                </div>
+                <div className="text-center p-4 bg-layer-1 rounded-xl">
+                  <div className="text-3xl font-bold text-foreground">
+                    {systemHealth.totalAPIs - systemHealth.onlineAPIs}
+                  </div>
+                  <div className="text-xs text-foreground-muted mt-1">APIs Offline</div>
+                </div>
+                <div className="text-center p-4 bg-layer-1 rounded-xl">
+                  <div className="text-3xl font-bold text-foreground">
+                    {Math.round((systemHealth.onlineAPIs / systemHealth.totalAPIs) * 100)}%
+                  </div>
+                  <div className="text-xs text-foreground-muted mt-1">Disponibilidade</div>
+                </div>
+                <div className="text-center p-4 bg-layer-1 rounded-xl">
+                  <div className="text-sm font-medium text-foreground">
+                    {systemHealth.lastCheck.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                  </div>
+                  <div className="text-xs text-foreground-muted mt-1">Última Verificação</div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* APIs by Category */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* AI Providers */}
+            <div className="card p-4">
+              <div className="flex items-center gap-2 mb-4">
+                <Activity className="w-4 h-4 text-violet-400" />
+                <h3 className="font-medium text-foreground">Provedores IA</h3>
+              </div>
+              <div className="space-y-2">
+                {categorizedAPIs.ai.map(api => (
+                  <APIStatusRow key={api.key} api={api} onConfigure={openApiKeyModal} />
                 ))}
               </div>
             </div>
 
-            {/* Ready State */}
-            {systemReady && (
-              <div className="bg-gradient-to-br from-indigo-900/30 to-purple-900/30 border-2 border-indigo-500/50 rounded-2xl p-8 text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <Sparkles className="w-16 h-16 text-yellow-400 mx-auto mb-4 animate-pulse" />
-                <h2 className="text-3xl font-bold text-white mb-3">
-                  {onlineCount === totalCount
-                    ? '🚀 SISTEMA PRONTO PARA DECOLAGEM!'
-                    : '⚠️ SISTEMA OPERACIONAL (MODO DEGRADADO)'}
-                </h2>
-                <p className="text-zinc-300 mb-6">
-                  {onlineCount === totalCount
-                    ? 'Todas as turbinas ligadas! Vamos criar conteúdo incrível.'
-                    : `${onlineCount} de ${totalCount} APIs conectadas. Configure as APIs offline para ter acesso total.`}
-                </p>
-
-                <div className="flex flex-wrap gap-4 justify-center">
-                  <button
-                    onClick={() => router.push('/workflow')}
-                    className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold rounded-xl transition-all flex items-center gap-3 shadow-lg shadow-indigo-500/50"
-                  >
-                    <Film className="w-5 h-5" />
-                    Iniciar Produção
-                    <ArrowRight className="w-5 h-5" />
-                  </button>
-
-                  {offlineCount > 0 && (
-                    <button
-                      onClick={openApiKeyModal}
-                      className="px-8 py-4 bg-zinc-800 hover:bg-zinc-700 text-white font-bold rounded-xl transition-all flex items-center gap-3"
-                    >
-                      <Settings className="w-5 h-5" />
-                      Configurar APIs
-                    </button>
-                  )}
-                </div>
+            {/* Media */}
+            <div className="card p-4">
+              <div className="flex items-center gap-2 mb-4">
+                <Film className="w-4 h-4 text-cyan-400" />
+                <h3 className="font-medium text-foreground">Mídia</h3>
               </div>
-            )}
-
-            {/* Features Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
-                <Brain className="w-10 h-10 text-purple-400 mb-3" />
-                <h3 className="font-bold text-white mb-2">IA Generativa</h3>
-                <p className="text-sm text-zinc-400">Roteiros criados automaticamente por múltiplas IAs</p>
+              <div className="space-y-2">
+                {categorizedAPIs.media.map(api => (
+                  <APIStatusRow key={api.key} api={api} onConfigure={openApiKeyModal} />
+                ))}
               </div>
+            </div>
 
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
-                <Film className="w-10 h-10 text-indigo-400 mb-3" />
-                <h3 className="font-bold text-white mb-2">Produção Automática</h3>
-                <p className="text-sm text-zinc-400">Vídeos prontos em minutos sem edição manual</p>
+            {/* Output */}
+            <div className="card p-4">
+              <div className="flex items-center gap-2 mb-4">
+                <Video className="w-4 h-4 text-rose-400" />
+                <h3 className="font-medium text-foreground">Output</h3>
               </div>
-
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
-                <Sparkles className="w-10 h-10 text-yellow-400 mb-3" />
-                <h3 className="font-bold text-white mb-2">Otimização SEO</h3>
-                <p className="text-sm text-zinc-400">Títulos, tags e descrições otimizadas</p>
+              <div className="space-y-2">
+                {categorizedAPIs.output.map(api => (
+                  <APIStatusRow key={api.key} api={api} onConfigure={openApiKeyModal} />
+                ))}
               </div>
+            </div>
 
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
-                <Zap className="w-10 h-10 text-green-400 mb-3" />
-                <h3 className="font-bold text-white mb-2">Modo Rápido</h3>
-                <p className="text-sm text-zinc-400">Workflow completo ou modo assistido</p>
+            {/* Infrastructure */}
+            <div className="card p-4">
+              <div className="flex items-center gap-2 mb-4">
+                <Zap className="w-4 h-4 text-amber-400" />
+                <h3 className="font-medium text-foreground">Infraestrutura</h3>
+              </div>
+              <div className="space-y-2">
+                {categorizedAPIs.infra.map(api => (
+                  <APIStatusRow key={api.key} api={api} onConfigure={openApiKeyModal} />
+                ))}
               </div>
             </div>
           </div>
-        )}
+        </div>
+
+        {/* Right Column - Actions + Recent */}
+        <div className="space-y-6">
+          {/* Quick Actions */}
+          <div className="card p-6">
+            <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+              <Zap className="w-5 h-5 text-cyan-400" />
+              Ações Rápidas
+            </h2>
+            <div className="space-y-3">
+              <button
+                onClick={() => router.push('/workflow')}
+                className="w-full btn-primary justify-start"
+              >
+                <Play className="w-4 h-4" />
+                Iniciar Nova Produção
+                <ArrowRight className="w-4 h-4 ml-auto" />
+              </button>
+
+              <button
+                onClick={openApiKeyModal}
+                className="w-full btn-secondary justify-start"
+              >
+                <Settings className="w-4 h-4" />
+                Configurar APIs
+              </button>
+
+              <button
+                onClick={() => router.push('/documentation')}
+                className="w-full btn-outline justify-start"
+              >
+                <Eye className="w-4 h-4" />
+                Ver Documentação
+              </button>
+            </div>
+          </div>
+
+          {/* Alerts */}
+          {systemHealth.overall !== 'healthy' && (
+            <div className="card p-6 border border-warning/30 bg-warning/5">
+              <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                <AlertCircle className="w-5 h-5 text-warning" />
+                Alertas
+              </h2>
+              <div className="space-y-3">
+                {apiStatuses.filter(a => a.status === 'offline').map(api => (
+                  <div key={api.key} className="flex items-center justify-between p-3 bg-layer-1 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <span>{api.icon}</span>
+                      <span className="text-sm text-foreground">{api.name}</span>
+                    </div>
+                    <span className="badge-error text-xs">Offline</span>
+                  </div>
+                ))}
+                <button
+                  onClick={openApiKeyModal}
+                  className="w-full btn-outline btn-sm mt-2"
+                >
+                  Configurar APIs Offline
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Recent Activity Placeholder */}
+          <div className="card p-6">
+            <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+              <Clock className="w-5 h-5 text-foreground-muted" />
+              Atividade Recente
+            </h2>
+            <div className="text-center py-8 text-foreground-muted">
+              <Calendar className="w-12 h-12 mx-auto mb-3 opacity-30" />
+              <p className="text-sm">Nenhuma produção recente</p>
+              <button
+                onClick={() => router.push('/workflow')}
+                className="btn-ghost btn-sm mt-4"
+              >
+                Criar primeira produção
+              </button>
+            </div>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="card p-6">
+            <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+              <BarChart3 className="w-5 h-5 text-foreground-muted" />
+              Estatísticas
+            </h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-foreground">0</div>
+                <div className="text-xs text-foreground-muted">Vídeos Criados</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-foreground">0</div>
+                <div className="text-xs text-foreground-muted">Em Progresso</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* CTA Banner */}
+      {systemHealth.overall === 'healthy' && !isLoading && (
+        <div className="mt-8 card-glass p-6 border border-cyan-500/30 bg-gradient-to-r from-cyan-950/30 to-blue-950/30">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-cyan-blue flex items-center justify-center shadow-glow-sm">
+                <CheckCircle2 className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-foreground">
+                  Sistema 100% Operacional
+                </h3>
+                <p className="text-sm text-foreground-muted">
+                  Todas as APIs conectadas. Pronto para produção de vídeos.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => router.push('/workflow')}
+              className="btn-primary btn-lg whitespace-nowrap"
+            >
+              <Rocket className="w-5 h-5" />
+              Iniciar Produção
+              <ArrowRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// API Status Row Component
+function APIStatusRow({ api, onConfigure }: { api: APIStatus; onConfigure: () => void }) {
+  return (
+    <div className="flex items-center justify-between p-2 rounded-lg hover:bg-layer-1 transition-colors">
+      <div className="flex items-center gap-2">
+        <span className="text-base">{api.icon}</span>
+        <span className="text-sm text-foreground">{api.name}</span>
+      </div>
+      {api.status === 'checking' ? (
+        <Loader2 className="w-4 h-4 text-cyan-400 animate-spin" />
+      ) : api.status === 'online' ? (
+        <div className="flex items-center gap-1.5">
+          <Wifi className="w-3.5 h-3.5 text-success" />
+          <span className="text-xs text-success">Online</span>
+        </div>
+      ) : (
+        <button
+          onClick={onConfigure}
+          className="flex items-center gap-1.5 text-xs text-error hover:text-error/80 transition-colors"
+        >
+          <WifiOff className="w-3.5 h-3.5" />
+          Offline
+        </button>
+      )}
     </div>
   );
 }
