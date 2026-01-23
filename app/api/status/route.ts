@@ -13,5 +13,7 @@ export async function GET() {
     elevenlabs: !!process.env.ELEVENLABS_API_KEY,
     tavily: !!process.env.TAVILY_API_KEY,
     json2video: !!process.env.JSON2VIDEO_API_KEY,
+    github: !!process.env.GITHUB_TOKEN,
+    vercel: !!process.env.VERCEL_TOKEN && !!process.env.VERCEL_PROJECT_ID,
   });
 }

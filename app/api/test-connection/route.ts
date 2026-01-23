@@ -31,6 +31,8 @@ export async function POST(req: Request) {
       elevenlabs: process.env.ELEVENLABS_API_KEY,
       tavily: process.env.TAVILY_API_KEY,
       json2video: process.env.JSON2VIDEO_API_KEY,
+      github: process.env.GITHUB_TOKEN,
+      vercel: process.env.VERCEL_TOKEN,
     };
 
     const key = keyMap[provider];
@@ -139,6 +141,33 @@ export async function POST(req: Request) {
           });
           result.success = j2vRes.status !== 401 && j2vRes.status !== 403;
           result.message = result.success ? 'JSON2Video respondendo!' : 'Falha na autenticação';
+          break;
+
+        case 'github':
+          const githubRes = await fetch('https://api.github.com/user', {
+            headers: {
+              'Authorization': `token ${key}`,
+              'Accept': 'application/vnd.github.v3+json'
+            }
+          });
+          result.success = githubRes.ok;
+          result.message = githubRes.ok ? 'GitHub conectado!' : 'Falha na autenticação';
+          if (githubRes.ok) {
+            const data = await githubRes.json();
+            result.details = `Usuário: ${data.login}`;
+          }
+          break;
+
+        case 'vercel':
+          const vercelRes = await fetch('https://api.vercel.com/v9/projects', {
+            headers: { 'Authorization': `Bearer ${key}` }
+          });
+          result.success = vercelRes.ok;
+          result.message = vercelRes.ok ? 'Vercel conectado!' : 'Falha na autenticação';
+          if (vercelRes.ok) {
+            const data = await vercelRes.json();
+            result.details = `${data.projects?.length || 0} projetos encontrados`;
+          }
           break;
 
         default:

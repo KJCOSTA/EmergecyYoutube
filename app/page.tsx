@@ -44,6 +44,8 @@ const API_LIST = [
   { name: 'ELEVENLABS', key: 'elevenlabs', icon: '🎤' },
   { name: 'TAVILY', key: 'tavily', icon: '🔍' },
   { name: 'JSON2VIDEO', key: 'json2video', icon: '🎬' },
+  { name: 'GITHUB', key: 'github', icon: '🐙' },
+  { name: 'VERCEL', key: 'vercel', icon: '▲' },
 ];
 
 export default function HomePage() {
