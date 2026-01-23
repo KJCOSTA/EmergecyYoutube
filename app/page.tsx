@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
   Activity,
-  AlertCircle,
   ArrowRight,
   CheckCircle2,
   Clock,

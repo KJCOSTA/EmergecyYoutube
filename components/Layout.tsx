@@ -17,7 +17,6 @@ import {
   Settings,
   ChevronLeft,
   LogOut,
-  User,
   Palette,
 } from "lucide-react";
 import GuidelinesModal from "./GuidelinesModal";

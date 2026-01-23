@@ -87,6 +87,7 @@ export default function WorkflowPage() {
       resetWorkflow();
       setShowResetDialog(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]); // Removido resetWorkflow, context, etc pra evitar loops
 
   // Verifica se um step foi realmente completado baseado nos dados
