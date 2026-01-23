@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className="dark">
-      <body className="font-sans bg-[#09090b] text-white overflow-hidden">
+      <body className="font-sans bg-[#09090b] text-white">
         {/* O Layout aqui garante que o Menu Lateral apareça sempre */}
         <Layout>
           {children}

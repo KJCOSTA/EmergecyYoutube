@@ -282,7 +282,7 @@ function DocumentationContent() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-full">
       {/* Header Principal com Nome do Sistema */}
       <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 px-4 sm:px-8 py-6 sm:py-10">
         <div className="max-w-7xl mx-auto">

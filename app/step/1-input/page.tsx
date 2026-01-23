@@ -205,7 +205,7 @@ export default function InputPage() {
   };
 
   return (
-    <div className="h-full w-full overflow-y-auto p-4 sm:p-6 md:p-8 space-y-6 md:space-y-8 animate-in fade-in duration-500">
+    <div className="w-full space-y-6 md:space-y-8 animate-in fade-in duration-500">
 
       {/* Cabeçalho */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800 pb-6">
