@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
           { status: 400 }
         );
       }
-    } catch (error) {
+    } catch {
       return NextResponse.json(
         { error: 'File not found' },
         { status: 404 }

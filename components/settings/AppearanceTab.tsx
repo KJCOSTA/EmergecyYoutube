@@ -190,7 +190,7 @@ export function AppearanceTab() {
                   </h4>
                   <ul className="text-xs text-purple-200/80 space-y-1">
                     <li>• Use um serviço como Imgur, Cloudinary ou GitHub</li>
-                    <li>• Para GitHub: suba a imagem e copie o link "raw"</li>
+                    <li>• Para GitHub: suba a imagem e copie o link &quot;raw&quot;</li>
                     <li>• Tamanho recomendado: 512x512px ou maior</li>
                     <li>• Deixe em branco para usar o logo padrão</li>
                   </ul>
