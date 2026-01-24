@@ -38,6 +38,7 @@ export default function InputPage() {
   const [theme, setTheme] = useState("");
   const [channelInfo, setChannelInfo] = useState<ChannelInfo | null>(null);
   const [loadingChannel, setLoadingChannel] = useState(false);
+  const [hasFetchedChannel, setHasFetchedChannel] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Pega as chaves que você salvou no navegador
@@ -73,7 +74,10 @@ export default function InputPage() {
 
   // Carregar informações do canal
   const fetchChannelInfo = useCallback(async () => {
+    if (hasFetchedChannel) return; // Evita chamadas duplicadas
+
     setLoadingChannel(true);
+    setHasFetchedChannel(true);
     try {
       // Buscar dados reais da API do YouTube
       const headers: HeadersInit = {};
@@ -123,17 +127,19 @@ export default function InputPage() {
       });
     } catch (error) {
       console.error("Erro ao buscar info do canal:", error);
+      setHasFetchedChannel(false); // Permite tentar novamente em caso de erro
     } finally {
       setLoadingChannel(false);
     }
-  }, [localKeys.youtube_api_key, localKeys.youtube_channel_id]);
+  }, [localKeys.youtube_api_key, localKeys.youtube_channel_id, hasFetchedChannel]);
 
   // Carregar informações do canal quando conectado
   useEffect(() => {
-    if (isYoutubeConnected && !channelInfo && !loadingChannel) {
+    if (isYoutubeConnected && !channelInfo && !loadingChannel && !hasFetchedChannel) {
       fetchChannelInfo();
     }
-  }, [isYoutubeConnected, channelInfo, loadingChannel, fetchChannelInfo]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isYoutubeConnected]);
 
   // Upload de arquivo
   const handleFileSelect = useCallback((file: File) => {
