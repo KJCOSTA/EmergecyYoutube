@@ -168,8 +168,7 @@ const config: Config = {
       // BLUR
       // ========================================
       backdropBlur: {
-        xs: "2px",
-        ...tokens.radius // Re-using radius values for blur consistency
+        xs: "2px"
       },
     },
   },
