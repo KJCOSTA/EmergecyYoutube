@@ -36,7 +36,7 @@ const PROJECT_CONFIG = {
   launchDate: new Date("2025-03-15T00:00:00"),
   lastUpdate: {
     date: "23/01/2026",
-    time: "18:45",
+    time: "20:10",
     author: "Claude",
     authorType: "ai" as const,
   },

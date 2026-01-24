@@ -3,6 +3,8 @@ import "./globals.css";
 import Layout from "@/components/Layout";
 import { VercelToolbar } from "@/components/VercelToolbar";
 import { getBrandingConfig } from "@/lib/branding";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export async function generateMetadata(): Promise<Metadata> {
   const branding = await getBrandingConfig();
@@ -28,6 +30,9 @@ export default function RootLayout({
         {/* Vercel Toolbar - habilitado em TODOS os ambientes (dev, preview, production) */}
         {/* Permite menções @Claude e comentários visuais em produção */}
         <VercelToolbar />
+        {/* Vercel Analytics & Speed Insights - Monitoramento profissional */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

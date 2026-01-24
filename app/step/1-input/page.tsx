@@ -209,10 +209,10 @@ export default function InputPage() {
     <div className="w-full space-y-6 md:space-y-8 animate-in fade-in duration-500">
 
       {/* Cabeçalho */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800 pb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-subtle pb-6">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Menu de Entrada</h1>
-          <p className="text-zinc-400 mt-1 text-sm sm:text-base">Configure o contexto inicial para a produção do seu vídeo.</p>
+          <p className="text-muted mt-1 text-sm sm:text-base">Configure o contexto inicial para a produção do seu vídeo.</p>
         </div>
 
         <button
@@ -231,14 +231,14 @@ export default function InputPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
 
         {/* Card Upload - AGORA FUNCIONAL */}
-        <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4 sm:p-6 hover:border-zinc-700 transition-all group">
+        <div className="bg-layer-1 border border-subtle rounded-xl p-4 sm:p-6 hover:border-default transition-all group">
           <div className="flex items-center gap-3 mb-4 sm:mb-6">
             <div className="p-2 sm:p-2.5 bg-blue-500/10 rounded-lg group-hover:bg-blue-500/20 transition-colors">
               <Upload className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />
             </div>
             <div>
               <h3 className="font-semibold text-white text-base sm:text-lg">Upload de Métricas</h3>
-              <p className="text-xs text-zinc-500">Dados históricos do canal (CSV)</p>
+              <p className="text-xs text-muted">Dados históricos do canal (CSV)</p>
             </div>
           </div>
 
@@ -259,7 +259,7 @@ export default function InputPage() {
                   </div>
                   <div className="min-w-0">
                     <p className="font-medium text-green-400 text-sm sm:text-base truncate">{uploadedFile.name}</p>
-                    <p className="text-zinc-500 text-xs">{(uploadedFile.size / 1024).toFixed(1)} KB</p>
+                    <p className="text-muted text-xs">{(uploadedFile.size / 1024).toFixed(1)} KB</p>
                   </div>
                 </div>
                 <button
@@ -276,32 +276,32 @@ export default function InputPage() {
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
-              className={`border-2 border-dashed rounded-xl h-32 sm:h-40 flex flex-col items-center justify-center text-zinc-500 transition-all cursor-pointer ${
+              className={`border-2 border-dashed rounded-xl h-32 sm:h-40 flex flex-col items-center justify-center text-muted transition-all cursor-pointer ${
                 isDragging
                   ? 'border-blue-500 bg-blue-500/10'
-                  : 'border-zinc-800 hover:bg-zinc-800/50 hover:border-zinc-600'
+                  : 'border-subtle hover:bg-layer-2/50 hover:border-zinc-600'
               }`}
             >
-              <div className={`p-2 sm:p-3 rounded-full mb-2 sm:mb-3 shadow-inner transition-colors ${isDragging ? 'bg-blue-500/20' : 'bg-zinc-800'}`}>
-                <FileText className={`w-5 h-5 sm:w-6 sm:h-6 ${isDragging ? 'text-blue-400' : 'text-zinc-400'}`} />
+              <div className={`p-2 sm:p-3 rounded-full mb-2 sm:mb-3 shadow-inner transition-colors ${isDragging ? 'bg-blue-500/20' : 'bg-layer-2'}`}>
+                <FileText className={`w-5 h-5 sm:w-6 sm:h-6 ${isDragging ? 'text-blue-400' : 'text-muted'}`} />
               </div>
-              <p className="font-medium text-zinc-300 text-sm sm:text-base">
+              <p className="font-medium text-foreground-secondary text-sm sm:text-base">
                 {isDragging ? 'Solte o arquivo aqui' : 'Clique ou arraste o arquivo'}
               </p>
-              <p className="text-xs text-zinc-500 mt-1">Apenas arquivos CSV</p>
+              <p className="text-xs text-muted mt-1">Apenas arquivos CSV</p>
             </div>
           )}
         </div>
 
         {/* Card YouTube Sync - COM INFO DO CANAL */}
-        <div className={`border rounded-xl p-4 sm:p-6 transition-all group ${isYoutubeConnected ? 'bg-green-900/10 border-green-900/30' : 'bg-zinc-900/50 border-zinc-800 hover:border-zinc-700'}`}>
+        <div className={`border rounded-xl p-4 sm:p-6 transition-all group ${isYoutubeConnected ? 'bg-green-900/10 border-green-900/30' : 'bg-layer-1 border-subtle hover:border-default'}`}>
           <div className="flex items-center gap-3 mb-4 sm:mb-6">
             <div className={`p-2 sm:p-2.5 rounded-lg transition-colors ${isYoutubeConnected ? 'bg-green-500/20' : 'bg-red-500/10'}`}>
               <Youtube className={`w-4 h-4 sm:w-5 sm:h-5 ${isYoutubeConnected ? 'text-green-500' : 'text-red-500'}`} />
             </div>
             <div>
               <h3 className="font-semibold text-white text-base sm:text-lg">Sincronização</h3>
-              <p className="text-xs text-zinc-500">Conexão em tempo real</p>
+              <p className="text-xs text-muted">Conexão em tempo real</p>
             </div>
             {isYoutubeConnected && (
                <span className="ml-auto bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded-full font-bold flex items-center gap-1 animate-in fade-in zoom-in">
@@ -310,12 +310,12 @@ export default function InputPage() {
             )}
           </div>
 
-          <div className="bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800 rounded-xl min-h-[128px] sm:min-h-[160px] flex flex-col items-center justify-center p-4 sm:p-6 text-center relative overflow-hidden">
+          <div className="bg-gradient-to-br from-zinc-900 to-zinc-950 border border-subtle rounded-xl min-h-[128px] sm:min-h-[160px] flex flex-col items-center justify-center p-4 sm:p-6 text-center relative overflow-hidden">
             {isYoutubeConnected ? (
               loadingChannel ? (
                 <div className="z-10 flex flex-col items-center gap-3">
                   <RefreshCw className="w-6 h-6 sm:w-8 sm:h-8 text-green-500 animate-spin" />
-                  <p className="text-zinc-400 text-sm">Carregando dados do canal...</p>
+                  <p className="text-muted text-sm">Carregando dados do canal...</p>
                 </div>
               ) : channelInfo ? (
                 <div className="z-10 w-full animate-in slide-in-from-bottom-2">
@@ -337,25 +337,25 @@ export default function InputPage() {
                     </div>
                   </div>
                   <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                    <div className="bg-zinc-800/50 rounded-lg p-2 sm:p-3">
-                      <Users className="w-3 h-3 sm:w-4 sm:h-4 text-zinc-400 mx-auto mb-1" />
+                    <div className="bg-layer-2/50 rounded-lg p-2 sm:p-3">
+                      <Users className="w-3 h-3 sm:w-4 sm:h-4 text-muted mx-auto mb-1" />
                       <p className="text-white font-bold text-xs sm:text-sm">{channelInfo.subscribers}</p>
-                      <p className="text-zinc-500 text-[10px] sm:text-xs">Inscritos</p>
+                      <p className="text-muted text-[10px] sm:text-xs">Inscritos</p>
                     </div>
-                    <div className="bg-zinc-800/50 rounded-lg p-2 sm:p-3">
-                      <Video className="w-3 h-3 sm:w-4 sm:h-4 text-zinc-400 mx-auto mb-1" />
+                    <div className="bg-layer-2/50 rounded-lg p-2 sm:p-3">
+                      <Video className="w-3 h-3 sm:w-4 sm:h-4 text-muted mx-auto mb-1" />
                       <p className="text-white font-bold text-xs sm:text-sm">{channelInfo.videos}</p>
-                      <p className="text-zinc-500 text-[10px] sm:text-xs">Vídeos</p>
+                      <p className="text-muted text-[10px] sm:text-xs">Vídeos</p>
                     </div>
-                    <div className="bg-zinc-800/50 rounded-lg p-2 sm:p-3">
-                      <Eye className="w-3 h-3 sm:w-4 sm:h-4 text-zinc-400 mx-auto mb-1" />
+                    <div className="bg-layer-2/50 rounded-lg p-2 sm:p-3">
+                      <Eye className="w-3 h-3 sm:w-4 sm:h-4 text-muted mx-auto mb-1" />
                       <p className="text-white font-bold text-xs sm:text-sm">{channelInfo.views}</p>
-                      <p className="text-zinc-500 text-[10px] sm:text-xs">Views</p>
+                      <p className="text-muted text-[10px] sm:text-xs">Views</p>
                     </div>
                   </div>
                   {channelInfo.channelUrl && (
-                    <div className="mt-3 pt-3 border-t border-zinc-800">
-                      <p className="text-zinc-500 text-[10px] sm:text-xs mb-1">Canal no YouTube:</p>
+                    <div className="mt-3 pt-3 border-t border-subtle">
+                      <p className="text-muted text-[10px] sm:text-xs mb-1">Canal no YouTube:</p>
                       <a
                         href={channelInfo.channelUrl}
                         target="_blank"
@@ -374,18 +374,18 @@ export default function InputPage() {
                       <CheckCircle2 className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
                    </div>
                    <p className="text-green-400 font-medium text-sm sm:text-base">Canal Sincronizado</p>
-                   <p className="text-zinc-500 text-xs">Pronto para gerar conteúdo</p>
+                   <p className="text-muted text-xs">Pronto para gerar conteúdo</p>
                 </div>
               )
             ) : (
               <div className="z-10 flex flex-col items-center gap-3">
-                <div className="flex items-center gap-2 text-zinc-300">
+                <div className="flex items-center gap-2 text-foreground-secondary">
                   <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
                   <span className="text-xs sm:text-sm font-medium">API Necessária</span>
                 </div>
                 <button
                   onClick={() => openApiKeyModal()}
-                  className="text-xs bg-zinc-800 hover:bg-zinc-700 text-white px-3 sm:px-4 py-2 rounded-md border border-zinc-700 transition-colors cursor-pointer"
+                  className="text-xs bg-layer-2 hover:bg-zinc-700 text-white px-3 sm:px-4 py-2 rounded-md border border-zinc-700 transition-colors cursor-pointer"
                 >
                   Configurar Acesso
                 </button>
@@ -396,14 +396,14 @@ export default function InputPage() {
       </div>
 
       {/* Definição de Tema */}
-      <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4 sm:p-6">
+      <div className="bg-layer-1 border border-subtle rounded-xl p-4 sm:p-6">
         <div className="flex items-center gap-3 mb-4 sm:mb-6">
           <div className="p-2 sm:p-2.5 bg-amber-500/10 rounded-lg">
             <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
           </div>
           <div>
             <h3 className="font-semibold text-white text-base sm:text-lg">Definição de Tema</h3>
-            <p className="text-xs text-zinc-500">O que vamos criar hoje?</p>
+            <p className="text-xs text-muted">O que vamos criar hoje?</p>
           </div>
         </div>
 
@@ -417,7 +417,7 @@ export default function InputPage() {
       </div>
 
       {/* Botão de Avançar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-4 border-t border-zinc-800">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-4 border-t border-subtle">
         {!canAdvance && (
           <div className="flex items-center gap-2 text-amber-400 bg-amber-500/10 px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-xs sm:text-sm order-2 sm:order-1">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
@@ -437,7 +437,7 @@ export default function InputPage() {
           className={`px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold shadow-lg flex items-center justify-center gap-2 transition-all text-sm sm:text-base order-1 sm:order-2 ${
             canAdvance
               ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-indigo-500/20 hover:shadow-indigo-500/40 cursor-pointer active:scale-95'
-              : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
+              : 'bg-layer-2 text-muted cursor-not-allowed'
           }`}
         >
           Avançar para Pesquisa

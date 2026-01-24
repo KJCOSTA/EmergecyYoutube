@@ -17,7 +17,6 @@ import {
   Settings,
   ChevronLeft,
   LogOut,
-  User,
   Palette,
 } from "lucide-react";
 import GuidelinesModal from "./GuidelinesModal";
@@ -259,15 +258,17 @@ export default function Layout({ children }: LayoutProps) {
             {!isMobile && (
               <button
                 onClick={() => setIsCollapsed(!isCollapsed)}
-                className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-text-muted hover:bg-surface-elevated hover:text-text-secondary transition-all"
+                className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-text-muted hover:bg-surface-elevated hover:text-text-primary transition-all duration-200 group border border-transparent hover:border-border-subtle"
                 title={isCollapsed ? "Expandir sidebar" : "Recolher sidebar"}
               >
-                <ChevronLeft className={cn(
-                  "w-5 h-5 transition-transform",
-                  isCollapsed && "rotate-180"
-                )} />
+                <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-surface-default group-hover:bg-cyan-500/10 transition-colors">
+                  <ChevronLeft className={cn(
+                    "w-4 h-4 transition-all duration-300 group-hover:text-cyan-400",
+                    isCollapsed && "rotate-180"
+                  )} />
+                </div>
                 {!isCollapsed && (
-                  <span className="text-xs font-medium">Recolher</span>
+                  <span className="text-sm font-medium flex-1 text-left">Recolher</span>
                 )}
               </button>
             )}
@@ -294,7 +295,16 @@ export default function Layout({ children }: LayoutProps) {
       <main className="flex-1 min-h-screen flex flex-col">
         {/* Header with User Avatar */}
         <header className="sticky top-0 z-30 bg-layer-1/95 backdrop-blur-sm border-b border-default">
-          <div className="flex items-center justify-end px-6 py-3">
+          <div className="flex items-center justify-end px-6 py-3 gap-4">
+            {/* System Status Indicator */}
+            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-success/10 border border-success/20">
+              <div className="relative w-2 h-2">
+                <div className="absolute inset-0 bg-success rounded-full animate-ping opacity-75" />
+                <div className="relative w-2 h-2 bg-success rounded-full" />
+              </div>
+              <span className="text-xs font-medium text-success">Sistema Operacional</span>
+            </div>
+
             {profile && (
               <div className="relative">
                 <button
@@ -305,11 +315,14 @@ export default function Layout({ children }: LayoutProps) {
                     <p className="text-sm font-medium text-text-primary">{profile.name}</p>
                     <p className="text-xs text-text-secondary">{profile.role}</p>
                   </div>
-                  <img
-                    src={profile.avatarUrl}
-                    alt={profile.name}
-                    className="w-9 h-9 rounded-full border-2 border-subtle"
-                  />
+                  <div className="relative">
+                    <img
+                      src={profile.avatarUrl}
+                      alt={profile.name}
+                      className="w-9 h-9 rounded-full border-2 border-subtle"
+                    />
+                    <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-success rounded-full border-2 border-layer-1" />
+                  </div>
                 </button>
 
                 {/* Dropdown Menu */}
@@ -320,14 +333,6 @@ export default function Layout({ children }: LayoutProps) {
                       onClick={() => setShowUserMenu(false)}
                     />
                     <div className="absolute right-0 mt-2 w-48 bg-layer-2 border border-default rounded-lg shadow-xl z-50 overflow-hidden">
-                      <Link
-                        href="/settings"
-                        onClick={() => setShowUserMenu(false)}
-                        className="flex items-center gap-2 px-4 py-3 hover:bg-surface-elevated transition-colors text-text-secondary hover:text-text-primary"
-                      >
-                        <User className="w-4 h-4" />
-                        <span className="text-sm">Meu Perfil</span>
-                      </Link>
                       <Link
                         href="/settings"
                         onClick={() => setShowUserMenu(false)}
