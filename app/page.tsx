@@ -224,14 +224,19 @@ export default function DashboardPage() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => router.push('/workflow')}
-            className="relative px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-shadow overflow-hidden group active:scale-95"
+            className="relative px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-500 to-blue-600 text-white font-semibold shadow-glow-lg shadow-cyan-500/50 hover:shadow-glow-lg hover:shadow-cyan-400/70 transition-all duration-300 overflow-hidden group active:scale-95 border border-cyan-400/30 hover:border-cyan-300/60"
           >
+            {/* Animated shine effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+
             <span className="relative z-10 flex items-center gap-2">
-              <Rocket className="w-5 h-5" />
+              <Rocket className="w-5 h-5 drop-shadow-glow" />
               Nova Produção
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform drop-shadow-glow" />
             </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+
+            {/* Pulsing glow background */}
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity animate-pulse-slow" />
           </motion.button>
         </div>
       </motion.div>
@@ -248,15 +253,23 @@ export default function DashboardPage() {
           variants={itemVariants}
           className="col-span-12 lg:col-span-8"
         >
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-layer-1/80 to-layer-2/50 backdrop-blur-xl border border-border-subtle p-6 h-full group hover:border-cyan-500/30 transition-all duration-300">
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-cyan-950/40 via-blue-950/30 to-layer-2/50 backdrop-blur-xl border-2 border-cyan-500/20 p-6 h-full group hover:border-cyan-400/60 hover:shadow-glow-lg hover:shadow-cyan-500/50 transition-all duration-300">
+            {/* Animated gradient mesh background */}
+            <div className="absolute inset-0 bg-gradient-mesh opacity-20" />
+
+            {/* Glow overlay on hover */}
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+            {/* Shimmer effect */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-700">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent animate-shimmer" />
+            </div>
 
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 flex items-center justify-center">
-                    <Activity className="w-5 h-5 text-cyan-400" />
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/30 to-blue-500/30 border border-cyan-400/50 flex items-center justify-center shadow-glow-sm shadow-cyan-500/50 group-hover:shadow-glow-md group-hover:shadow-cyan-400/70 transition-shadow duration-300">
+                    <Activity className="w-5 h-5 text-cyan-300 group-hover:text-cyan-200 transition-colors" />
                   </div>
                   <div>
                     <h2 className="text-lg font-semibold text-white">Status do Sistema</h2>
@@ -333,13 +346,22 @@ export default function DashboardPage() {
           variants={itemVariants}
           className="col-span-12 lg:col-span-4"
         >
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-layer-1/80 to-layer-2/50 backdrop-blur-xl border border-border-subtle p-6 h-full group hover:border-purple-500/30 transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-950/40 via-violet-950/30 to-layer-2/50 backdrop-blur-xl border-2 border-purple-500/20 p-6 h-full group hover:border-purple-400/60 hover:shadow-glow-lg hover:shadow-purple-500/50 transition-all duration-300">
+            {/* Animated gradient mesh */}
+            <div className="absolute inset-0 bg-gradient-mesh opacity-20" />
+
+            {/* Glow overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-violet-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+            {/* Shimmer effect */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-700">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-400/20 to-transparent animate-shimmer" />
+            </div>
 
             <div className="relative z-10">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-purple-400" />
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/30 to-pink-500/30 border border-purple-400/50 flex items-center justify-center shadow-glow-sm shadow-purple-500/50 group-hover:shadow-glow-md group-hover:shadow-purple-400/70 transition-shadow duration-300">
+                  <Zap className="w-5 h-5 text-purple-300 group-hover:text-purple-200 transition-colors" />
                 </div>
                 <h2 className="text-lg font-semibold text-white">Ações Rápidas</h2>
               </div>
@@ -412,14 +434,23 @@ export default function DashboardPage() {
           variants={itemVariants}
           className="col-span-12 lg:col-span-6"
         >
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-layer-1/80 to-layer-2/50 backdrop-blur-xl border border-border-subtle p-6 h-full group hover:border-emerald-500/30 transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-950/40 via-green-950/30 to-layer-2/50 backdrop-blur-xl border-2 border-emerald-500/20 p-6 h-full group hover:border-emerald-400/60 hover:shadow-glow-lg hover:shadow-emerald-500/50 transition-all duration-300">
+            {/* Animated gradient mesh */}
+            <div className="absolute inset-0 bg-gradient-mesh opacity-20" />
+
+            {/* Glow overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 via-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+            {/* Shimmer effect */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-700">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent animate-shimmer" />
+            </div>
 
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-green-500/20 border border-emerald-500/30 flex items-center justify-center">
-                    <BarChart3 className="w-5 h-5 text-emerald-400" />
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/30 to-green-500/30 border border-emerald-400/50 flex items-center justify-center shadow-glow-sm shadow-emerald-500/50 group-hover:shadow-glow-md group-hover:shadow-emerald-400/70 transition-shadow duration-300">
+                    <BarChart3 className="w-5 h-5 text-emerald-300 group-hover:text-emerald-200 transition-colors" />
                   </div>
                   <div>
                     <h2 className="text-lg font-semibold text-white">Disponibilidade</h2>
@@ -509,13 +540,22 @@ export default function DashboardPage() {
           variants={itemVariants}
           className="col-span-12 lg:col-span-6"
         >
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-layer-1/80 to-layer-2/50 backdrop-blur-xl border border-border-subtle p-6 h-full group hover:border-blue-500/30 transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-950/40 via-indigo-950/30 to-layer-2/50 backdrop-blur-xl border-2 border-blue-500/20 p-6 h-full group hover:border-blue-400/60 hover:shadow-glow-lg hover:shadow-blue-500/50 transition-all duration-300">
+            {/* Animated gradient mesh */}
+            <div className="absolute inset-0 bg-gradient-mesh opacity-20" />
+
+            {/* Glow overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-indigo-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+            {/* Shimmer effect */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-700">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-400/20 to-transparent animate-shimmer" />
+            </div>
 
             <div className="relative z-10">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30 flex items-center justify-center">
-                  <Code2 className="w-5 h-5 text-blue-400" />
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/30 to-cyan-500/30 border border-blue-400/50 flex items-center justify-center shadow-glow-sm shadow-blue-500/50 group-hover:shadow-glow-md group-hover:shadow-blue-400/70 transition-shadow duration-300">
+                  <Code2 className="w-5 h-5 text-blue-300 group-hover:text-blue-200 transition-colors" />
                 </div>
                 <div>
                   <h2 className="text-lg font-semibold text-white">Saúde do Sistema</h2>
