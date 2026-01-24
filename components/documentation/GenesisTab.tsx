@@ -37,7 +37,7 @@ export default function GenesisTab() {
               <p className="text-purple-300">A origem e propósito fundamental</p>
             </div>
           </div>
-          <p className="text-lg text-zinc-300 leading-relaxed max-w-3xl">
+          <p className="text-lg text-secondary leading-relaxed max-w-3xl">
             O <strong className="text-white">ORION</strong> (anteriormente ORION) nasceu de uma necessidade
             real e urgente: <span className="text-purple-400 font-semibold">democratizar a produção
             de vídeos profissionais para YouTube</span>, eliminando as barreiras técnicas, financeiras
@@ -59,7 +59,7 @@ export default function GenesisTab() {
             filename="problema.md"
           />
         </div>
-        <p className="text-zinc-400 mb-6">
+        <p className="text-muted mb-6">
           Criar vídeos de qualidade para YouTube tradicionalmente exige:
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -103,12 +103,12 @@ export default function GenesisTab() {
             >
               <item.icon className={`w-8 h-8 ${item.color} mb-3`} />
               <h4 className="font-semibold text-white mb-2">{item.title}</h4>
-              <p className="text-sm text-zinc-400">{item.description}</p>
+              <p className="text-sm text-muted">{item.description}</p>
             </div>
           ))}
         </div>
-        <div className="mt-6 p-4 bg-zinc-800/50 rounded-xl border border-zinc-700">
-          <p className="text-zinc-300 italic">
+        <div className="mt-6 p-4 bg-layer-2/50 rounded-xl border border-subtle">
+          <p className="text-secondary italic">
             Essa barreira exclui milhões de potenciais criadores que têm conhecimento
             valioso mas não os recursos para transformá-lo em conteúdo visual.
           </p>
@@ -129,7 +129,7 @@ export default function GenesisTab() {
           />
         </div>
         <div className="bg-gradient-to-r from-green-900/30 to-emerald-900/30 border border-green-500/20 rounded-xl p-6">
-          <p className="text-zinc-300 mb-6">
+          <p className="text-secondary mb-6">
             O ORION é um <strong className="text-green-400">sistema de automação inteligente</strong> que:
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -143,12 +143,12 @@ export default function GenesisTab() {
             ].map((step, index) => (
               <div
                 key={index}
-                className="flex items-start gap-3 p-3 bg-zinc-900/50 rounded-lg"
+                className="flex items-start gap-3 p-3 bg-layer-1/50 rounded-lg"
               >
                 <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
                   <span className="text-white font-bold text-sm">{step.num}</span>
                 </div>
-                <p className="text-zinc-300 text-sm">{step.text}</p>
+                <p className="text-secondary text-sm">{step.text}</p>
               </div>
             ))}
           </div>
@@ -225,7 +225,7 @@ export default function GenesisTab() {
               </div>
               <ul className="space-y-2">
                 {guideline.points.map((point, i) => (
-                  <li key={i} className="flex items-start gap-2 text-zinc-300 text-sm">
+                  <li key={i} className="flex items-start gap-2 text-secondary text-sm">
                     <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
                     {point}
                   </li>
@@ -250,36 +250,36 @@ export default function GenesisTab() {
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+          <div className="bg-layer-1 border border-subtle rounded-xl p-5">
             <div className="w-12 h-12 bg-gradient-to-br from-zinc-700 to-zinc-800 rounded-xl flex items-center justify-center mb-4">
               <span className="text-xl font-bold text-white">N</span>
             </div>
             <h4 className="font-bold text-white mb-2">Por que Next.js 15?</h4>
-            <ul className="text-sm text-zinc-400 space-y-1">
+            <ul className="text-sm text-muted space-y-1">
               <li>App Router para roteamento moderno</li>
               <li>Server Components para performance</li>
               <li>API Routes para backend integrado</li>
               <li>Vercel como deploy nativo</li>
             </ul>
           </div>
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+          <div className="bg-layer-1 border border-subtle rounded-xl p-5">
             <div className="w-12 h-12 bg-gradient-to-br from-amber-600 to-yellow-500 rounded-xl flex items-center justify-center mb-4">
               <span className="text-xl font-bold text-white">Z</span>
             </div>
             <h4 className="font-bold text-white mb-2">Por que Zustand?</h4>
-            <ul className="text-sm text-zinc-400 space-y-1">
+            <ul className="text-sm text-muted space-y-1">
               <li>Simplicidade sobre complexidade</li>
               <li>Persistência nativa com localStorage</li>
               <li>TypeScript first</li>
               <li>Minimal boilerplate</li>
             </ul>
           </div>
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+          <div className="bg-layer-1 border border-subtle rounded-xl p-5">
             <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-indigo-500 rounded-xl flex items-center justify-center mb-4">
               <span className="text-xl font-bold text-white">6</span>
             </div>
             <h4 className="font-bold text-white mb-2">Por que 6 Etapas?</h4>
-            <ul className="text-sm text-zinc-400 space-y-1">
+            <ul className="text-sm text-muted space-y-1">
               <li>Espelha produção real de vídeo</li>
               <li>Validação humana em cada transição</li>
               <li>Rollback para etapas anteriores</li>
@@ -309,7 +309,7 @@ export default function GenesisTab() {
                 "Composição de vídeo com narração",
                 "Upload direto para YouTube",
               ].map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-zinc-300 text-sm">
+                <li key={i} className="flex items-start gap-2 text-secondary text-sm">
                   <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
                   {item}
                 </li>
@@ -328,7 +328,7 @@ export default function GenesisTab() {
                 "Não garante viralização",
                 "Não armazena vídeos eternamente",
               ].map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-zinc-300 text-sm">
+                <li key={i} className="flex items-start gap-2 text-secondary text-sm">
                   <XCircle className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
                   {item}
                 </li>
@@ -373,14 +373,14 @@ export default function GenesisTab() {
           ].map((principle, index) => (
             <div
               key={index}
-              className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-5 flex gap-4"
+              className="bg-layer-1/50 border border-subtle rounded-xl p-5 flex gap-4"
             >
               <div className="w-10 h-10 bg-violet-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
                 <span className="text-violet-400 font-bold">{principle.num}</span>
               </div>
               <div>
                 <h4 className="font-semibold text-white mb-1">{principle.title}</h4>
-                <p className="text-sm text-zinc-400">{principle.description}</p>
+                <p className="text-sm text-muted">{principle.description}</p>
               </div>
             </div>
           ))}

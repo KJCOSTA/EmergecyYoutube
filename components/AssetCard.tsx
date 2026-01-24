@@ -100,7 +100,7 @@ export default function AssetCard({
 
       {/* Regenerate AI Selector */}
       {showRegenerate && (
-        <div className="mb-4 p-4 bg-gray-800/50 rounded-lg space-y-3">
+        <div className="mb-4 p-4 bg-layer-2/50 rounded-lg space-y-3">
           <AIModelSelector
             selectedProvider={selectedProvider}
             selectedModel={selectedModel}

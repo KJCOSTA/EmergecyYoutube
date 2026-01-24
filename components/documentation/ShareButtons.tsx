@@ -56,7 +56,7 @@ export default function ShareButtons() {
       {/* Modal de Compartilhamento */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 max-w-md w-full shadow-2xl animate-in zoom-in-95 duration-200">
+          <div className="bg-layer-1 border border-subtle rounded-2xl p-6 max-w-md w-full shadow-2xl animate-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold text-white flex items-center gap-2">
                 <Share2 className="w-5 h-5 text-green-400" />
@@ -64,33 +64,33 @@ export default function ShareButtons() {
               </h3>
               <button
                 onClick={() => setShowModal(false)}
-                className="p-1.5 hover:bg-zinc-800 rounded-lg transition-colors"
+                className="p-1.5 hover:bg-layer-2 rounded-lg transition-colors"
               >
-                <X className="w-5 h-5 text-zinc-400" />
+                <X className="w-5 h-5 text-muted" />
               </button>
             </div>
 
-            <p className="text-zinc-400 text-sm mb-4">
+            <p className="text-muted text-sm mb-4">
               Quem receber este link poderá visualizar a documentação, mas{" "}
               <strong className="text-amber-400">não poderá copiar conteúdos nem compartilhar novamente</strong>.
             </p>
 
             {/* Link Display */}
-            <div className="bg-zinc-800/50 border border-zinc-700 rounded-xl p-3 mb-4">
-              <p className="text-xs text-zinc-500 mb-2">Link de Compartilhamento:</p>
+            <div className="bg-layer-2/50 border border-subtle rounded-xl p-3 mb-4">
+              <p className="text-xs text-muted mb-2">Link de Compartilhamento:</p>
               <div className="flex items-center gap-2">
                 <input
                   type="text"
                   value={shareUrl}
                   readOnly
-                  className="flex-1 bg-transparent text-zinc-300 text-sm outline-none truncate"
+                  className="flex-1 bg-transparent text-secondary text-sm outline-none truncate"
                 />
                 <button
                   onClick={copyToClipboard}
                   className={`p-2 rounded-lg transition-all ${
                     copied
                       ? "bg-green-500/20 text-green-400"
-                      : "bg-zinc-700 text-zinc-400 hover:bg-zinc-600 hover:text-white"
+                      : "bg-zinc-700 text-muted hover:bg-zinc-600 hover:text-white"
                   }`}
                   title={copied ? "Copiado!" : "Copiar link"}
                 >

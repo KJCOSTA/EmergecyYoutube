@@ -136,8 +136,8 @@ export default function ModelsExplorer({ provider, apiKey, isConnected }: Models
 
   if (!models) {
     return (
-      <div className="p-4 text-center text-zinc-400">
-        <AlertCircle className="w-8 h-8 mx-auto mb-2 text-zinc-600" />
+      <div className="p-4 text-center text-muted">
+        <AlertCircle className="w-8 h-8 mx-auto mb-2 text-disabled" />
         <p>Modelos não disponíveis para este provedor</p>
       </div>
     );
@@ -150,7 +150,7 @@ export default function ModelsExplorer({ provider, apiKey, isConnected }: Models
         <span className="text-2xl">{models.icon}</span>
         <div className="flex-1">
           <h3 className="font-semibold text-white">{models.name}</h3>
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-muted">
             {loadingAvailable ? (
               <span className="flex items-center gap-1">
                 <Loader2 className="w-3 h-3 animate-spin" />
@@ -167,13 +167,13 @@ export default function ModelsExplorer({ provider, apiKey, isConnected }: Models
 
       {/* Campo de pesquisa */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" />
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Pesquisar modelos..."
-          className="w-full pl-10 pr-4 py-2 bg-zinc-800/50 border border-zinc-700 rounded-lg text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors"
+          className="w-full pl-10 pr-4 py-2 bg-layer-2/50 border border-subtle rounded-lg text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition-colors"
         />
       </div>
 
@@ -182,25 +182,25 @@ export default function ModelsExplorer({ provider, apiKey, isConnected }: Models
         {filteredCategories.map((category) => (
           <div
             key={category.name}
-            className="border border-zinc-800 rounded-lg overflow-hidden"
+            className="border border-subtle rounded-lg overflow-hidden"
           >
             {/* Cabeçalho da categoria */}
             <button
               onClick={() => toggleCategory(category.name)}
-              className="w-full px-4 py-3 bg-zinc-800/50 hover:bg-zinc-800 flex items-center justify-between transition-colors"
+              className="w-full px-4 py-3 bg-layer-2/50 hover:bg-layer-2 flex items-center justify-between transition-colors"
             >
               <div className="text-left">
                 <h4 className="font-medium text-white text-sm">{category.name}</h4>
-                <p className="text-xs text-zinc-500">{category.description}</p>
+                <p className="text-xs text-muted">{category.description}</p>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-zinc-500 bg-zinc-700 px-2 py-0.5 rounded">
+                <span className="text-xs text-muted bg-zinc-700 px-2 py-0.5 rounded">
                   {category.models.length} modelos
                 </span>
                 {expandedCategories[category.name] ? (
-                  <ChevronUp className="w-4 h-4 text-zinc-400" />
+                  <ChevronUp className="w-4 h-4 text-muted" />
                 ) : (
-                  <ChevronDown className="w-4 h-4 text-zinc-400" />
+                  <ChevronDown className="w-4 h-4 text-muted" />
                 )}
               </div>
             </button>
@@ -213,7 +213,7 @@ export default function ModelsExplorer({ provider, apiKey, isConnected }: Models
                   return (
                     <div
                       key={model.id}
-                      className="px-4 py-3 bg-zinc-900/50 hover:bg-zinc-800/30 transition-colors"
+                      className="px-4 py-3 bg-layer-1/50 hover:bg-layer-2/30 transition-colors"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex-1 min-w-0">
@@ -229,7 +229,7 @@ export default function ModelsExplorer({ provider, apiKey, isConnected }: Models
                             )}
                           </div>
                           <p className="text-sm text-white mt-0.5">{model.name}</p>
-                          <p className="text-xs text-zinc-500 mt-0.5">{model.description}</p>
+                          <p className="text-xs text-muted mt-0.5">{model.description}</p>
                         </div>
 
                         {/* Status de disponibilidade */}
@@ -241,7 +241,7 @@ export default function ModelsExplorer({ provider, apiKey, isConnected }: Models
                             </div>
                           )}
                           {availability === false && (
-                            <div className="flex items-center gap-1 text-zinc-500 bg-zinc-700/30 px-2 py-1 rounded">
+                            <div className="flex items-center gap-1 text-muted bg-zinc-700/30 px-2 py-1 rounded">
                               <Cpu className="w-3 h-3" />
                               <span className="text-[10px]">Indisponível</span>
                             </div>
@@ -263,7 +263,7 @@ export default function ModelsExplorer({ provider, apiKey, isConnected }: Models
         ))}
 
         {filteredCategories.length === 0 && (
-          <div className="p-8 text-center text-zinc-500">
+          <div className="p-8 text-center text-muted">
             <Search className="w-8 h-8 mx-auto mb-2 opacity-50" />
             <p>Nenhum modelo encontrado para &quot;{searchQuery}&quot;</p>
           </div>

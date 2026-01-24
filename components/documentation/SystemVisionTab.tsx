@@ -94,7 +94,7 @@ export default function SystemVisionTab() {
         <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
         <div className="relative">
           <h2 className="text-2xl font-bold text-white mb-4">O Que o Sistema Faz</h2>
-          <p className="text-lg text-zinc-300 leading-relaxed max-w-3xl">
+          <p className="text-lg text-secondary leading-relaxed max-w-3xl">
             O <strong className="text-white">ORION</strong> é uma plataforma de automação
             de produção de vídeos que transforma um simples tema em um{" "}
             <span className="text-cyan-400 font-semibold">
@@ -141,13 +141,13 @@ export default function SystemVisionTab() {
           ].map((profile, index) => (
             <div
               key={index}
-              className="bg-zinc-900 border border-zinc-800 rounded-xl p-6"
+              className="bg-layer-1 border border-subtle rounded-xl p-6"
             >
               <profile.icon className={`w-10 h-10 text-${profile.color}-400 mb-4`} />
               <h4 className="font-bold text-white mb-3">{profile.title}</h4>
               <ul className="space-y-2">
                 {profile.items.map((item, i) => (
-                  <li key={i} className="flex items-center gap-2 text-zinc-400 text-sm">
+                  <li key={i} className="flex items-center gap-2 text-muted text-sm">
                     <CheckCircle2 className="w-4 h-4 text-green-400" />
                     {item}
                   </li>
@@ -196,17 +196,17 @@ export default function SystemVisionTab() {
 
                   <div className="space-y-3">
                     <div>
-                      <p className="text-xs font-medium text-zinc-500 uppercase mb-2">Entradas</p>
+                      <p className="text-xs font-medium text-muted uppercase mb-2">Entradas</p>
                       <div className="flex flex-wrap gap-1">
                         {step.inputs.map((input, i) => (
-                          <span key={i} className="px-2 py-1 bg-zinc-800 rounded text-xs text-zinc-300">
+                          <span key={i} className="px-2 py-1 bg-layer-2 rounded text-xs text-secondary">
                             {input}
                           </span>
                         ))}
                       </div>
                     </div>
                     <div>
-                      <p className="text-xs font-medium text-zinc-500 uppercase mb-2">Saídas</p>
+                      <p className="text-xs font-medium text-muted uppercase mb-2">Saídas</p>
                       <div className="flex flex-wrap gap-1">
                         {step.outputs.map((output, i) => (
                           <span key={i} className={`px-2 py-1 ${colors.bg} rounded text-xs ${colors.text}`}>
@@ -237,8 +237,8 @@ export default function SystemVisionTab() {
           />
         </div>
 
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-          <div className="grid grid-cols-3 gap-0 border-b border-zinc-800 bg-zinc-800/50">
+        <div className="bg-layer-1 border border-subtle rounded-xl overflow-hidden">
+          <div className="grid grid-cols-3 gap-0 border-b border-subtle bg-layer-2/50">
             <div className="p-4 font-semibold text-white">Etapa</div>
             <div className="p-4 font-semibold text-purple-400 flex items-center gap-2">
               <Users className="w-4 h-4" /> Decisão Humana
@@ -257,11 +257,11 @@ export default function SystemVisionTab() {
           ].map((row, index) => (
             <div
               key={index}
-              className="grid grid-cols-3 gap-0 border-b border-zinc-800 last:border-0 hover:bg-zinc-800/30 transition-colors"
+              className="grid grid-cols-3 gap-0 border-b border-subtle last:border-0 hover:bg-layer-2/30 transition-colors"
             >
-              <div className="p-4 text-zinc-300 font-medium">{row.step}</div>
-              <div className="p-4 text-zinc-400 text-sm">{row.human}</div>
-              <div className="p-4 text-zinc-400 text-sm">{row.auto}</div>
+              <div className="p-4 text-secondary font-medium">{row.step}</div>
+              <div className="p-4 text-muted text-sm">{row.human}</div>
+              <div className="p-4 text-muted text-sm">{row.auto}</div>
             </div>
           ))}
         </div>
@@ -276,7 +276,7 @@ export default function SystemVisionTab() {
               "Nenhuma ação destrutiva sem confirmação",
               "Histórico de versões permite rollback",
             ].map((item, i) => (
-              <li key={i} className="flex items-center gap-2 text-zinc-300 text-sm">
+              <li key={i} className="flex items-center gap-2 text-secondary text-sm">
                 <CheckCircle2 className="w-4 h-4 text-green-400" />
                 {item}
               </li>
@@ -309,14 +309,14 @@ export default function SystemVisionTab() {
                 <p className="text-xs text-blue-400">Next.js App Router</p>
               </div>
             </div>
-            <p className="text-xs font-medium text-zinc-500 uppercase mb-2">Responsabilidades</p>
-            <ul className="space-y-2 text-sm text-zinc-400">
+            <p className="text-xs font-medium text-muted uppercase mb-2">Responsabilidades</p>
+            <ul className="space-y-2 text-sm text-muted">
               <li>Interface de usuário</li>
               <li>Navegação por workflow</li>
               <li>Estado local e persistência</li>
               <li>Comunicação com APIs</li>
             </ul>
-            <p className="text-xs font-medium text-zinc-500 uppercase mt-4 mb-2">Tecnologias</p>
+            <p className="text-xs font-medium text-muted uppercase mt-4 mb-2">Tecnologias</p>
             <div className="flex flex-wrap gap-1">
               {["React 19", "Tailwind", "Framer Motion", "Zustand"].map((tech, i) => (
                 <span key={i} className="px-2 py-1 bg-blue-500/10 text-blue-400 rounded text-xs">
@@ -335,14 +335,14 @@ export default function SystemVisionTab() {
                 <p className="text-xs text-green-400">API Routes</p>
               </div>
             </div>
-            <p className="text-xs font-medium text-zinc-500 uppercase mb-2">Responsabilidades</p>
-            <ul className="space-y-2 text-sm text-zinc-400">
+            <p className="text-xs font-medium text-muted uppercase mb-2">Responsabilidades</p>
+            <ul className="space-y-2 text-sm text-muted">
               <li>Integração com IAs</li>
               <li>Comunicação externa</li>
               <li>Processamento de dados</li>
               <li>Validação e segurança</li>
             </ul>
-            <p className="text-xs font-medium text-zinc-500 uppercase mt-4 mb-2">Endpoints</p>
+            <p className="text-xs font-medium text-muted uppercase mt-4 mb-2">Endpoints</p>
             <div className="flex flex-wrap gap-1">
               {["/api/proposal/*", "/api/images/*", "/api/youtube/*"].map((endpoint, i) => (
                 <span key={i} className="px-2 py-1 bg-green-500/10 text-green-400 rounded text-xs font-mono">
@@ -361,13 +361,13 @@ export default function SystemVisionTab() {
                 <p className="text-xs text-amber-400">Zustand Stores</p>
               </div>
             </div>
-            <p className="text-xs font-medium text-zinc-500 uppercase mb-2">Stores</p>
-            <ul className="space-y-2 text-sm text-zinc-400">
+            <p className="text-xs font-medium text-muted uppercase mb-2">Stores</p>
+            <ul className="space-y-2 text-sm text-muted">
               <li><strong className="text-amber-400">WorkflowStore</strong> - Dados e navegação</li>
               <li><strong className="text-amber-400">GuidelinesStore</strong> - Diretrizes</li>
               <li><strong className="text-amber-400">UIStore</strong> - Estado de interface</li>
             </ul>
-            <p className="text-xs font-medium text-zinc-500 uppercase mt-4 mb-2">Persistência</p>
+            <p className="text-xs font-medium text-muted uppercase mt-4 mb-2">Persistência</p>
             <span className="px-2 py-1 bg-amber-500/10 text-amber-400 rounded text-xs">
               localStorage
             </span>
@@ -382,7 +382,7 @@ export default function SystemVisionTab() {
           Diagrama de Fluxo Operacional
         </h3>
 
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 overflow-x-auto">
+        <div className="bg-layer-1 border border-subtle rounded-xl p-6 overflow-x-auto">
           <div className="min-w-[600px]">
             {/* Top Row */}
             <div className="flex items-center justify-center gap-4 mb-6">
@@ -394,9 +394,9 @@ export default function SystemVisionTab() {
                 <div key={i} className="flex items-center gap-4">
                   <div className={`bg-${step.color}-500/20 border border-${step.color}-500/30 rounded-lg p-4 text-center min-w-[120px]`}>
                     <p className={`font-bold text-${step.color}-400`}>{step.name}</p>
-                    <p className="text-xs text-zinc-500">{step.sub}</p>
+                    <p className="text-xs text-muted">{step.sub}</p>
                   </div>
-                  {i < 2 && <ArrowRight className="w-6 h-6 text-zinc-600" />}
+                  {i < 2 && <ArrowRight className="w-6 h-6 text-disabled" />}
                 </div>
               ))}
             </div>
@@ -414,10 +414,10 @@ export default function SystemVisionTab() {
                 { name: "STUDIO", sub: "Storyboard", color: "pink" },
               ].map((step, i) => (
                 <div key={i} className="flex items-center gap-4">
-                  {i < 2 && <ArrowRight className="w-6 h-6 text-zinc-600 rotate-180" />}
+                  {i < 2 && <ArrowRight className="w-6 h-6 text-disabled rotate-180" />}
                   <div className={`bg-${step.color}-500/20 border border-${step.color}-500/30 rounded-lg p-4 text-center min-w-[120px]`}>
                     <p className={`font-bold text-${step.color}-400`}>{step.name}</p>
-                    <p className="text-xs text-zinc-500">{step.sub}</p>
+                    <p className="text-xs text-muted">{step.sub}</p>
                   </div>
                 </div>
               ))}

@@ -147,7 +147,7 @@ export function LogsTab() {
       default:
         return {
           bg: 'bg-zinc-500/10',
-          text: 'text-zinc-400',
+          text: 'text-muted',
           label: state,
         };
     }
@@ -167,21 +167,21 @@ export function LogsTab() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between pb-4 border-b border-zinc-800">
+      <div className="flex items-center justify-between pb-4 border-b border-subtle">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-emerald-500/10 rounded-lg">
             <Terminal className="w-5 h-5 text-emerald-500" />
           </div>
           <div>
             <h2 className="text-xl font-bold text-white">Logs & Atividades</h2>
-            <p className="text-sm text-zinc-400">Monitore o sistema, commits e deployments</p>
+            <p className="text-sm text-muted">Monitore o sistema, commits e deployments</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={loadData}
             disabled={loading}
-            className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg text-sm flex items-center gap-2 transition-all disabled:opacity-50"
+            className="px-4 py-2 bg-layer-2 hover:bg-zinc-700 text-white rounded-lg text-sm flex items-center gap-2 transition-all disabled:opacity-50"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             Atualizar
@@ -199,13 +199,13 @@ export function LogsTab() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-zinc-800">
+      <div className="flex gap-2 border-b border-subtle">
         <button
           onClick={() => setActiveView('system')}
           className={`px-4 py-2.5 text-sm font-medium transition-all relative ${
             activeView === 'system'
               ? 'text-emerald-400'
-              : 'text-zinc-400 hover:text-white'
+              : 'text-muted hover:text-white'
           }`}
         >
           <div className="flex items-center gap-2">
@@ -221,7 +221,7 @@ export function LogsTab() {
           className={`px-4 py-2.5 text-sm font-medium transition-all relative ${
             activeView === 'git'
               ? 'text-emerald-400'
-              : 'text-zinc-400 hover:text-white'
+              : 'text-muted hover:text-white'
           }`}
         >
           <div className="flex items-center gap-2">
@@ -237,7 +237,7 @@ export function LogsTab() {
           className={`px-4 py-2.5 text-sm font-medium transition-all relative ${
             activeView === 'vercel'
               ? 'text-emerald-400'
-              : 'text-zinc-400 hover:text-white'
+              : 'text-muted hover:text-white'
           }`}
         >
           <div className="flex items-center gap-2">
@@ -254,14 +254,14 @@ export function LogsTab() {
       {activeView === 'system' && (
         <div className="flex gap-2">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
               placeholder="Pesquisar nos logs..."
-              className="w-full bg-black/50 border border-zinc-700 rounded-lg py-2.5 pl-10 pr-4 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full bg-black/50 border border-subtle rounded-lg py-2.5 pl-10 pr-4 text-white placeholder:text-disabled focus:outline-none focus:ring-2 focus:ring-emerald-500"
             />
           </div>
           <button
@@ -274,7 +274,7 @@ export function LogsTab() {
           {searchQuery && (
             <button
               onClick={handleClearSearch}
-              className="px-4 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition-all"
+              className="px-4 py-2.5 bg-layer-2 hover:bg-zinc-700 text-white rounded-lg transition-all"
             >
               Limpar
             </button>
@@ -296,7 +296,7 @@ export function LogsTab() {
       {/* Loading State */}
       {loading && (
         <div className="flex items-center justify-center py-12">
-          <div className="flex items-center gap-3 text-zinc-400">
+          <div className="flex items-center gap-3 text-muted">
             <RefreshCw className="w-5 h-5 animate-spin" />
             <span>Carregando...</span>
           </div>
@@ -310,9 +310,9 @@ export function LogsTab() {
           {activeView === 'system' && (
             <div className="space-y-2">
               {systemLogs.length === 0 ? (
-                <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-8 text-center">
-                  <Terminal className="w-12 h-12 text-zinc-600 mx-auto mb-3" />
-                  <p className="text-zinc-400">Nenhum log encontrado</p>
+                <div className="bg-layer-1/50 border border-subtle rounded-xl p-8 text-center">
+                  <Terminal className="w-12 h-12 text-disabled mx-auto mb-3" />
+                  <p className="text-muted">Nenhum log encontrado</p>
                 </div>
               ) : (
                 systemLogs.map((log) => {
@@ -322,7 +322,7 @@ export function LogsTab() {
                   return (
                     <div
                       key={log.id}
-                      className={`bg-zinc-900/50 border ${styles.border} rounded-lg p-4 hover:bg-zinc-900 transition-all`}
+                      className={`bg-layer-1/50 border ${styles.border} rounded-lg p-4 hover:bg-layer-1 transition-all`}
                     >
                       <div className="flex items-start gap-3">
                         <div className={`p-2 ${styles.bg} rounded-lg flex-shrink-0`}>
@@ -333,17 +333,17 @@ export function LogsTab() {
                             <span className={`px-2 py-0.5 ${styles.bg} ${styles.text} text-xs font-medium rounded uppercase`}>
                               {log.level}
                             </span>
-                            <span className="px-2 py-0.5 bg-zinc-800 text-zinc-400 text-xs rounded">
+                            <span className="px-2 py-0.5 bg-layer-2 text-muted text-xs rounded">
                               {log.source}
                             </span>
-                            <span className="text-xs text-zinc-500">
+                            <span className="text-xs text-muted">
                               {formatTimestamp(log.timestamp)}
                             </span>
                           </div>
                           <p className="text-sm text-white">{log.message}</p>
                           {log.details && Object.keys(log.details).length > 0 && (
-                            <div className="mt-2 p-2 bg-black/30 rounded border border-zinc-800">
-                              <pre className="text-xs text-zinc-400 font-mono overflow-x-auto">
+                            <div className="mt-2 p-2 bg-black/30 rounded border border-subtle">
+                              <pre className="text-xs text-muted font-mono overflow-x-auto">
                                 {JSON.stringify(log.details, null, 2)}
                               </pre>
                             </div>
@@ -361,32 +361,32 @@ export function LogsTab() {
           {activeView === 'git' && (
             <div className="space-y-2">
               {gitCommits.length === 0 ? (
-                <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-8 text-center">
-                  <GitCommit className="w-12 h-12 text-zinc-600 mx-auto mb-3" />
-                  <p className="text-zinc-400">Nenhum commit encontrado</p>
-                  <p className="text-xs text-zinc-500 mt-1">Configure a integração GitHub nas configurações</p>
+                <div className="bg-layer-1/50 border border-subtle rounded-xl p-8 text-center">
+                  <GitCommit className="w-12 h-12 text-disabled mx-auto mb-3" />
+                  <p className="text-muted">Nenhum commit encontrado</p>
+                  <p className="text-xs text-muted mt-1">Configure a integração GitHub nas configurações</p>
                 </div>
               ) : (
                 gitCommits.map((commit) => (
                   <div
                     key={commit.sha}
-                    className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 hover:bg-zinc-900 transition-all"
+                    className="bg-layer-1/50 border border-subtle rounded-lg p-4 hover:bg-layer-1 transition-all"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="p-2 bg-zinc-800 rounded-lg flex-shrink-0">
-                        <GitCommit className="w-4 h-4 text-zinc-400" />
+                      <div className="p-2 bg-layer-2 rounded-lg flex-shrink-0">
+                        <GitCommit className="w-4 h-4 text-muted" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <code className="px-2 py-0.5 bg-zinc-800 text-zinc-300 text-xs font-mono rounded">
+                          <code className="px-2 py-0.5 bg-layer-2 text-secondary text-xs font-mono rounded">
                             {commit.sha}
                           </code>
-                          <span className="text-xs text-zinc-500">
+                          <span className="text-xs text-muted">
                             {formatTimestamp(commit.date)}
                           </span>
                         </div>
                         <p className="text-sm text-white mb-1">{commit.message}</p>
-                        <div className="flex items-center gap-2 text-xs text-zinc-500">
+                        <div className="flex items-center gap-2 text-xs text-muted">
                           <span>{commit.author}</span>
                           {commit.url && (
                             <>
@@ -414,10 +414,10 @@ export function LogsTab() {
           {activeView === 'vercel' && (
             <div className="space-y-2">
               {vercelDeployments.length === 0 ? (
-                <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-8 text-center">
-                  <Globe className="w-12 h-12 text-zinc-600 mx-auto mb-3" />
-                  <p className="text-zinc-400">Nenhum deployment encontrado</p>
-                  <p className="text-xs text-zinc-500 mt-1">Configure a integração Vercel nas configurações</p>
+                <div className="bg-layer-1/50 border border-subtle rounded-xl p-8 text-center">
+                  <Globe className="w-12 h-12 text-disabled mx-auto mb-3" />
+                  <p className="text-muted">Nenhum deployment encontrado</p>
+                  <p className="text-xs text-muted mt-1">Configure a integração Vercel nas configurações</p>
                 </div>
               ) : (
                 vercelDeployments.map((deployment) => {
@@ -426,7 +426,7 @@ export function LogsTab() {
                   return (
                     <div
                       key={deployment.uid}
-                      className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 hover:bg-zinc-900 transition-all"
+                      className="bg-layer-1/50 border border-subtle rounded-lg p-4 hover:bg-layer-1 transition-all"
                     >
                       <div className="flex items-start gap-3">
                         <div className={`p-2 ${styles.bg} rounded-lg flex-shrink-0`}>
@@ -437,7 +437,7 @@ export function LogsTab() {
                             <span className={`px-2 py-0.5 ${styles.bg} ${styles.text} text-xs font-medium rounded`}>
                               {styles.label}
                             </span>
-                            <span className="text-xs text-zinc-500">
+                            <span className="text-xs text-muted">
                               {formatTimestamp(deployment.createdAt)}
                             </span>
                           </div>

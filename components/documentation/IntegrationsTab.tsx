@@ -163,7 +163,7 @@ export default function IntegrationsTab() {
               <p className="text-green-300">Arquitetura de conexões externas</p>
             </div>
           </div>
-          <p className="text-lg text-zinc-300 leading-relaxed max-w-3xl">
+          <p className="text-lg text-secondary leading-relaxed max-w-3xl">
             O ORION integra-se com{" "}
             <span className="text-green-400 font-semibold">múltiplos serviços externos</span>{" "}
             para fornecer suas funcionalidades. Cada integração tem um propósito
@@ -192,7 +192,7 @@ export default function IntegrationsTab() {
           {integrations.map((api, index) => (
             <div
               key={index}
-              className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 hover:border-zinc-700 transition-colors"
+              className="bg-layer-1 border border-subtle rounded-xl p-6 hover:border-subtle transition-colors"
             >
               <div className="flex items-start gap-4 mb-4">
                 <ServiceLogo name={api.name} color={api.gradient} />
@@ -203,23 +203,23 @@ export default function IntegrationsTab() {
                       {api.criticality}
                     </span>
                   </div>
-                  <p className="text-sm text-zinc-400">{api.function}</p>
+                  <p className="text-sm text-muted">{api.function}</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p className="text-xs text-zinc-500 uppercase mb-1">Modelo/Versão</p>
-                  <p className="text-zinc-300">{api.model}</p>
+                  <p className="text-xs text-muted uppercase mb-1">Modelo/Versão</p>
+                  <p className="text-secondary">{api.model}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-zinc-500 uppercase mb-1">Uso Principal</p>
-                  <p className="text-zinc-300">{api.use}</p>
+                  <p className="text-xs text-muted uppercase mb-1">Uso Principal</p>
+                  <p className="text-secondary">{api.use}</p>
                 </div>
               </div>
 
-              <div className="mt-4 pt-4 border-t border-zinc-800">
-                <div className="flex items-center gap-2 text-xs text-zinc-500">
+              <div className="mt-4 pt-4 border-t border-subtle">
+                <div className="flex items-center gap-2 text-xs text-muted">
                   <Key className="w-3 h-3" />
                   <span>{api.auth}</span>
                 </div>
@@ -228,7 +228,7 @@ export default function IntegrationsTab() {
                     {api.endpoints.map((endpoint, i) => (
                       <code
                         key={i}
-                        className="px-2 py-1 bg-zinc-800 rounded text-xs text-zinc-400 font-mono"
+                        className="px-2 py-1 bg-layer-2 rounded text-xs text-muted font-mono"
                       >
                         {endpoint}
                       </code>
@@ -255,7 +255,7 @@ export default function IntegrationsTab() {
           />
         </div>
 
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8">
+        <div className="bg-layer-1 border border-subtle rounded-xl p-8">
           <div className="text-center mb-8">
             <div className="inline-block bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl px-8 py-4">
               <p className="text-white font-bold text-lg">EMERGENCY YOUTUBE</p>
@@ -277,7 +277,7 @@ export default function IntegrationsTab() {
                     <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${service.color} flex items-center justify-center text-white text-xs font-bold`}>
                       {service.name.charAt(0)}
                     </div>
-                    <span className="text-sm text-zinc-300">{service.name}</span>
+                    <span className="text-sm text-secondary">{service.name}</span>
                   </div>
                 ))}
               </div>
@@ -297,7 +297,7 @@ export default function IntegrationsTab() {
                     <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${provider.color} flex items-center justify-center text-white text-xs font-bold`}>
                       {provider.name.charAt(0)}
                     </div>
-                    <span className="text-sm text-zinc-300">{provider.name}</span>
+                    <span className="text-sm text-secondary">{provider.name}</span>
                   </div>
                 ))}
               </div>
@@ -317,7 +317,7 @@ export default function IntegrationsTab() {
                     <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${service.color} flex items-center justify-center text-white text-xs font-bold`}>
                       {service.name.charAt(0)}
                     </div>
-                    <span className="text-sm text-zinc-300">{service.name}</span>
+                    <span className="text-sm text-secondary">{service.name}</span>
                   </div>
                 ))}
               </div>
@@ -330,8 +330,8 @@ export default function IntegrationsTab() {
                 <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center text-white text-2xl font-bold mb-3">
                   Y
                 </div>
-                <span className="text-zinc-300 font-medium">YouTube Data API</span>
-                <span className="text-xs text-zinc-500 mt-1">v3</span>
+                <span className="text-secondary font-medium">YouTube Data API</span>
+                <span className="text-xs text-muted mt-1">v3</span>
               </div>
             </div>
           </div>
@@ -354,7 +354,7 @@ export default function IntegrationsTab() {
 
         <div className="space-y-6">
           {/* Script Generation Flow */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+          <div className="bg-layer-1 border border-subtle rounded-xl p-6">
             <h4 className="font-semibold text-white mb-4">1. Geração de Roteiro</h4>
             <div className="flex items-center gap-4 overflow-x-auto pb-2">
               {[
@@ -365,18 +365,18 @@ export default function IntegrationsTab() {
                 { label: "Frontend", sub: "UI" },
               ].map((step, i) => (
                 <div key={i} className="flex items-center gap-4">
-                  <div className="bg-zinc-800 border border-zinc-700 rounded-lg p-3 min-w-[100px] text-center">
+                  <div className="bg-layer-2 border border-subtle rounded-lg p-3 min-w-[100px] text-center">
                     <p className="text-white font-medium text-sm">{step.label}</p>
-                    <p className="text-zinc-500 text-xs">{step.sub}</p>
+                    <p className="text-muted text-xs">{step.sub}</p>
                   </div>
-                  {i < 4 && <ArrowRight className="w-5 h-5 text-zinc-600 flex-shrink-0" />}
+                  {i < 4 && <ArrowRight className="w-5 h-5 text-disabled flex-shrink-0" />}
                 </div>
               ))}
             </div>
           </div>
 
           {/* Thumbnail Generation Flow */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+          <div className="bg-layer-1 border border-subtle rounded-xl p-6">
             <h4 className="font-semibold text-white mb-4">2. Geração de Thumbnail</h4>
             <div className="flex items-center gap-4 overflow-x-auto pb-2">
               {[
@@ -387,18 +387,18 @@ export default function IntegrationsTab() {
                 { label: "Frontend", sub: "Preview" },
               ].map((step, i) => (
                 <div key={i} className="flex items-center gap-4">
-                  <div className="bg-zinc-800 border border-zinc-700 rounded-lg p-3 min-w-[100px] text-center">
+                  <div className="bg-layer-2 border border-subtle rounded-lg p-3 min-w-[100px] text-center">
                     <p className="text-white font-medium text-sm">{step.label}</p>
-                    <p className="text-zinc-500 text-xs">{step.sub}</p>
+                    <p className="text-muted text-xs">{step.sub}</p>
                   </div>
-                  {i < 4 && <ArrowRight className="w-5 h-5 text-zinc-600 flex-shrink-0" />}
+                  {i < 4 && <ArrowRight className="w-5 h-5 text-disabled flex-shrink-0" />}
                 </div>
               ))}
             </div>
           </div>
 
           {/* YouTube Upload Flow */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+          <div className="bg-layer-1 border border-subtle rounded-xl p-6">
             <h4 className="font-semibold text-white mb-4">3. Upload para YouTube</h4>
             <div className="flex items-center gap-4 overflow-x-auto pb-2">
               {[
@@ -409,11 +409,11 @@ export default function IntegrationsTab() {
                 { label: "Publicado", sub: "URL" },
               ].map((step, i) => (
                 <div key={i} className="flex items-center gap-4">
-                  <div className="bg-zinc-800 border border-zinc-700 rounded-lg p-3 min-w-[100px] text-center">
+                  <div className="bg-layer-2 border border-subtle rounded-lg p-3 min-w-[100px] text-center">
                     <p className="text-white font-medium text-sm">{step.label}</p>
-                    <p className="text-zinc-500 text-xs">{step.sub}</p>
+                    <p className="text-muted text-xs">{step.sub}</p>
                   </div>
-                  {i < 4 && <ArrowRight className="w-5 h-5 text-zinc-600 flex-shrink-0" />}
+                  {i < 4 && <ArrowRight className="w-5 h-5 text-disabled flex-shrink-0" />}
                 </div>
               ))}
             </div>
@@ -437,7 +437,7 @@ export default function IntegrationsTab() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Credential Storage */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+          <div className="bg-layer-1 border border-subtle rounded-xl p-6">
             <h4 className="font-semibold text-white mb-4 flex items-center gap-2">
               <Database className="w-5 h-5 text-amber-400" />
               Armazenamento de Credenciais
@@ -448,9 +448,9 @@ export default function IntegrationsTab() {
                 { type: "API Keys (Usuário)", local: "localStorage (browser)", security: "Criptografadas localmente" },
                 { type: "OAuth Tokens", local: "Cookie httpOnly", security: "Sessão segura" },
               ].map((item, i) => (
-                <div key={i} className="p-3 bg-zinc-800/50 rounded-lg">
+                <div key={i} className="p-3 bg-layer-2/50 rounded-lg">
                   <p className="font-medium text-white text-sm">{item.type}</p>
-                  <p className="text-xs text-zinc-400">{item.local}</p>
+                  <p className="text-xs text-muted">{item.local}</p>
                   <p className="text-xs text-green-400 mt-1 flex items-center gap-1">
                     <Lock className="w-3 h-3" />
                     {item.security}
@@ -461,7 +461,7 @@ export default function IntegrationsTab() {
           </div>
 
           {/* Fallback & Redundancy */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+          <div className="bg-layer-1 border border-subtle rounded-xl p-6">
             <h4 className="font-semibold text-white mb-4 flex items-center gap-2">
               <RefreshCw className="w-5 h-5 text-cyan-400" />
               Fallback e Redundância
@@ -485,17 +485,17 @@ export default function IntegrationsTab() {
                 },
               ].map((item, i) => (
                 <div key={i} className="flex items-center gap-3">
-                  <div className="flex-1 p-2 bg-zinc-800 rounded text-center">
+                  <div className="flex-1 p-2 bg-layer-2 rounded text-center">
                     <p className="text-sm text-white">{item.primary}</p>
                   </div>
                   <item.icon className="w-4 h-4 text-yellow-400" />
-                  <div className="flex-1 p-2 bg-zinc-800/50 rounded text-center border border-dashed border-zinc-700">
-                    <p className="text-sm text-zinc-400">{item.fallback}</p>
+                  <div className="flex-1 p-2 bg-layer-2/50 rounded text-center border border-dashed border-subtle">
+                    <p className="text-sm text-muted">{item.fallback}</p>
                   </div>
                 </div>
               ))}
             </div>
-            <p className="text-xs text-zinc-500 mt-4">
+            <p className="text-xs text-muted mt-4">
               Se o serviço primário falhar, o sistema tenta automaticamente o fallback.
             </p>
           </div>
@@ -516,7 +516,7 @@ export default function IntegrationsTab() {
           />
         </div>
 
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+        <div className="bg-layer-1 border border-subtle rounded-xl p-6">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             {[
               { num: "1", text: "Usuário clica em Conectar YouTube" },
@@ -529,7 +529,7 @@ export default function IntegrationsTab() {
                 <div className="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
                   <span className="text-red-400 font-bold">{step.num}</span>
                 </div>
-                <p className="text-xs text-zinc-400">{step.text}</p>
+                <p className="text-xs text-muted">{step.text}</p>
               </div>
             ))}
           </div>

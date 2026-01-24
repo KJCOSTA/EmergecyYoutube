@@ -122,26 +122,26 @@ export function IntegrationsTab({ initialTokens, onUpdate }: IntegrationsTabProp
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3 pb-4 border-b border-zinc-800">
+      <div className="flex items-center gap-3 pb-4 border-b border-subtle">
         <div className="p-2 bg-blue-500/10 rounded-lg">
           <Globe className="w-5 h-5 text-blue-500" />
         </div>
         <div>
           <h2 className="text-xl font-bold text-white">Integrações & Tokens</h2>
-          <p className="text-sm text-zinc-400">Configure APIs para logs e automação</p>
+          <p className="text-sm text-muted">Configure APIs para logs e automação</p>
         </div>
       </div>
 
       <div className="space-y-6">
         {/* GitHub Integration */}
-        <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+        <div className="bg-layer-1/50 border border-subtle rounded-xl p-6">
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-zinc-800 rounded-lg">
+            <div className="p-2 bg-layer-2 rounded-lg">
               <Github className="w-5 h-5 text-white" />
             </div>
             <div className="flex-1">
               <h3 className="font-semibold text-white">GitHub</h3>
-              <p className="text-xs text-zinc-500">Para logs de commits e changelog automático</p>
+              <p className="text-xs text-muted">Para logs de commits e changelog automático</p>
             </div>
             {tokens.github && (
               <span className="px-2 py-1 bg-green-500/10 text-green-400 text-xs rounded-full flex items-center gap-1">
@@ -153,33 +153,33 @@ export function IntegrationsTab({ initialTokens, onUpdate }: IntegrationsTabProp
 
           <div className="space-y-3">
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1">Token</label>
+              <label className="block text-sm font-medium text-secondary mb-1">Token</label>
               <input
                 type="password"
                 value={githubForm.token}
                 onChange={(e) => setGithubForm({ ...githubForm, token: e.target.value })}
-                className="w-full bg-black/50 border border-zinc-700 rounded-lg py-2 px-3 text-white text-sm"
+                className="w-full bg-black/50 border border-subtle rounded-lg py-2 px-3 text-white text-sm"
                 placeholder="ghp_..."
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1">Owner</label>
+                <label className="block text-sm font-medium text-secondary mb-1">Owner</label>
                 <input
                   type="text"
                   value={githubForm.owner}
                   onChange={(e) => setGithubForm({ ...githubForm, owner: e.target.value })}
-                  className="w-full bg-black/50 border border-zinc-700 rounded-lg py-2 px-3 text-white text-sm"
+                  className="w-full bg-black/50 border border-subtle rounded-lg py-2 px-3 text-white text-sm"
                   placeholder="username"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1">Repositório</label>
+                <label className="block text-sm font-medium text-secondary mb-1">Repositório</label>
                 <input
                   type="text"
                   value={githubForm.repo}
                   onChange={(e) => setGithubForm({ ...githubForm, repo: e.target.value })}
-                  className="w-full bg-black/50 border border-zinc-700 rounded-lg py-2 px-3 text-white text-sm"
+                  className="w-full bg-black/50 border border-subtle rounded-lg py-2 px-3 text-white text-sm"
                   placeholder="repository-name"
                 />
               </div>
@@ -199,7 +199,7 @@ export function IntegrationsTab({ initialTokens, onUpdate }: IntegrationsTabProp
               <button
                 onClick={handleTestGitHub}
                 disabled={testing === 'github' || !tokens.github}
-                className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg text-sm flex items-center gap-2 transition-all disabled:opacity-50"
+                className="px-4 py-2 bg-layer-2 hover:bg-zinc-700 text-white rounded-lg text-sm flex items-center gap-2 transition-all disabled:opacity-50"
               >
                 {testing === 'github' ? (
                   <><RefreshCw className="w-4 h-4 animate-spin" /> Testando...</>
@@ -228,16 +228,16 @@ export function IntegrationsTab({ initialTokens, onUpdate }: IntegrationsTabProp
         </div>
 
         {/* Vercel Integration */}
-        <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+        <div className="bg-layer-1/50 border border-subtle rounded-xl p-6">
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-zinc-800 rounded-lg">
+            <div className="p-2 bg-layer-2 rounded-lg">
               <svg className="w-5 h-5 text-white" viewBox="0 0 76 76" fill="currentColor">
                 <path d="M38 0L76 66H0L38 0z" />
               </svg>
             </div>
             <div className="flex-1">
               <h3 className="font-semibold text-white">Vercel</h3>
-              <p className="text-xs text-zinc-500">Para logs de deployments</p>
+              <p className="text-xs text-muted">Para logs de deployments</p>
             </div>
             {tokens.vercel && (
               <span className="px-2 py-1 bg-green-500/10 text-green-400 text-xs rounded-full flex items-center gap-1">
@@ -249,22 +249,22 @@ export function IntegrationsTab({ initialTokens, onUpdate }: IntegrationsTabProp
 
           <div className="space-y-3">
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1">Token</label>
+              <label className="block text-sm font-medium text-secondary mb-1">Token</label>
               <input
                 type="password"
                 value={vercelForm.token}
                 onChange={(e) => setVercelForm({ ...vercelForm, token: e.target.value })}
-                className="w-full bg-black/50 border border-zinc-700 rounded-lg py-2 px-3 text-white text-sm"
+                className="w-full bg-black/50 border border-subtle rounded-lg py-2 px-3 text-white text-sm"
                 placeholder="v1_..."
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1">Project ID</label>
+              <label className="block text-sm font-medium text-secondary mb-1">Project ID</label>
               <input
                 type="text"
                 value={vercelForm.projectId}
                 onChange={(e) => setVercelForm({ ...vercelForm, projectId: e.target.value })}
-                className="w-full bg-black/50 border border-zinc-700 rounded-lg py-2 px-3 text-white text-sm"
+                className="w-full bg-black/50 border border-subtle rounded-lg py-2 px-3 text-white text-sm"
                 placeholder="prj_..."
               />
             </div>
@@ -283,7 +283,7 @@ export function IntegrationsTab({ initialTokens, onUpdate }: IntegrationsTabProp
               <button
                 onClick={handleTestVercel}
                 disabled={testing === 'vercel' || !tokens.vercel}
-                className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg text-sm flex items-center gap-2 transition-all disabled:opacity-50"
+                className="px-4 py-2 bg-layer-2 hover:bg-zinc-700 text-white rounded-lg text-sm flex items-center gap-2 transition-all disabled:opacity-50"
               >
                 {testing === 'vercel' ? (
                   <><RefreshCw className="w-4 h-4 animate-spin" /> Testando...</>

@@ -84,27 +84,27 @@ export function AppearanceTab() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <RefreshCw className="w-8 h-8 text-zinc-600 animate-spin" />
+        <RefreshCw className="w-8 h-8 text-disabled animate-spin" />
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between pb-4 border-b border-zinc-800">
+      <div className="flex items-center justify-between pb-4 border-b border-subtle">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-purple-500/10 rounded-lg">
             <Palette className="w-5 h-5 text-purple-500" />
           </div>
           <div>
             <h2 className="text-xl font-bold text-white">Aparência do Sistema</h2>
-            <p className="text-sm text-zinc-400">Personalize o nome e logotipo (White Label)</p>
+            <p className="text-sm text-muted">Personalize o nome e logotipo (White Label)</p>
           </div>
         </div>
         <button
           onClick={handleReset}
           disabled={saving}
-          className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg font-medium flex items-center gap-2 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2 bg-layer-2 hover:bg-zinc-700 text-secondary rounded-lg font-medium flex items-center gap-2 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <RotateCcw className="w-4 h-4" />
           Resetar Padrão
@@ -114,10 +114,10 @@ export function AppearanceTab() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Logo Preview */}
         <div className="lg:col-span-1">
-          <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
-            <h3 className="text-sm font-semibold text-zinc-300 mb-4">Preview do Logo</h3>
+          <div className="bg-layer-1/50 border border-subtle rounded-xl p-6">
+            <h3 className="text-sm font-semibold text-secondary mb-4">Preview do Logo</h3>
 
-            <div className="aspect-square bg-black/50 border-2 border-dashed border-zinc-700 rounded-xl flex items-center justify-center overflow-hidden">
+            <div className="aspect-square bg-black/50 border-2 border-dashed border-subtle rounded-xl flex items-center justify-center overflow-hidden">
               {config.logoUrl ? (
                 <img
                   src={config.logoUrl}
@@ -130,14 +130,14 @@ export function AppearanceTab() {
                 />
               ) : (
                 <div className="text-center">
-                  <ImageIcon className="w-12 h-12 text-zinc-600 mx-auto mb-2" />
-                  <p className="text-xs text-zinc-500">Sem logo</p>
+                  <ImageIcon className="w-12 h-12 text-disabled mx-auto mb-2" />
+                  <p className="text-xs text-muted">Sem logo</p>
                 </div>
               )}
             </div>
 
-            <div className="mt-4 p-3 bg-zinc-900 border border-zinc-800 rounded-lg">
-              <p className="text-xs font-semibold text-zinc-400 mb-1">Nome do Sistema:</p>
+            <div className="mt-4 p-3 bg-layer-1 border border-subtle rounded-lg">
+              <p className="text-xs font-semibold text-muted mb-1">Nome do Sistema:</p>
               <p className="text-lg font-bold text-white">{config.systemName}</p>
             </div>
           </div>
@@ -145,37 +145,37 @@ export function AppearanceTab() {
 
         {/* Configuration Form */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 space-y-4">
+          <div className="bg-layer-1/50 border border-subtle rounded-xl p-6 space-y-4">
             {/* System Name */}
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">
+              <label className="block text-sm font-medium text-secondary mb-2">
                 Nome do Sistema
               </label>
               <input
                 type="text"
                 value={config.systemName}
                 onChange={(e) => setConfig({ ...config, systemName: e.target.value })}
-                className="w-full bg-black/50 border border-zinc-700 rounded-lg py-2.5 px-4 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                className="w-full bg-black/50 border border-subtle rounded-lg py-2.5 px-4 text-white placeholder:text-disabled focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                 placeholder="Ex: ORION, MyApp, Studio..."
               />
-              <p className="text-xs text-zinc-500 mt-1">
+              <p className="text-xs text-muted mt-1">
                 Este nome aparecerá na barra lateral e no título da página
               </p>
             </div>
 
             {/* Logo URL */}
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">
+              <label className="block text-sm font-medium text-secondary mb-2">
                 URL do Logotipo
               </label>
               <input
                 type="url"
                 value={config.logoUrl || ''}
                 onChange={(e) => setConfig({ ...config, logoUrl: e.target.value || null })}
-                className="w-full bg-black/50 border border-zinc-700 rounded-lg py-2.5 px-4 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                className="w-full bg-black/50 border border-subtle rounded-lg py-2.5 px-4 text-white placeholder:text-disabled focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                 placeholder="https://exemplo.com/logo.png"
               />
-              <p className="text-xs text-zinc-500 mt-1">
+              <p className="text-xs text-muted mt-1">
                 Formatos recomendados: PNG, SVG (fundo transparente)
               </p>
             </div>
@@ -199,8 +199,8 @@ export function AppearanceTab() {
             </div>
 
             {/* Save Button */}
-            <div className="flex items-center justify-between pt-4 border-t border-zinc-800">
-              <div className="text-xs text-zinc-500">
+            <div className="flex items-center justify-between pt-4 border-t border-subtle">
+              <div className="text-xs text-muted">
                 Última atualização:{' '}
                 {new Date(config.updatedAt).toLocaleString('pt-BR')}
               </div>
@@ -230,12 +230,12 @@ export function AppearanceTab() {
           </div>
 
           {/* Additional Info */}
-          <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
-            <h3 className="text-sm font-semibold text-zinc-300 mb-3 flex items-center gap-2">
-              <ImageIcon className="w-4 h-4 text-zinc-400" />
+          <div className="bg-layer-1/50 border border-subtle rounded-xl p-6">
+            <h3 className="text-sm font-semibold text-secondary mb-3 flex items-center gap-2">
+              <ImageIcon className="w-4 h-4 text-muted" />
               Sistema White Label
             </h3>
-            <p className="text-sm text-zinc-400 leading-relaxed">
+            <p className="text-sm text-muted leading-relaxed">
               Com o sistema White Label, você pode personalizar completamente a identidade visual do ORION.
               Altere o nome do sistema e o logotipo para refletir sua marca. As mudanças são aplicadas
               automaticamente em toda a interface, incluindo a barra lateral, título da página e metadados.

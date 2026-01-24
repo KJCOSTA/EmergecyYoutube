@@ -93,22 +93,22 @@ export function ProfileTab({ initialProfile }: ProfileTabProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3 pb-4 border-b border-zinc-800">
+      <div className="flex items-center gap-3 pb-4 border-b border-subtle">
         <div className="p-2 bg-indigo-500/10 rounded-lg">
           <User className="w-5 h-5 text-indigo-500" />
         </div>
         <div>
           <h2 className="text-xl font-bold text-white">Perfil do Usuário</h2>
-          <p className="text-sm text-zinc-400">Gerencie suas informações pessoais</p>
+          <p className="text-sm text-muted">Gerencie suas informações pessoais</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Avatar Preview with Upload */}
         <div className="lg:col-span-1">
-          <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 text-center">
+          <div className="bg-layer-1/50 border border-subtle rounded-xl p-6 text-center">
             <div className="relative w-32 h-32 mx-auto mb-4">
-              <div className="w-full h-full rounded-full overflow-hidden border-4 border-zinc-700">
+              <div className="w-full h-full rounded-full overflow-hidden border-4 border-subtle">
                 <img
                   src={profile.avatarUrl}
                   alt={profile.name}
@@ -140,8 +140,8 @@ export function ProfileTab({ initialProfile }: ProfileTabProps) {
             </div>
 
             <h3 className="text-lg font-semibold text-white">{profile.name}</h3>
-            <p className="text-sm text-zinc-400">{profile.role}</p>
-            <p className="text-xs text-zinc-500 mt-2">ID: {profile.id}</p>
+            <p className="text-sm text-muted">{profile.role}</p>
+            <p className="text-xs text-muted mt-2">ID: {profile.id}</p>
 
             {/* Upload Button */}
             <button
@@ -170,7 +170,7 @@ export function ProfileTab({ initialProfile }: ProfileTabProps) {
               </div>
             )}
 
-            <p className="text-xs text-zinc-500 mt-3">
+            <p className="text-xs text-muted mt-3">
               Clique na foto ou no botão para alterar.
               <br />
               Formatos: JPEG, PNG, GIF, WebP (máx. 5MB)
@@ -180,48 +180,48 @@ export function ProfileTab({ initialProfile }: ProfileTabProps) {
 
         {/* Profile Form */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 space-y-4">
+          <div className="bg-layer-1/50 border border-subtle rounded-xl p-6 space-y-4">
             {/* Name */}
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">
+              <label className="block text-sm font-medium text-secondary mb-2">
                 Nome
               </label>
               <input
                 type="text"
                 value={profile.name}
                 onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                className="w-full bg-black/50 border border-zinc-700 rounded-lg py-2.5 px-4 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                className="w-full bg-black/50 border border-subtle rounded-lg py-2.5 px-4 text-white placeholder:text-disabled focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                 placeholder="Seu nome"
               />
             </div>
 
             {/* Role */}
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">
+              <label className="block text-sm font-medium text-secondary mb-2">
                 Cargo
               </label>
               <input
                 type="text"
                 value={profile.role}
                 onChange={(e) => setProfile({ ...profile, role: e.target.value })}
-                className="w-full bg-black/50 border border-zinc-700 rounded-lg py-2.5 px-4 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                className="w-full bg-black/50 border border-subtle rounded-lg py-2.5 px-4 text-white placeholder:text-disabled focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                 placeholder="Seu cargo"
               />
             </div>
 
             {/* Avatar URL - Manual input as fallback */}
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">
+              <label className="block text-sm font-medium text-secondary mb-2">
                 URL do Avatar (alternativo)
               </label>
               <input
                 type="url"
                 value={profile.avatarUrl}
                 onChange={(e) => setProfile({ ...profile, avatarUrl: e.target.value })}
-                className="w-full bg-black/50 border border-zinc-700 rounded-lg py-2.5 px-4 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                className="w-full bg-black/50 border border-subtle rounded-lg py-2.5 px-4 text-white placeholder:text-disabled focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                 placeholder="https://..."
               />
-              <p className="text-xs text-zinc-500 mt-1">
+              <p className="text-xs text-muted mt-1">
                 Ou use{' '}
                 <a
                   href="https://api.dicebear.com/7.x/avataaars/svg?seed=YourName"
@@ -237,21 +237,21 @@ export function ProfileTab({ initialProfile }: ProfileTabProps) {
 
             {/* Bio */}
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">
+              <label className="block text-sm font-medium text-secondary mb-2">
                 Bio
               </label>
               <textarea
                 value={profile.bio}
                 onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
                 rows={3}
-                className="w-full bg-black/50 border border-zinc-700 rounded-lg py-2.5 px-4 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all resize-none"
+                className="w-full bg-black/50 border border-subtle rounded-lg py-2.5 px-4 text-white placeholder:text-disabled focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all resize-none"
                 placeholder="Escreva uma breve descrição sobre você..."
               />
             </div>
 
             {/* Save Button */}
-            <div className="flex items-center justify-between pt-4 border-t border-zinc-800">
-              <div className="text-xs text-zinc-500">
+            <div className="flex items-center justify-between pt-4 border-t border-subtle">
+              <div className="text-xs text-muted">
                 Última atualização:{' '}
                 {new Date(profile.updatedAt).toLocaleString('pt-BR')}
               </div>

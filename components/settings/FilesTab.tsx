@@ -128,7 +128,7 @@ export function FilesTab() {
     const iconMap: Record<string, React.ReactElement> = {
       // Documents
       json: <FileText className="w-5 h-5 text-blue-400" />,
-      txt: <FileText className="w-5 h-5 text-zinc-400" />,
+      txt: <FileText className="w-5 h-5 text-muted" />,
       csv: <FileText className="w-5 h-5 text-green-400" />,
       xml: <FileText className="w-5 h-5 text-orange-400" />,
       md: <FileText className="w-5 h-5 text-purple-400" />,
@@ -154,13 +154,13 @@ export function FilesTab() {
       gz: <Archive className="w-5 h-5 text-amber-400" />,
     };
 
-    return iconMap[ext || ''] || <File className="w-5 h-5 text-zinc-500" />;
+    return iconMap[ext || ''] || <File className="w-5 h-5 text-muted" />;
   };
 
   if (loading && !listing) {
     return (
       <div className="flex items-center justify-center py-12">
-        <RefreshCw className="w-8 h-8 text-zinc-600 animate-spin" />
+        <RefreshCw className="w-8 h-8 text-disabled animate-spin" />
       </div>
     );
   }
@@ -168,14 +168,14 @@ export function FilesTab() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between pb-4 border-b border-zinc-800">
+      <div className="flex items-center justify-between pb-4 border-b border-subtle">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-orange-500/10 rounded-lg">
             <Cloud className="w-5 h-5 text-orange-500" />
           </div>
           <div>
             <h2 className="text-xl font-bold text-white">Gerenciador de Arquivos</h2>
-            <p className="text-sm text-zinc-400">
+            <p className="text-sm text-muted">
               Vercel Blob Storage - Arquivos do projeto
             </p>
           </div>
@@ -234,16 +234,16 @@ export function FilesTab() {
       {/* Stats */}
       {listing && (
         <div className="grid grid-cols-3 gap-4">
-          <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4">
-            <p className="text-sm text-zinc-500">Total de Arquivos</p>
+          <div className="bg-layer-1/50 border border-subtle rounded-lg p-4">
+            <p className="text-sm text-muted">Total de Arquivos</p>
             <p className="text-2xl font-bold text-white">{listing.totalFiles || 0}</p>
           </div>
-          <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4">
-            <p className="text-sm text-zinc-500">Tamanho Total</p>
+          <div className="bg-layer-1/50 border border-subtle rounded-lg p-4">
+            <p className="text-sm text-muted">Tamanho Total</p>
             <p className="text-2xl font-bold text-white">{formatBytes(listing.totalSize)}</p>
           </div>
-          <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4">
-            <p className="text-sm text-zinc-500">Nesta Pasta</p>
+          <div className="bg-layer-1/50 border border-subtle rounded-lg p-4">
+            <p className="text-sm text-muted">Nesta Pasta</p>
             <p className="text-2xl font-bold text-white">{listing.entries.length}</p>
           </div>
         </div>
@@ -251,7 +251,7 @@ export function FilesTab() {
 
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm">
-        <FolderOpen className="w-4 h-4 text-zinc-500" />
+        <FolderOpen className="w-4 h-4 text-muted" />
         <button
           onClick={() => setCurrentPath('')}
           className="text-orange-400 hover:text-orange-300 transition-colors"
@@ -260,7 +260,7 @@ export function FilesTab() {
         </button>
         {currentPath.split('/').filter(Boolean).map((part, index, arr) => (
           <div key={index} className="flex items-center gap-2">
-            <ChevronRight className="w-4 h-4 text-zinc-600" />
+            <ChevronRight className="w-4 h-4 text-disabled" />
             <button
               onClick={() => {
                 const newPath = arr.slice(0, index + 1).join('/');
@@ -275,9 +275,9 @@ export function FilesTab() {
       </div>
 
       {/* File List */}
-      <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden">
+      <div className="bg-layer-1/50 border border-subtle rounded-xl overflow-hidden">
         {/* Header */}
-        <div className="grid grid-cols-12 gap-4 px-6 py-3 bg-zinc-950/50 border-b border-zinc-800 text-xs font-medium text-zinc-400">
+        <div className="grid grid-cols-12 gap-4 px-6 py-3 bg-zinc-950/50 border-b border-subtle text-xs font-medium text-muted">
           <div className="col-span-6">Nome</div>
           <div className="col-span-2">Tamanho</div>
           <div className="col-span-3">Modificado</div>
@@ -290,20 +290,20 @@ export function FilesTab() {
           {currentPath && (
             <button
               onClick={handleGoUp}
-              className="w-full grid grid-cols-12 gap-4 px-6 py-3 hover:bg-zinc-800/50 transition-colors text-left"
+              className="w-full grid grid-cols-12 gap-4 px-6 py-3 hover:bg-layer-2/50 transition-colors text-left"
             >
               <div className="col-span-6 flex items-center gap-3">
-                <FolderClosed className="w-5 h-5 text-zinc-500" />
-                <span className="text-zinc-400">..</span>
+                <FolderClosed className="w-5 h-5 text-muted" />
+                <span className="text-muted">..</span>
               </div>
-              <div className="col-span-5 text-sm text-zinc-500">Voltar</div>
+              <div className="col-span-5 text-sm text-muted">Voltar</div>
             </button>
           )}
 
           {listing?.entries.map((entry, index) => (
             <div
               key={index}
-              className="grid grid-cols-12 gap-4 px-6 py-3 hover:bg-zinc-800/50 transition-colors group"
+              className="grid grid-cols-12 gap-4 px-6 py-3 hover:bg-layer-2/50 transition-colors group"
             >
               {/* Name */}
               <button
@@ -317,12 +317,12 @@ export function FilesTab() {
               </button>
 
               {/* Size */}
-              <div className="col-span-2 flex items-center text-sm text-zinc-400">
+              <div className="col-span-2 flex items-center text-sm text-muted">
                 {formatBytes(entry.size)}
               </div>
 
               {/* Modified Date */}
-              <div className="col-span-3 flex items-center text-sm text-zinc-400">
+              <div className="col-span-3 flex items-center text-sm text-muted">
                 {formatDate(entry.modifiedAt)}
               </div>
 
@@ -343,9 +343,9 @@ export function FilesTab() {
 
           {listing?.entries.length === 0 && (
             <div className="px-6 py-12 text-center">
-              <Cloud className="w-12 h-12 text-zinc-600 mx-auto mb-3" />
-              <p className="text-zinc-500">Nenhum arquivo encontrado</p>
-              <p className="text-zinc-600 text-sm mt-1">
+              <Cloud className="w-12 h-12 text-disabled mx-auto mb-3" />
+              <p className="text-muted">Nenhum arquivo encontrado</p>
+              <p className="text-disabled text-sm mt-1">
                 Faça upload de arquivos para começar
               </p>
             </div>

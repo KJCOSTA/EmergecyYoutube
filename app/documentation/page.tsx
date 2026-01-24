@@ -149,12 +149,12 @@ function CountdownTimer({ targetDate }: { targetDate: Date }) {
   return (
     <div className="flex items-center gap-2 text-sm">
       <Rocket className="w-4 h-4 text-amber-400" />
-      <span className="text-zinc-300">Lançamento em:</span>
+      <span className="text-secondary">Lançamento em:</span>
       <div className="flex gap-1">
-        <span className="bg-zinc-800 px-2 py-1 rounded font-mono text-amber-400">{timeLeft.days}d</span>
-        <span className="bg-zinc-800 px-2 py-1 rounded font-mono text-amber-400">{timeLeft.hours}h</span>
-        <span className="bg-zinc-800 px-2 py-1 rounded font-mono text-amber-400">{timeLeft.minutes}m</span>
-        <span className="bg-zinc-800 px-2 py-1 rounded font-mono text-amber-400">{timeLeft.seconds}s</span>
+        <span className="bg-layer-2 px-2 py-1 rounded font-mono text-amber-400">{timeLeft.days}d</span>
+        <span className="bg-layer-2 px-2 py-1 rounded font-mono text-amber-400">{timeLeft.hours}h</span>
+        <span className="bg-layer-2 px-2 py-1 rounded font-mono text-amber-400">{timeLeft.minutes}m</span>
+        <span className="bg-layer-2 px-2 py-1 rounded font-mono text-amber-400">{timeLeft.seconds}s</span>
       </div>
     </div>
   );
@@ -163,7 +163,7 @@ function CountdownTimer({ targetDate }: { targetDate: Date }) {
 // Componente de Barra de Progresso
 function ProjectProgress() {
   return (
-    <div className="bg-zinc-900/80 border border-zinc-700 rounded-xl p-4">
+    <div className="bg-layer-1/80 border border-subtle rounded-xl p-4">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <TrendingUp className="w-5 h-5 text-green-400" />
@@ -173,7 +173,7 @@ function ProjectProgress() {
       </div>
 
       {/* Barra principal */}
-      <div className="h-3 bg-zinc-800 rounded-full overflow-hidden mb-4">
+      <div className="h-3 bg-layer-2 rounded-full overflow-hidden mb-4">
         <div
           className="h-full bg-gradient-to-r from-green-500 to-emerald-400 rounded-full transition-all duration-500"
           style={{ width: `${PROJECT_CONFIG.progress.completed}%` }}
@@ -183,9 +183,9 @@ function ProjectProgress() {
       {/* Items detalhados */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {PROJECT_CONFIG.progress.items.map((item) => (
-          <div key={item.name} className="bg-zinc-800/50 rounded-lg p-2">
+          <div key={item.name} className="bg-layer-2/50 rounded-lg p-2">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-xs text-zinc-400 truncate">{item.name}</span>
+              <span className="text-xs text-muted truncate">{item.name}</span>
               <span className={cn(
                 "text-xs font-medium",
                 item.status === "done" ? "text-green-400" : "text-amber-400"
@@ -237,14 +237,14 @@ function KleitonAvatar({ size = 48 }: { size?: number }) {
 // Componente de Última Atualização
 function LastUpdateInfo() {
   return (
-    <div className="flex flex-wrap items-center gap-3 text-sm bg-zinc-800/50 px-3 py-2 rounded-lg">
+    <div className="flex flex-wrap items-center gap-3 text-sm bg-layer-2/50 px-3 py-2 rounded-lg">
       <Clock className="w-4 h-4 text-blue-400" />
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-zinc-400">Última atualização:</span>
+        <span className="text-muted">Última atualização:</span>
         <span className="text-white font-medium">{PROJECT_CONFIG.lastUpdate.date}</span>
-        <span className="text-zinc-500">às</span>
+        <span className="text-muted">às</span>
         <span className="text-white font-medium">{PROJECT_CONFIG.lastUpdate.time}</span>
-        <span className="text-zinc-500">por</span>
+        <span className="text-muted">por</span>
         <div className="flex items-center gap-1">
           {PROJECT_CONFIG.lastUpdate.authorType === "ai" ? (
             <span className="bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded text-xs font-medium">
@@ -402,7 +402,7 @@ function DocumentationContent() {
       </div>
 
       {/* Seção de Progresso e Última Atualização */}
-      <div className="bg-zinc-950 border-b border-zinc-800 px-4 sm:px-8 py-4">
+      <div className="bg-zinc-950 border-b border-subtle px-4 sm:px-8 py-4">
         <div className="max-w-7xl mx-auto space-y-4">
           {/* Última Atualização */}
           <LastUpdateInfo />
@@ -413,7 +413,7 @@ function DocumentationContent() {
       </div>
 
         {/* Tab Navigation */}
-        <div className="bg-zinc-900/50 border-b border-zinc-800 sticky top-0 z-10 backdrop-blur-md">
+        <div className="bg-layer-1/50 border-b border-subtle sticky top-0 z-10 backdrop-blur-md">
           <div className="max-w-7xl mx-auto px-4 sm:px-8">
             <div className="flex overflow-x-auto gap-1 py-2 hide-scrollbar">
               {tabs.map((tab) => {
@@ -428,7 +428,7 @@ function DocumentationContent() {
                       "flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition-all",
                       isActive
                         ? `bg-gradient-to-r ${tab.gradient} text-white shadow-lg`
-                        : "text-zinc-400 hover:text-white hover:bg-zinc-800"
+                        : "text-muted hover:text-white hover:bg-layer-2"
                     )}
                   >
                     <Icon className="w-4 h-4" />
@@ -443,9 +443,9 @@ function DocumentationContent() {
 
         {/* Tab Description */}
         {activeTabData && (
-          <div className="bg-zinc-900/30 border-b border-zinc-800">
+          <div className="bg-layer-1/30 border-b border-subtle">
             <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3 sm:py-4">
-              <div className="flex items-center gap-2 text-zinc-400 text-sm">
+              <div className="flex items-center gap-2 text-muted text-sm">
                 <ChevronRight className="w-4 h-4 flex-shrink-0" />
                 <span>{activeTabData.description}</span>
               </div>

@@ -95,7 +95,7 @@ export default function CurrentStateTab() {
       case "baixa":
         return "bg-green-500/20 text-green-400";
       default:
-        return "bg-zinc-500/20 text-zinc-400";
+        return "bg-zinc-500/20 text-muted";
     }
   };
 
@@ -108,9 +108,9 @@ export default function CurrentStateTab() {
       case "médio":
         return "bg-blue-500/20 text-blue-400";
       case "baixo":
-        return "bg-zinc-500/20 text-zinc-400";
+        return "bg-zinc-500/20 text-muted";
       default:
-        return "bg-zinc-500/20 text-zinc-400";
+        return "bg-zinc-500/20 text-muted";
     }
   };
 
@@ -141,17 +141,17 @@ export default function CurrentStateTab() {
             ].map((stat, i) => (
               <div
                 key={i}
-                className="bg-zinc-900/50 rounded-lg p-4 border border-zinc-800"
+                className="bg-layer-1/50 rounded-lg p-4 border border-subtle"
               >
                 <stat.icon className="w-5 h-5 text-rose-400 mb-2" />
-                <p className="text-xs text-zinc-500">{stat.label}</p>
+                <p className="text-xs text-muted">{stat.label}</p>
                 <p className="text-lg font-bold text-white">{stat.value}</p>
               </div>
             ))}
           </div>
 
           <div className="mt-4">
-            <p className="text-sm text-zinc-400">
+            <p className="text-sm text-muted">
               URL de Produção:{" "}
               <a
                 href="https://emergecy-youtube.vercel.app"
@@ -173,17 +173,17 @@ export default function CurrentStateTab() {
           Funcionalidades Concluídas
         </h3>
 
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-          <div className="bg-green-500/10 border-b border-zinc-800 px-4 py-3 flex items-center justify-between">
+        <div className="bg-layer-1 border border-subtle rounded-xl overflow-hidden">
+          <div className="bg-green-500/10 border-b border-subtle px-4 py-3 flex items-center justify-between">
             <span className="font-medium text-green-400">Core Features</span>
-            <span className="text-sm text-zinc-400">
+            <span className="text-sm text-muted">
               {completedFeatures.length} funcionalidades
             </span>
           </div>
           <div className="p-4 max-h-96 overflow-y-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-zinc-500 text-xs uppercase">
+                <tr className="text-muted text-xs uppercase">
                   <th className="text-left pb-3">Funcionalidade</th>
                   <th className="text-left pb-3">Prioridade</th>
                   <th className="text-left pb-3">Impacto</th>
@@ -192,7 +192,7 @@ export default function CurrentStateTab() {
               </thead>
               <tbody>
                 {completedFeatures.map((feature, i) => (
-                  <tr key={i} className="border-t border-zinc-800">
+                  <tr key={i} className="border-t border-subtle">
                     <td className="py-3 text-white">{feature.name}</td>
                     <td className="py-3">
                       <span className={`px-2 py-1 rounded text-xs ${getPriorityColor(feature.priority)}`}>
@@ -229,7 +229,7 @@ export default function CurrentStateTab() {
           {partialFeatures.map((feature, i) => (
             <div
               key={i}
-              className="bg-zinc-900 border border-zinc-800 rounded-xl p-5"
+              className="bg-layer-1 border border-subtle rounded-xl p-5"
             >
               <div className="flex items-center justify-between mb-3">
                 <h4 className="font-semibold text-white">{feature.name}</h4>
@@ -240,10 +240,10 @@ export default function CurrentStateTab() {
 
               <div className="mb-3">
                 <div className="flex items-center justify-between text-sm mb-1">
-                  <span className="text-zinc-400">Progresso</span>
+                  <span className="text-muted">Progresso</span>
                   <span className="text-white font-medium">{feature.progress}%</span>
                 </div>
-                <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-layer-2 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-gradient-to-r from-yellow-500 to-amber-500 rounded-full"
                     style={{ width: `${feature.progress}%` }}
@@ -253,7 +253,7 @@ export default function CurrentStateTab() {
 
               <div className="flex items-center gap-2 text-sm">
                 <AlertTriangle className="w-4 h-4 text-yellow-400" />
-                <span className="text-zinc-400">Bloqueio:</span>
+                <span className="text-muted">Bloqueio:</span>
                 <span className="text-yellow-400">{feature.blocker}</span>
               </div>
             </div>
@@ -264,14 +264,14 @@ export default function CurrentStateTab() {
       {/* Not Started Features */}
       <section>
         <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <XCircle className="w-6 h-6 text-zinc-400" />
+          <XCircle className="w-6 h-6 text-muted" />
           Funcionalidades Não Iniciadas
         </h3>
 
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+        <div className="bg-layer-1 border border-subtle rounded-xl overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-zinc-800/50">
-              <tr className="text-zinc-500 text-xs uppercase">
+            <thead className="bg-layer-2/50">
+              <tr className="text-muted text-xs uppercase">
                 <th className="text-left p-4">Funcionalidade</th>
                 <th className="text-left p-4">Complexidade</th>
                 <th className="text-left p-4">Prioridade</th>
@@ -280,8 +280,8 @@ export default function CurrentStateTab() {
             </thead>
             <tbody>
               {notStartedFeatures.map((feature, i) => (
-                <tr key={i} className="border-t border-zinc-800 hover:bg-zinc-800/30">
-                  <td className="p-4 text-zinc-300">{feature.name}</td>
+                <tr key={i} className="border-t border-subtle hover:bg-layer-2/30">
+                  <td className="p-4 text-secondary">{feature.name}</td>
                   <td className="p-4">
                     <span className={`px-2 py-1 rounded text-xs ${
                       feature.complexity === "Alta" ? "bg-red-500/20 text-red-400" :
@@ -323,14 +323,14 @@ export default function CurrentStateTab() {
             </div>
             <div className="p-4 space-y-3">
               {technicalDebt.high.map((item, i) => (
-                <div key={i} className="p-3 bg-zinc-900/50 rounded-lg">
+                <div key={i} className="p-3 bg-layer-1/50 rounded-lg">
                   <p className="font-medium text-white text-sm">{item.name}</p>
-                  <p className="text-xs text-zinc-400 mt-1">{item.description}</p>
+                  <p className="text-xs text-muted mt-1">{item.description}</p>
                   <div className="flex gap-2 mt-2">
-                    <span className="px-2 py-0.5 bg-zinc-800 rounded text-xs text-zinc-400">
+                    <span className="px-2 py-0.5 bg-layer-2 rounded text-xs text-muted">
                       {item.impact}
                     </span>
-                    <span className="px-2 py-0.5 bg-zinc-800 rounded text-xs text-zinc-400">
+                    <span className="px-2 py-0.5 bg-layer-2 rounded text-xs text-muted">
                       Esforço: {item.effort}
                     </span>
                   </div>
@@ -346,14 +346,14 @@ export default function CurrentStateTab() {
             </div>
             <div className="p-4 space-y-3">
               {technicalDebt.medium.map((item, i) => (
-                <div key={i} className="p-3 bg-zinc-900/50 rounded-lg">
+                <div key={i} className="p-3 bg-layer-1/50 rounded-lg">
                   <p className="font-medium text-white text-sm">{item.name}</p>
-                  <p className="text-xs text-zinc-400 mt-1">{item.description}</p>
+                  <p className="text-xs text-muted mt-1">{item.description}</p>
                   <div className="flex gap-2 mt-2">
-                    <span className="px-2 py-0.5 bg-zinc-800 rounded text-xs text-zinc-400">
+                    <span className="px-2 py-0.5 bg-layer-2 rounded text-xs text-muted">
                       {item.impact}
                     </span>
-                    <span className="px-2 py-0.5 bg-zinc-800 rounded text-xs text-zinc-400">
+                    <span className="px-2 py-0.5 bg-layer-2 rounded text-xs text-muted">
                       Esforço: {item.effort}
                     </span>
                   </div>
@@ -369,14 +369,14 @@ export default function CurrentStateTab() {
             </div>
             <div className="p-4 space-y-3">
               {technicalDebt.low.map((item, i) => (
-                <div key={i} className="p-3 bg-zinc-900/50 rounded-lg">
+                <div key={i} className="p-3 bg-layer-1/50 rounded-lg">
                   <p className="font-medium text-white text-sm">{item.name}</p>
-                  <p className="text-xs text-zinc-400 mt-1">{item.description}</p>
+                  <p className="text-xs text-muted mt-1">{item.description}</p>
                   <div className="flex gap-2 mt-2">
-                    <span className="px-2 py-0.5 bg-zinc-800 rounded text-xs text-zinc-400">
+                    <span className="px-2 py-0.5 bg-layer-2 rounded text-xs text-muted">
                       {item.impact}
                     </span>
-                    <span className="px-2 py-0.5 bg-zinc-800 rounded text-xs text-zinc-400">
+                    <span className="px-2 py-0.5 bg-layer-2 rounded text-xs text-muted">
                       Esforço: {item.effort}
                     </span>
                   </div>
@@ -396,13 +396,13 @@ export default function CurrentStateTab() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Technical Risks */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-            <div className="bg-violet-500/10 px-4 py-3 border-b border-zinc-800">
+          <div className="bg-layer-1 border border-subtle rounded-xl overflow-hidden">
+            <div className="bg-violet-500/10 px-4 py-3 border-b border-subtle">
               <h4 className="font-semibold text-violet-400">Riscos Técnicos</h4>
             </div>
             <div className="p-4 space-y-3">
               {risks.technical.map((item, i) => (
-                <div key={i} className="p-3 bg-zinc-800/50 rounded-lg">
+                <div key={i} className="p-3 bg-layer-2/50 rounded-lg">
                   <div className="flex items-center justify-between mb-2">
                     <p className="font-medium text-white text-sm">{item.risk}</p>
                     <div className="flex gap-2">
@@ -418,8 +418,8 @@ export default function CurrentStateTab() {
                       </span>
                     </div>
                   </div>
-                  <p className="text-xs text-zinc-400">
-                    <span className="text-zinc-500">Mitigação:</span> {item.mitigation}
+                  <p className="text-xs text-muted">
+                    <span className="text-muted">Mitigação:</span> {item.mitigation}
                   </p>
                 </div>
               ))}
@@ -427,13 +427,13 @@ export default function CurrentStateTab() {
           </div>
 
           {/* Business Risks */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-            <div className="bg-rose-500/10 px-4 py-3 border-b border-zinc-800">
+          <div className="bg-layer-1 border border-subtle rounded-xl overflow-hidden">
+            <div className="bg-rose-500/10 px-4 py-3 border-b border-subtle">
               <h4 className="font-semibold text-rose-400">Riscos de Negócio</h4>
             </div>
             <div className="p-4 space-y-3">
               {risks.business.map((item, i) => (
-                <div key={i} className="p-3 bg-zinc-800/50 rounded-lg">
+                <div key={i} className="p-3 bg-layer-2/50 rounded-lg">
                   <div className="flex items-center justify-between mb-2">
                     <p className="font-medium text-white text-sm">{item.risk}</p>
                     <div className="flex gap-2">
@@ -449,8 +449,8 @@ export default function CurrentStateTab() {
                       </span>
                     </div>
                   </div>
-                  <p className="text-xs text-zinc-400">
-                    <span className="text-zinc-500">Mitigação:</span> {item.mitigation}
+                  <p className="text-xs text-muted">
+                    <span className="text-muted">Mitigação:</span> {item.mitigation}
                   </p>
                 </div>
               ))}
@@ -475,7 +475,7 @@ export default function CurrentStateTab() {
               </div>
               <div>
                 <h4 className="font-semibold text-cyan-400">Curto Prazo</h4>
-                <p className="text-xs text-zinc-500">1-3 meses</p>
+                <p className="text-xs text-muted">1-3 meses</p>
               </div>
             </div>
             <ul className="space-y-3">
@@ -505,7 +505,7 @@ export default function CurrentStateTab() {
               </div>
               <div>
                 <h4 className="font-semibold text-purple-400">Médio Prazo</h4>
-                <p className="text-xs text-zinc-500">3-6 meses</p>
+                <p className="text-xs text-muted">3-6 meses</p>
               </div>
             </div>
             <ul className="space-y-3">
@@ -530,7 +530,7 @@ export default function CurrentStateTab() {
               </div>
               <div>
                 <h4 className="font-semibold text-amber-400">Longo Prazo</h4>
-                <p className="text-xs text-zinc-500">6-12 meses</p>
+                <p className="text-xs text-muted">6-12 meses</p>
               </div>
             </div>
             <ul className="space-y-3">
@@ -552,13 +552,13 @@ export default function CurrentStateTab() {
       {/* Conclusion */}
       <section className="bg-gradient-to-r from-indigo-900/30 via-purple-900/30 to-pink-900/30 border border-purple-500/20 rounded-xl p-6">
         <h3 className="text-xl font-bold text-white mb-4">Conclusão</h3>
-        <p className="text-zinc-300 mb-4">
+        <p className="text-secondary mb-4">
           O ORION está em estágio de{" "}
           <span className="text-green-400 font-semibold">produção funcional</span> com
           as principais features de geração de conteúdo operacionais. Os próximos
           passos críticos são:
         </p>
-        <ol className="space-y-2 text-zinc-300">
+        <ol className="space-y-2 text-secondary">
           {[
             "Completar a integração de upload YouTube",
             "Implementar render de vídeo completo",
@@ -573,7 +573,7 @@ export default function CurrentStateTab() {
             </li>
           ))}
         </ol>
-        <p className="text-zinc-400 mt-4 text-sm">
+        <p className="text-muted mt-4 text-sm">
           O sistema está preparado para escalar e evoluir conforme as necessidades
           dos usuários.
         </p>

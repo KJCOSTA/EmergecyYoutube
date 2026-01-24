@@ -49,7 +49,7 @@ export default function FileDropzone({
 
   if (currentFile) {
     return (
-      <div className="border border-gray-700 rounded-lg p-4 bg-gray-800/50">
+      <div className="border border-subtle rounded-lg p-4 bg-layer-2/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-primary-500/10 rounded-lg">
@@ -57,7 +57,7 @@ export default function FileDropzone({
             </div>
             <div>
               <p className="text-sm font-medium text-white">{currentFile.name}</p>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-muted">
                 {formatFileSize(currentFile.size)}
               </p>
             </div>
@@ -67,7 +67,7 @@ export default function FileDropzone({
               onClick={onRemove}
               className="p-1 hover:bg-gray-700 rounded-lg transition-colors"
             >
-              <X className="w-4 h-4 text-gray-400" />
+              <X className="w-4 h-4 text-muted" />
             </button>
           )}
         </div>
@@ -83,19 +83,19 @@ export default function FileDropzone({
           "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all duration-200",
           isDragActive
             ? "border-primary-500 bg-primary-500/10"
-            : "border-gray-700 hover:border-gray-600 bg-gray-800/30"
+            : "border-subtle hover:border-gray-600 bg-layer-2/30"
         )}
       >
         <input {...getInputProps()} />
         <Upload
           className={cn(
             "w-10 h-10 mx-auto mb-3",
-            isDragActive ? "text-primary-500" : "text-gray-500"
+            isDragActive ? "text-primary-500" : "text-muted"
           )}
         />
         <p className="text-sm font-medium text-white mb-1">{label}</p>
-        <p className="text-xs text-gray-400">{description}</p>
-        <p className="text-xs text-gray-500 mt-2">
+        <p className="text-xs text-muted">{description}</p>
+        <p className="text-xs text-muted mt-2">
           Tamanho máximo: {formatFileSize(maxSize)}
         </p>
       </div>

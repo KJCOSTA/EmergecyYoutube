@@ -111,14 +111,14 @@ export function DocsManagerTab({ initialDocs, onUpdate }: DocsManagerTabProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between pb-4 border-b border-zinc-800">
+      <div className="flex items-center justify-between pb-4 border-b border-subtle">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-amber-500/10 rounded-lg">
             <FileText className="w-5 h-5 text-amber-500" />
           </div>
           <div>
             <h2 className="text-xl font-bold text-white">Gerenciador de Documentação</h2>
-            <p className="text-sm text-zinc-400">Crie e edite páginas de documentação</p>
+            <p className="text-sm text-muted">Crie e edite páginas de documentação</p>
           </div>
         </div>
         <button
@@ -132,36 +132,36 @@ export function DocsManagerTab({ initialDocs, onUpdate }: DocsManagerTabProps) {
 
       {/* Create/Edit Form */}
       {(isCreating || editingId) && (
-        <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 space-y-4">
+        <div className="bg-layer-1/50 border border-subtle rounded-xl p-6 space-y-4">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-white">
               {isCreating ? 'Criar Nova Página' : 'Editar Página'}
             </h3>
             <button
               onClick={cancelEdit}
-              className="p-2 hover:bg-zinc-800 rounded-lg transition-colors"
+              className="p-2 hover:bg-layer-2 rounded-lg transition-colors"
             >
-              <X className="w-5 h-5 text-zinc-400" />
+              <X className="w-5 h-5 text-muted" />
             </button>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">Título</label>
+              <label className="block text-sm font-medium text-secondary mb-2">Título</label>
               <input
                 type="text"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="w-full bg-black/50 border border-zinc-700 rounded-lg py-2 px-3 text-white"
+                className="w-full bg-black/50 border border-subtle rounded-lg py-2 px-3 text-white"
                 placeholder="Título da página"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">Categoria</label>
+              <label className="block text-sm font-medium text-secondary mb-2">Categoria</label>
               <select
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value as DocCategory })}
-                className="w-full bg-black/50 border border-zinc-700 rounded-lg py-2 px-3 text-white"
+                className="w-full bg-black/50 border border-subtle rounded-lg py-2 px-3 text-white"
               >
                 {CATEGORIES.map(cat => (
                   <option key={cat.value} value={cat.value}>{cat.label}</option>
@@ -171,12 +171,12 @@ export function DocsManagerTab({ initialDocs, onUpdate }: DocsManagerTabProps) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-2">Conteúdo (Markdown)</label>
+            <label className="block text-sm font-medium text-secondary mb-2">Conteúdo (Markdown)</label>
             <textarea
               value={formData.content}
               onChange={(e) => setFormData({ ...formData, content: e.target.value })}
               rows={10}
-              className="w-full bg-black/50 border border-zinc-700 rounded-lg py-2 px-3 text-white font-mono text-sm resize-none"
+              className="w-full bg-black/50 border border-subtle rounded-lg py-2 px-3 text-white font-mono text-sm resize-none"
               placeholder="# Título\n\nConteúdo em markdown..."
             />
           </div>
@@ -187,9 +187,9 @@ export function DocsManagerTab({ initialDocs, onUpdate }: DocsManagerTabProps) {
                 type="checkbox"
                 checked={formData.visible}
                 onChange={(e) => setFormData({ ...formData, visible: e.target.checked })}
-                className="w-4 h-4 rounded border-zinc-700 text-amber-600 focus:ring-amber-500"
+                className="w-4 h-4 rounded border-subtle text-amber-600 focus:ring-amber-500"
               />
-              <span className="text-sm text-zinc-300">Visível no menu de documentação</span>
+              <span className="text-sm text-secondary">Visível no menu de documentação</span>
             </label>
 
             <button
@@ -208,20 +208,20 @@ export function DocsManagerTab({ initialDocs, onUpdate }: DocsManagerTabProps) {
         {docs.map((doc) => (
           <div
             key={doc.id}
-            className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 hover:border-zinc-700 transition-all"
+            className="bg-layer-1/50 border border-subtle rounded-lg p-4 hover:border-subtle transition-all"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3 flex-1 min-w-0">
-                <div className={`p-2 rounded-lg ${doc.visible ? 'bg-green-500/10' : 'bg-zinc-800'}`}>
+                <div className={`p-2 rounded-lg ${doc.visible ? 'bg-green-500/10' : 'bg-layer-2'}`}>
                   {doc.visible ? (
                     <Eye className="w-4 h-4 text-green-500" />
                   ) : (
-                    <EyeOff className="w-4 h-4 text-zinc-500" />
+                    <EyeOff className="w-4 h-4 text-muted" />
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="font-semibold text-white truncate">{doc.title}</h4>
-                  <div className="flex items-center gap-2 text-xs text-zinc-500">
+                  <div className="flex items-center gap-2 text-xs text-muted">
                     <span>{CATEGORIES.find(c => c.value === doc.category)?.label}</span>
                     <span>•</span>
                     <span>Ordem: {doc.order}</span>
@@ -231,24 +231,24 @@ export function DocsManagerTab({ initialDocs, onUpdate }: DocsManagerTabProps) {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => handleToggleVisibility(doc)}
-                  className="p-2 hover:bg-zinc-800 rounded-lg transition-colors"
+                  className="p-2 hover:bg-layer-2 rounded-lg transition-colors"
                   title={doc.visible ? 'Ocultar' : 'Mostrar'}
                 >
                   {doc.visible ? (
-                    <Eye className="w-4 h-4 text-zinc-400" />
+                    <Eye className="w-4 h-4 text-muted" />
                   ) : (
-                    <EyeOff className="w-4 h-4 text-zinc-400" />
+                    <EyeOff className="w-4 h-4 text-muted" />
                   )}
                 </button>
                 <button
                   onClick={() => startEdit(doc)}
-                  className="p-2 hover:bg-zinc-800 rounded-lg transition-colors"
+                  className="p-2 hover:bg-layer-2 rounded-lg transition-colors"
                 >
                   <Edit2 className="w-4 h-4 text-blue-400" />
                 </button>
                 <button
                   onClick={() => handleDelete(doc.id)}
-                  className="p-2 hover:bg-zinc-800 rounded-lg transition-colors"
+                  className="p-2 hover:bg-layer-2 rounded-lg transition-colors"
                 >
                   <Trash2 className="w-4 h-4 text-red-400" />
                 </button>

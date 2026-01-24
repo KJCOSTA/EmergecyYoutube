@@ -56,7 +56,7 @@ export function CopyButton({ content, className = "" }: CopyButtonProps) {
       className={`p-1.5 rounded-lg transition-all ${
         copied
           ? "bg-green-500/20 text-green-400"
-          : "bg-zinc-800/50 text-zinc-400 hover:bg-zinc-700 hover:text-white"
+          : "bg-layer-2/50 text-muted hover:bg-zinc-700 hover:text-white"
       } ${className}`}
       title={copied ? "Copiado!" : "Copiar"}
     >
@@ -91,7 +91,7 @@ export function MarkdownButton({ content, filename = "content.md", className = "
   return (
     <button
       onClick={handleDownload}
-      className={`p-1.5 rounded-lg transition-all bg-zinc-800/50 text-zinc-400 hover:bg-indigo-500/20 hover:text-indigo-400 ${className}`}
+      className={`p-1.5 rounded-lg transition-all bg-layer-2/50 text-muted hover:bg-indigo-500/20 hover:text-indigo-400 ${className}`}
       title="Exportar como Markdown"
     >
       <FileCode className="w-3.5 h-3.5" />
