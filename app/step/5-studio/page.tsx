@@ -219,7 +219,7 @@ export default function Step5Studio() {
         <h1 className="text-3xl font-bold text-white mb-2">
           Studio de Criação
         </h1>
-        <p className="text-gray-400">
+        <p className="text-muted">
           Popule cada cena com mídia, revise e renderize seu vídeo.
         </p>
       </div>
@@ -267,7 +267,7 @@ export default function Step5Studio() {
                 <h2 className="text-xl font-semibold text-white">
                   Storyboard ({storyboard.scenes.length} cenas)
                 </h2>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-muted">
                   Duração total: {formatDuration(storyboard.totalDuration)}
                 </p>
               </div>
@@ -281,7 +281,7 @@ export default function Step5Studio() {
             {/* Media Sources Filter */}
             <Card padding="sm">
               <div className="flex items-center gap-4">
-                <span className="text-sm text-gray-400">Fontes de mídia:</span>
+                <span className="text-sm text-muted">Fontes de mídia:</span>
                 {(["pexels", "pixabay", "unsplash"] as MediaSource[]).map((source) => {
                   const isAvailable = apiKeyStatus?.[source as keyof APIKeyStatus];
                   const isSelected = selectedSources.includes(source);
@@ -301,10 +301,10 @@ export default function Step5Studio() {
                       disabled={!isAvailable}
                       className={`px-3 py-1 rounded-full text-sm transition-all ${
                         !isAvailable
-                          ? "bg-gray-800 text-gray-600 cursor-not-allowed"
+                          ? "bg-layer-2 text-disabled cursor-not-allowed"
                           : isSelected
                           ? "bg-primary-600 text-white"
-                          : "bg-gray-800 text-gray-400 hover:bg-gray-700"
+                          : "bg-layer-2 text-muted hover:bg-layer-3"
                       }`}
                     >
                       {source.charAt(0).toUpperCase() + source.slice(1)}
@@ -321,16 +321,16 @@ export default function Step5Studio() {
                   <div className="flex gap-4">
                     {/* Drag Handle */}
                     <div className="flex items-center">
-                      <GripVertical className="w-5 h-5 text-gray-600 cursor-move" />
+                      <GripVertical className="w-5 h-5 text-disabled cursor-move" />
                     </div>
 
                     {/* Scene Number */}
-                    <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <span className="text-lg font-bold text-gray-400">{index + 1}</span>
+                    <div className="w-12 h-12 bg-layer-2 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <span className="text-lg font-bold text-muted">{index + 1}</span>
                     </div>
 
                     {/* Media Preview */}
-                    <div className="w-32 h-20 bg-gray-800 rounded-lg overflow-hidden flex-shrink-0">
+                    <div className="w-32 h-20 bg-layer-2 rounded-lg overflow-hidden flex-shrink-0">
                       {scene.media ? (
                         scene.media.type === "video" ? (
                           <video
@@ -347,7 +347,7 @@ export default function Step5Studio() {
                         )
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <Image className="w-6 h-6 text-gray-600" />
+                          <Image className="w-6 h-6 text-disabled" />
                         </div>
                       )}
                     </div>
@@ -364,11 +364,11 @@ export default function Step5Studio() {
                           </Badge>
                         )}
                       </div>
-                      <p className="text-sm text-gray-300 line-clamp-2">{scene.text}</p>
+                      <p className="text-sm text-secondary line-clamp-2">{scene.text}</p>
 
                       {/* Media Source Info */}
                       {scene.media && (
-                        <p className="text-xs text-gray-500 mt-1">{scene.media.attribution}</p>
+                        <p className="text-xs text-muted mt-1">{scene.media.attribution}</p>
                       )}
                     </div>
 
@@ -398,9 +398,9 @@ export default function Step5Studio() {
 
                   {/* Media Search Results */}
                   {mediaSearchResults[scene.id] && (
-                    <div className="mt-4 pt-4 border-t border-gray-800">
+                    <div className="mt-4 pt-4 border-t border-subtle">
                       <div className="flex items-center justify-between mb-3">
-                        <span className="text-sm text-gray-400">
+                        <span className="text-sm text-muted">
                           {mediaSearchResults[scene.id].length} resultados encontrados
                         </span>
                         <button
@@ -411,7 +411,7 @@ export default function Step5Studio() {
                               return updated;
                             })
                           }
-                          className="text-sm text-gray-500 hover:text-gray-400"
+                          className="text-sm text-muted hover:text-muted"
                         >
                           Fechar
                         </button>
@@ -421,7 +421,7 @@ export default function Step5Studio() {
                           <button
                             key={media.id}
                             onClick={() => selectMediaForScene(scene.id, media)}
-                            className="aspect-video bg-gray-800 rounded overflow-hidden hover:ring-2 hover:ring-primary-500 transition-all"
+                            className="aspect-video bg-layer-2 rounded overflow-hidden hover:ring-2 hover:ring-primary-500 transition-all"
                           >
                             <img
                               src={media.previewUrl}
@@ -480,7 +480,7 @@ export default function Step5Studio() {
                         : "Pendente"}
                     </Badge>
                     {render.status === "rendering" && (
-                      <div className="flex-1 h-2 bg-gray-800 rounded-full overflow-hidden">
+                      <div className="flex-1 h-2 bg-layer-2 rounded-full overflow-hidden">
                         <div
                           className="h-full bg-primary-500 transition-all"
                           style={{ width: `${render.progress}%` }}

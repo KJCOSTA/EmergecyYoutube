@@ -109,39 +109,39 @@ export default function SettingsPage() {
   const getTabColorClasses = (color: string) => {
     const colors = {
       indigo: {
-        active: 'text-indigo-400 bg-indigo-500/10',
-        inactive: 'text-zinc-400 hover:text-white hover:bg-zinc-800/50',
-        indicator: 'bg-indigo-500',
+        active: 'text-indigo-400 bg-indigo-500/10 border-2 border-indigo-500/30 shadow-glow-md shadow-indigo-500/20',
+        inactive: 'text-muted hover:text-white hover:bg-layer-2/80 border-2 border-transparent hover:border-indigo-500/20',
+        indicator: 'bg-indigo-500 shadow-glow-sm shadow-indigo-500/50',
       },
       purple: {
-        active: 'text-purple-400 bg-purple-500/10',
-        inactive: 'text-zinc-400 hover:text-white hover:bg-zinc-800/50',
-        indicator: 'bg-purple-500',
+        active: 'text-purple-400 bg-purple-500/10 border-2 border-purple-500/30 shadow-glow-md shadow-purple-500/20',
+        inactive: 'text-muted hover:text-white hover:bg-layer-2/80 border-2 border-transparent hover:border-purple-500/20',
+        indicator: 'bg-purple-500 shadow-glow-sm shadow-purple-500/50',
       },
       cyan: {
-        active: 'text-cyan-400 bg-cyan-500/10',
-        inactive: 'text-zinc-400 hover:text-white hover:bg-zinc-800/50',
-        indicator: 'bg-cyan-500',
+        active: 'text-cyan-400 bg-cyan-500/10 border-2 border-cyan-500/30 shadow-glow-md shadow-cyan-500/20',
+        inactive: 'text-muted hover:text-white hover:bg-layer-2/80 border-2 border-transparent hover:border-cyan-500/20',
+        indicator: 'bg-cyan-500 shadow-glow-sm shadow-cyan-500/50',
       },
       orange: {
-        active: 'text-orange-400 bg-orange-500/10',
-        inactive: 'text-zinc-400 hover:text-white hover:bg-zinc-800/50',
-        indicator: 'bg-orange-500',
+        active: 'text-orange-400 bg-orange-500/10 border-2 border-orange-500/30 shadow-glow-md shadow-orange-500/20',
+        inactive: 'text-muted hover:text-white hover:bg-layer-2/80 border-2 border-transparent hover:border-orange-500/20',
+        indicator: 'bg-orange-500 shadow-glow-sm shadow-orange-500/50',
       },
       amber: {
-        active: 'text-amber-400 bg-amber-500/10',
-        inactive: 'text-zinc-400 hover:text-white hover:bg-zinc-800/50',
-        indicator: 'bg-amber-500',
+        active: 'text-amber-400 bg-amber-500/10 border-2 border-amber-500/30 shadow-glow-md shadow-amber-500/20',
+        inactive: 'text-muted hover:text-white hover:bg-layer-2/80 border-2 border-transparent hover:border-amber-500/20',
+        indicator: 'bg-amber-500 shadow-glow-sm shadow-amber-500/50',
       },
       blue: {
-        active: 'text-blue-400 bg-blue-500/10',
-        inactive: 'text-zinc-400 hover:text-white hover:bg-zinc-800/50',
-        indicator: 'bg-blue-500',
+        active: 'text-blue-400 bg-blue-500/10 border-2 border-blue-500/30 shadow-glow-md shadow-blue-500/20',
+        inactive: 'text-muted hover:text-white hover:bg-layer-2/80 border-2 border-transparent hover:border-blue-500/20',
+        indicator: 'bg-blue-500 shadow-glow-sm shadow-blue-500/50',
       },
       emerald: {
-        active: 'text-emerald-400 bg-emerald-500/10',
-        inactive: 'text-zinc-400 hover:text-white hover:bg-zinc-800/50',
-        indicator: 'bg-emerald-500',
+        active: 'text-emerald-400 bg-emerald-500/10 border-2 border-emerald-500/30 shadow-glow-md shadow-emerald-500/20',
+        inactive: 'text-muted hover:text-white hover:bg-layer-2/80 border-2 border-transparent hover:border-emerald-500/20',
+        indicator: 'bg-emerald-500 shadow-glow-sm shadow-emerald-500/50',
       },
     };
 
@@ -152,8 +152,11 @@ export default function SettingsPage() {
     return (
       <div className="min-h-full flex items-center justify-center">
         <div className="text-center">
-          <Settings className="w-12 h-12 text-zinc-600 mx-auto mb-4 animate-spin" />
-          <p className="text-zinc-400">Carregando configurações...</p>
+          <div className="relative inline-block">
+            <Settings className="w-12 h-12 text-cyan-500 mx-auto mb-4 animate-spin" />
+            <div className="absolute inset-0 w-12 h-12 bg-cyan-500/20 blur-xl animate-pulse" />
+          </div>
+          <p className="text-muted">Carregando configurações...</p>
         </div>
       </div>
     );
@@ -162,15 +165,16 @@ export default function SettingsPage() {
   return (
     <div className="min-h-full">
       {/* Header */}
-      <div className="border-b border-zinc-800 bg-zinc-950/50 backdrop-blur-sm sticky top-0 z-10">
+      <div className="border-b border-subtle bg-gradient-to-br from-layer-1/80 via-indigo-950/20 to-layer-1/80 backdrop-blur-sm sticky top-0 z-10 shadow-lg shadow-indigo-500/5">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl">
-              <Settings className="w-6 h-6 text-white" />
+            <div className="relative p-2.5 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-glow-md shadow-indigo-500/50 group hover:shadow-glow-lg hover:shadow-indigo-400/70 transition-all duration-300">
+              <Settings className="w-6 h-6 text-white relative z-10" />
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-500/20 to-purple-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-white">Configurações</h1>
-              <p className="text-sm text-zinc-400">Gerencie perfil, documentação e integrações</p>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent">Configurações</h1>
+              <p className="text-sm text-muted">Gerencie perfil, documentação e integrações</p>
             </div>
           </div>
         </div>
@@ -198,8 +202,8 @@ export default function SettingsPage() {
                 >
                   <div className={`p-2 rounded-lg transition-all ${
                     isActive
-                      ? 'bg-white/10'
-                      : 'bg-zinc-800 group-hover:bg-zinc-700'
+                      ? 'bg-white/10 shadow-glow-sm'
+                      : 'bg-layer-2 group-hover:bg-layer-3'
                   }`}>
                     <Icon className="w-4 h-4" />
                   </div>
@@ -214,48 +218,62 @@ export default function SettingsPage() {
 
           {/* Tab Content */}
           <div className="min-h-[600px]">
-            <div className="bg-zinc-950/50 border border-zinc-800 rounded-2xl p-8">
-              {activeTab === 'profile' && profile && (
-                <div className="animate-fade-in">
-                  <ProfileTab initialProfile={profile} />
-                </div>
-              )}
+            <div className="relative overflow-hidden bg-gradient-to-br from-layer-1/80 via-indigo-950/10 to-layer-2/50 backdrop-blur-xl border-2 border-subtle rounded-2xl p-8 shadow-xl hover:border-active/30 transition-all duration-300 group">
+              {/* Animated gradient mesh background */}
+              <div className="absolute inset-0 bg-gradient-mesh opacity-10" />
 
-              {activeTab === 'appearance' && (
-                <div className="animate-fade-in">
-                  <AppearanceTab />
-                </div>
-              )}
+              {/* Glow overlay on hover */}
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-              {activeTab === 'monitor' && (
-                <div className="animate-fade-in">
-                  <SystemMonitorTab />
-                </div>
-              )}
+              {/* Shimmer effect */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-700">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/10 to-transparent animate-shimmer" />
+              </div>
 
-              {activeTab === 'files' && (
-                <div className="animate-fade-in">
-                  <FilesTab />
-                </div>
-              )}
+              {/* Content */}
+              <div className="relative z-10">
+                {activeTab === 'profile' && profile && (
+                  <div className="animate-fade-in">
+                    <ProfileTab initialProfile={profile} />
+                  </div>
+                )}
 
-              {activeTab === 'docs' && (
-                <div className="animate-fade-in">
-                  <DocsManagerTab initialDocs={docs.pages} onUpdate={handleDocsUpdate} />
-                </div>
-              )}
+                {activeTab === 'appearance' && (
+                  <div className="animate-fade-in">
+                    <AppearanceTab />
+                  </div>
+                )}
 
-              {activeTab === 'integrations' && tokens && (
-                <div className="animate-fade-in">
-                  <IntegrationsTab initialTokens={tokens} onUpdate={handleTokensUpdate} />
-                </div>
-              )}
+                {activeTab === 'monitor' && (
+                  <div className="animate-fade-in">
+                    <SystemMonitorTab />
+                  </div>
+                )}
 
-              {activeTab === 'logs' && (
-                <div className="animate-fade-in">
-                  <LogsTab />
-                </div>
-              )}
+                {activeTab === 'files' && (
+                  <div className="animate-fade-in">
+                    <FilesTab />
+                  </div>
+                )}
+
+                {activeTab === 'docs' && (
+                  <div className="animate-fade-in">
+                    <DocsManagerTab initialDocs={docs.pages} onUpdate={handleDocsUpdate} />
+                  </div>
+                )}
+
+                {activeTab === 'integrations' && tokens && (
+                  <div className="animate-fade-in">
+                    <IntegrationsTab initialTokens={tokens} onUpdate={handleTokensUpdate} />
+                  </div>
+                )}
+
+                {activeTab === 'logs' && (
+                  <div className="animate-fade-in">
+                    <LogsTab />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

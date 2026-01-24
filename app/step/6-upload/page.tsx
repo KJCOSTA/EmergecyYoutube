@@ -121,7 +121,7 @@ export default function Step6Upload() {
         <h1 className="text-3xl font-bold text-white mb-2">
           Finalização e Upload
         </h1>
-        <p className="text-gray-400">
+        <p className="text-muted">
           Revise seu vídeo e envie para o YouTube.
         </p>
       </div>
@@ -166,12 +166,12 @@ export default function Step6Upload() {
               {selectedTitle ? (
                 <div className="space-y-4">
                   <div>
-                    <p className="text-sm text-gray-400 mb-1">Título</p>
+                    <p className="text-sm text-muted mb-1">Título</p>
                     <p className="text-lg font-medium text-white">{selectedTitle.title}</p>
                   </div>
                   {selectedTitle.thumbnailUrl && (
                     <div>
-                      <p className="text-sm text-gray-400 mb-2">Thumbnail</p>
+                      <p className="text-sm text-muted mb-2">Thumbnail</p>
                       <img
                         src={selectedTitle.thumbnailUrl}
                         alt={selectedTitle.title}
@@ -181,7 +181,7 @@ export default function Step6Upload() {
                   )}
                 </div>
               ) : (
-                <p className="text-gray-500">Nenhum título selecionado</p>
+                <p className="text-muted">Nenhum título selecionado</p>
               )}
             </CardContent>
           </Card>
@@ -196,7 +196,7 @@ export default function Step6Upload() {
             </CardHeader>
             <CardContent>
               <div className="max-h-48 overflow-auto">
-                <pre className="text-sm text-gray-300 whitespace-pre-wrap font-sans">
+                <pre className="text-sm text-secondary whitespace-pre-wrap font-sans">
                   {proposal.description.content}
                 </pre>
               </div>
@@ -233,15 +233,15 @@ export default function Step6Upload() {
             <CardContent>
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div>
-                  <p className="text-gray-400">Categoria</p>
+                  <p className="text-muted">Categoria</p>
                   <p className="text-white">{getCategoryName(proposal.uploadSetup.category)}</p>
                 </div>
                 <div>
-                  <p className="text-gray-400">Idioma</p>
+                  <p className="text-muted">Idioma</p>
                   <p className="text-white">{getLanguageName(proposal.uploadSetup.language)}</p>
                 </div>
                 <div>
-                  <p className="text-gray-400">Licença</p>
+                  <p className="text-muted">Licença</p>
                   <p className="text-white">
                     {proposal.uploadSetup.license === "youtube"
                       ? "YouTube Standard"
@@ -249,7 +249,7 @@ export default function Step6Upload() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-gray-400">Para Crianças</p>
+                  <p className="text-muted">Para Crianças</p>
                   <p className="text-white">{proposal.uploadSetup.madeForKids ? "Sim" : "Não"}</p>
                 </div>
               </div>
