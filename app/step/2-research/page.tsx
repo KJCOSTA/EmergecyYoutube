@@ -127,7 +127,7 @@ export default function Step2Research() {
         <h1 className="text-3xl font-bold text-white mb-2">
           Inteligência - Deep Research Agent
         </h1>
-        <p className="text-gray-400">
+        <p className="text-muted">
           Análise profunda de dados e pesquisa de tendências para o tema:{" "}
           <span className="text-white font-medium">{context.theme}</span>
         </p>
@@ -155,7 +155,7 @@ export default function Step2Research() {
           <CardContent className="space-y-4">
             {isLoadingKeys ? (
               <div className="flex items-center justify-center py-8">
-                <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+                <Loader2 className="w-6 h-6 animate-spin text-muted" />
               </div>
             ) : (
               <AIModelSelector
@@ -211,8 +211,8 @@ export default function Step2Research() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 bg-gray-800/50 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-400 mb-2 flex items-center gap-2">
+                  <div className="p-4 bg-layer-2 rounded-lg">
+                    <h4 className="text-sm font-medium text-muted mb-2 flex items-center gap-2">
                       <TrendingUp className="w-4 h-4" />
                       Tópicos de Alta Performance
                     </h4>
@@ -225,36 +225,36 @@ export default function Step2Research() {
                     </div>
                   </div>
 
-                  <div className="p-4 bg-gray-800/50 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-400 mb-2 flex items-center gap-2">
+                  <div className="p-4 bg-layer-2 rounded-lg">
+                    <h4 className="text-sm font-medium text-muted mb-2 flex items-center gap-2">
                       <Users className="w-4 h-4" />
                       Insights da Audiência
                     </h4>
-                    <ul className="space-y-1 text-sm text-gray-300">
+                    <ul className="space-y-1 text-sm text-foreground-secondary">
                       {research.internalAnalysis.audienceInsights.map((insight, i) => (
                         <li key={i}>• {insight}</li>
                       ))}
                     </ul>
                   </div>
 
-                  <div className="p-4 bg-gray-800/50 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-400 mb-2 flex items-center gap-2">
+                  <div className="p-4 bg-layer-2 rounded-lg">
+                    <h4 className="text-sm font-medium text-muted mb-2 flex items-center gap-2">
                       <Lightbulb className="w-4 h-4" />
                       Lacunas de Conteúdo
                     </h4>
-                    <ul className="space-y-1 text-sm text-gray-300">
+                    <ul className="space-y-1 text-sm text-foreground-secondary">
                       {research.internalAnalysis.contentGaps.map((gap, i) => (
                         <li key={i}>• {gap}</li>
                       ))}
                     </ul>
                   </div>
 
-                  <div className="p-4 bg-gray-800/50 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-400 mb-2 flex items-center gap-2">
+                  <div className="p-4 bg-layer-2 rounded-lg">
+                    <h4 className="text-sm font-medium text-muted mb-2 flex items-center gap-2">
                       <Check className="w-4 h-4" />
                       Recomendações
                     </h4>
-                    <ul className="space-y-1 text-sm text-gray-300">
+                    <ul className="space-y-1 text-sm text-foreground-secondary">
                       {research.internalAnalysis.recommendations.map((rec, i) => (
                         <li key={i}>• {rec}</li>
                       ))}
@@ -274,8 +274,8 @@ export default function Step2Research() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="p-4 bg-gray-800/50 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-400 mb-2">
+                  <div className="p-4 bg-layer-2 rounded-lg">
+                    <h4 className="text-sm font-medium text-muted mb-2">
                       Tópicos em Alta
                     </h4>
                     <div className="flex flex-wrap gap-2">
@@ -287,22 +287,22 @@ export default function Step2Research() {
                     </div>
                   </div>
 
-                  <div className="p-4 bg-gray-800/50 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-400 mb-2">
+                  <div className="p-4 bg-layer-2 rounded-lg">
+                    <h4 className="text-sm font-medium text-muted mb-2">
                       Insights de Competidores
                     </h4>
-                    <ul className="space-y-1 text-sm text-gray-300">
+                    <ul className="space-y-1 text-sm text-foreground-secondary">
                       {research.externalAnalysis.competitorInsights.map((insight, i) => (
                         <li key={i}>• {insight}</li>
                       ))}
                     </ul>
                   </div>
 
-                  <div className="p-4 bg-gray-800/50 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-400 mb-2">
+                  <div className="p-4 bg-layer-2 rounded-lg">
+                    <h4 className="text-sm font-medium text-muted mb-2">
                       Oportunidades de Mercado
                     </h4>
-                    <ul className="space-y-1 text-sm text-gray-300">
+                    <ul className="space-y-1 text-sm text-foreground-secondary">
                       {research.externalAnalysis.marketOpportunities.map((opp, i) => (
                         <li key={i}>• {opp}</li>
                       ))}
@@ -321,7 +321,7 @@ export default function Step2Research() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-300 leading-relaxed">
+                <p className="text-foreground-secondary leading-relaxed">
                   {research.consolidatedInsights}
                 </p>
               </CardContent>
@@ -337,7 +337,7 @@ export default function Step2Research() {
                   {research.queries.map((query, i) => (
                     <div
                       key={i}
-                      className="p-3 bg-gray-800/30 rounded-lg border border-gray-800"
+                      className="p-3 bg-layer-3 rounded-lg border border-subtle"
                     >
                       <div className="flex items-center justify-between mb-2">
                         <span className="font-medium text-white">
@@ -347,7 +347,7 @@ export default function Step2Research() {
                           {query.source === "tavily" ? "Tavily" : "Simulado"}
                         </Badge>
                       </div>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm text-muted">
                         {query.results.length} resultados encontrados
                       </p>
                     </div>

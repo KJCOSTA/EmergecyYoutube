@@ -427,7 +427,7 @@ export default function Step4Proposal() {
         <h1 className="text-3xl font-bold text-white mb-2">
           Proposta de Vídeo - Mesa de Decisão
         </h1>
-        <p className="text-gray-400">
+        <p className="text-muted">
           Todos os assets são gerados aqui. Nada avança sem sua aprovação.
         </p>
       </div>
@@ -453,7 +453,7 @@ export default function Step4Proposal() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-300 leading-relaxed">{proposal.rationale}</p>
+              <p className="text-foreground-secondary leading-relaxed">{proposal.rationale}</p>
             </CardContent>
           </Card>
         )}
@@ -487,20 +487,20 @@ export default function Step4Proposal() {
         >
           {proposal.script.sections.length > 0 ? (
             <div className="space-y-4">
-              <div className="flex items-center gap-4 text-sm text-gray-400">
+              <div className="flex items-center gap-4 text-sm text-muted">
                 <span>Duração: {formatDuration(proposal.script.totalDuration)}</span>
                 <span>Seções: {proposal.script.sections.length}</span>
               </div>
               <div className="space-y-3 max-h-96 overflow-auto">
                 {proposal.script.sections.map((section) => (
-                  <div key={section.id} className="p-3 bg-gray-800/50 rounded-lg">
+                  <div key={section.id} className="p-3 bg-layer-2 rounded-lg">
                     <div className="flex items-center gap-2 mb-2">
                       <Badge variant="info">{section.type}</Badge>
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-muted">
                         {formatDuration(section.duration)}
                       </span>
                     </div>
-                    <p className="text-gray-300 text-sm whitespace-pre-wrap">
+                    <p className="text-foreground-secondary text-sm whitespace-pre-wrap">
                       {section.content}
                     </p>
                   </div>
@@ -509,7 +509,7 @@ export default function Step4Proposal() {
 
               {/* TTS Section */}
               <div className="pt-4 border-t border-gray-800">
-                <h4 className="text-sm font-medium text-gray-400 mb-3 flex items-center gap-2">
+                <h4 className="text-sm font-medium text-muted mb-3 flex items-center gap-2">
                   <Volume2 className="w-4 h-4" />
                   Gerar Áudio (TTS)
                 </h4>
@@ -539,7 +539,7 @@ export default function Step4Proposal() {
               </div>
             </div>
           ) : (
-            <p className="text-gray-500 text-center py-8">
+            <p className="text-muted text-center py-8">
               Clique em &quot;Regerar&quot; para gerar o roteiro
             </p>
           )}
@@ -562,7 +562,7 @@ export default function Step4Proposal() {
                   className={`p-3 rounded-lg border transition-all cursor-pointer ${
                     proposal.soundtrack.selected === track.id
                       ? "bg-primary-500/10 border-primary-500"
-                      : "bg-gray-800/50 border-gray-700 hover:border-gray-600"
+                      : "bg-layer-2 border-subtle hover:border-gray-600"
                   }`}
                   onClick={() =>
                     updateProposal({
@@ -573,7 +573,7 @@ export default function Step4Proposal() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-medium text-white">{track.title}</p>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm text-muted">
                         {track.artist} • {track.genre}
                       </p>
                     </div>
@@ -583,7 +583,7 @@ export default function Step4Proposal() {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 text-center py-8">
+            <p className="text-muted text-center py-8">
               Clique em &quot;Regerar&quot; para sugerir trilhas
             </p>
           )}
@@ -619,12 +619,12 @@ export default function Step4Proposal() {
         >
           {proposal.description.content ? (
             <div className="prose prose-invert max-w-none">
-              <pre className="whitespace-pre-wrap text-sm text-gray-300 font-sans">
+              <pre className="whitespace-pre-wrap text-sm text-foreground-secondary font-sans">
                 {proposal.description.content}
               </pre>
             </div>
           ) : (
-            <p className="text-gray-500 text-center py-8">
+            <p className="text-muted text-center py-8">
               Clique em &quot;Regerar&quot; para gerar a descrição
             </p>
           )}
@@ -671,7 +671,7 @@ export default function Step4Proposal() {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 text-center py-8">
+            <p className="text-muted text-center py-8">
               Clique em &quot;Regerar&quot; para gerar as tags
             </p>
           )}
@@ -681,7 +681,7 @@ export default function Step4Proposal() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Settings className="w-5 h-5 text-gray-500" />
+              <Settings className="w-5 h-5 text-muted" />
               Setup de Upload
             </CardTitle>
           </CardHeader>
@@ -783,12 +783,12 @@ export default function Step4Proposal() {
                   className={`p-4 rounded-lg border transition-all ${
                     proposal.titlesAndThumbs.selectedVariation === variation.id
                       ? "bg-primary-500/10 border-primary-500"
-                      : "bg-gray-800/50 border-gray-700"
+                      : "bg-layer-2 border-subtle"
                   }`}
                 >
                   <div className="flex items-start gap-4">
                     {/* Thumbnail */}
-                    <div className="w-48 h-27 bg-gray-700 rounded-lg overflow-hidden flex-shrink-0">
+                    <div className="w-48 h-27 bg-layer-2 rounded-lg overflow-hidden flex-shrink-0">
                       {variation.thumbnailUrl ? (
                         <img
                           src={variation.thumbnailUrl}
@@ -797,14 +797,14 @@ export default function Step4Proposal() {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <Image className="w-8 h-8 text-gray-500" />
+                          <Image className="w-8 h-8 text-muted" />
                         </div>
                       )}
                     </div>
 
                     <div className="flex-1">
                       <h4 className="font-medium text-white mb-2">{variation.title}</h4>
-                      <p className="text-sm text-gray-400 mb-3">{variation.thumbnailPrompt}</p>
+                      <p className="text-sm text-muted mb-3">{variation.thumbnailPrompt}</p>
 
                       <div className="flex flex-wrap gap-2">
                         <Button
@@ -869,7 +869,7 @@ export default function Step4Proposal() {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 text-center py-8">
+            <p className="text-muted text-center py-8">
               Clique em &quot;Regerar&quot; para gerar títulos e prompts de thumbnail
             </p>
           )}
@@ -887,7 +887,7 @@ export default function Step4Proposal() {
                     </div>
                     <div>
                       <p className="font-medium text-white">Todos os assets aprovados!</p>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm text-muted">
                         Você pode prosseguir para o Studio de Criação.
                       </p>
                     </div>
@@ -899,7 +899,7 @@ export default function Step4Proposal() {
                     </div>
                     <div>
                       <p className="font-medium text-white">Aprovações pendentes</p>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm text-muted">
                         Gere e aprove todos os assets para continuar.
                       </p>
                     </div>
