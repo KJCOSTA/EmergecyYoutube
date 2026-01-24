@@ -699,7 +699,7 @@ model WorkflowState {
                   <strong>Resultado:</strong> Sistema visual 100% modernizado.
                   1000+ substituições de classes antigas (zinc-*, gray-*) por design tokens.
                   Glow effects aplicados em todos cards, modais e interações.
-                  Pronto para deploy com estilo "State of the Art" (AlphaGPT inspirado).
+                  Pronto para deploy com estilo &quot;State of the Art&quot; (AlphaGPT inspirado).
                 </p>
               </div>
             </div>
