@@ -63,22 +63,28 @@ export default function Modal({
       {/* Modal */}
       <div
         className={cn(
-          "relative w-full mx-4 bg-gray-900 rounded-xl shadow-2xl border border-gray-800",
+          "relative w-full mx-4 bg-gradient-to-br from-layer-1/95 via-indigo-950/20 to-layer-2/95 backdrop-blur-xl rounded-2xl shadow-2xl border-2 border-subtle",
           "max-h-[90vh] overflow-hidden flex flex-col",
-          "animate-fade-in",
+          "animate-fade-in shadow-glow-lg shadow-indigo-500/20",
           sizes[size]
         )}
       >
+        {/* Animated gradient mesh background */}
+        <div className="absolute inset-0 bg-gradient-mesh opacity-10 pointer-events-none" />
+
+        {/* Glow overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-blue-500/5 to-purple-500/5 pointer-events-none rounded-2xl" />
+
         {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+          <div className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-subtle bg-gradient-to-r from-layer-2/50 to-transparent backdrop-blur-sm">
             {title && (
-              <h2 className="text-lg font-semibold text-white">{title}</h2>
+              <h2 className="text-lg font-semibold bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent">{title}</h2>
             )}
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="p-1 rounded-lg hover:bg-gray-800 text-gray-400 hover:text-white transition-colors"
+                className="p-1 rounded-lg hover:bg-layer-2 text-muted hover:text-white transition-all hover:shadow-glow-sm"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -87,7 +93,7 @@ export default function Modal({
         )}
 
         {/* Content */}
-        <div className="flex-1 overflow-auto p-6">{children}</div>
+        <div className="relative z-10 flex-1 overflow-auto p-6">{children}</div>
       </div>
     </div>
   );

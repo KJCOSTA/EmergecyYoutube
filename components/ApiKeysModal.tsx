@@ -272,13 +272,13 @@ export default function ApiKeysModal() {
     >
       <div className="space-y-6">
         {/* Tabs */}
-        <div className="flex border-b border-gray-700">
+        <div className="flex border-b border-subtle">
           <button
             onClick={() => { setActiveTab('keys'); setSelectedProvider(null); }}
             className={`px-4 py-2 font-medium text-sm transition-colors flex items-center gap-2 ${
               activeTab === 'keys'
                 ? 'text-indigo-400 border-b-2 border-indigo-400'
-                : 'text-gray-400 hover:text-gray-200'
+                : 'text-muted hover:text-gray-200'
             }`}
           >
             <Key className="w-4 h-4" />
@@ -289,7 +289,7 @@ export default function ApiKeysModal() {
             className={`px-4 py-2 font-medium text-sm transition-colors flex items-center gap-2 ${
               activeTab === 'models'
                 ? 'text-indigo-400 border-b-2 border-indigo-400'
-                : 'text-gray-400 hover:text-gray-200'
+                : 'text-muted hover:text-gray-200'
             }`}
           >
             <Cpu className="w-4 h-4" />
@@ -302,7 +302,7 @@ export default function ApiKeysModal() {
           <div className="space-y-4">
             {!selectedProvider ? (
               <>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-muted">
                   Selecione um provedor para explorar os modelos disponíveis:
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -312,20 +312,20 @@ export default function ApiKeysModal() {
                       <button
                         key={provider.key}
                         onClick={() => setSelectedProvider(provider.key)}
-                        className={`p-4 rounded-lg border transition-all flex items-center gap-3 hover:bg-gray-800/50 ${
+                        className={`p-4 rounded-lg border transition-all flex items-center gap-3 hover:bg-layer-2/50 ${
                           connected
                             ? 'border-green-500/30 bg-green-900/10'
-                            : 'border-gray-700 bg-gray-800/30'
+                            : 'border-subtle bg-layer-2/30'
                         }`}
                       >
                         <span className="text-2xl">{provider.icon}</span>
                         <div className="text-left flex-1">
                           <p className="font-medium text-white text-sm">{provider.name}</p>
-                          <p className={`text-xs ${connected ? 'text-green-400' : 'text-gray-500'}`}>
+                          <p className={`text-xs ${connected ? 'text-green-400' : 'text-muted'}`}>
                             {connected ? 'Conectado' : 'Não configurado'}
                           </p>
                         </div>
-                        <ChevronRight className="w-4 h-4 text-gray-500" />
+                        <ChevronRight className="w-4 h-4 text-muted" />
                       </button>
                     );
                   })}
@@ -353,9 +353,9 @@ export default function ApiKeysModal() {
         {activeTab === 'keys' && (
           <>
         {/* Resumo */}
-        <div className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg">
+        <div className="flex items-center justify-between p-4 bg-layer-2/50 rounded-lg">
           <div>
-            <p className="text-sm text-gray-400">APIs Configuradas</p>
+            <p className="text-sm text-muted">APIs Configuradas</p>
             <p className="text-2xl font-bold text-white">
               {configuredCount} / {API_KEYS_CONFIG.length}
             </p>
@@ -400,7 +400,7 @@ export default function ApiKeysModal() {
             return (
               <div
                 key={config.key}
-                className="p-4 bg-gray-800/30 rounded-lg border border-gray-800"
+                className="p-4 bg-layer-2/30 rounded-lg border border-subtle"
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
@@ -450,7 +450,7 @@ export default function ApiKeysModal() {
                     <button
                       type="button"
                       onClick={() => toggleShowPassword(config.key)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-gray-300"
                     >
                       {showPassword[config.key] ? (
                         <EyeOff className="w-4 h-4" />
@@ -505,7 +505,7 @@ export default function ApiKeysModal() {
                 )}
 
                 {/* Info do env var */}
-                <p className="text-xs text-gray-500 mt-2 font-mono">
+                <p className="text-xs text-muted mt-2 font-mono">
                   ENV: {config.envVar}
                 </p>
               </div>
@@ -528,7 +528,7 @@ export default function ApiKeysModal() {
         )}
 
         {/* Botões de ação */}
-        <div className="flex justify-end gap-2 pt-4 border-t border-gray-800">
+        <div className="flex justify-end gap-2 pt-4 border-t border-subtle">
           <Button variant="ghost" onClick={closeApiKeyModal}>
             Fechar
           </Button>

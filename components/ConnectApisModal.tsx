@@ -85,18 +85,18 @@ export default function ConnectApisModal() {
 
   return (
     <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-in fade-in duration-200">
-      <div className="w-full max-w-3xl bg-[#09090b] border border-zinc-800 rounded-xl text-white shadow-2xl flex flex-col max-h-[85vh]">
+      <div className="w-full max-w-3xl bg-[#09090b] border border-subtle rounded-xl text-white shadow-2xl flex flex-col max-h-[85vh]">
         
-        <div className="flex items-center justify-between p-6 border-b border-zinc-800 bg-zinc-900/50 rounded-t-xl">
+        <div className="flex items-center justify-between p-6 border-b border-subtle bg-layer-1/50 rounded-t-xl">
           <div>
             <h2 className="text-xl font-bold flex items-center gap-2">
               <Key className="w-5 h-5 text-indigo-500" />
               Central de Conexões
             </h2>
-            <p className="text-zinc-400 text-sm">Gerencie chaves do Servidor (.env) ou Locais (Navegador).</p>
+            <p className="text-muted text-sm">Gerencie chaves do Servidor (.env) ou Locais (Navegador).</p>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-zinc-800 rounded-full transition-colors cursor-pointer">
-            <X className="w-6 h-6 text-zinc-400 hover:text-white" />
+          <button onClick={onClose} className="p-2 hover:bg-layer-2 rounded-full transition-colors cursor-pointer">
+            <X className="w-6 h-6 text-muted hover:text-white" />
           </button>
         </div>
 
@@ -116,17 +116,17 @@ export default function ConnectApisModal() {
               const isEditing = showEdit === key;
 
               return (
-                <div key={key} className={`border rounded-lg transition-all ${isConnected ? 'border-green-900/30 bg-green-900/5' : 'border-zinc-800 bg-zinc-900/30'}`}>
+                <div key={key} className={`border rounded-lg transition-all ${isConnected ? 'border-green-900/30 bg-green-900/5' : 'border-subtle bg-layer-1/30'}`}>
                   <div className="flex items-center justify-between p-4">
                     <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${isConnected ? 'bg-green-500/10' : 'bg-zinc-800'}`}>
+                      <div className={`p-2 rounded-lg ${isConnected ? 'bg-green-500/10' : 'bg-layer-2'}`}>
                         {isConnected ? <Check className="w-5 h-5 text-green-500" /> : <AlertCircle className="w-5 h-5 text-zinc-500" />}
                       </div>
                       <div>
                         <h3 className="font-semibold text-zinc-200">{API_NAMES[key]}</h3>
                         <div className="flex items-center gap-2 mt-1">
                           {isServerConnected && (
-                            <span className="flex items-center gap-1 text-[10px] bg-zinc-800 px-2 py-0.5 rounded text-zinc-300 border border-zinc-700">
+                            <span className="flex items-center gap-1 text-[10px] bg-layer-2 px-2 py-0.5 rounded text-zinc-300 border border-subtle">
                               <Server className="w-3 h-3" /> Servidor
                             </span>
                           )}
@@ -152,7 +152,7 @@ export default function ConnectApisModal() {
                             setShowEdit(isEditing ? null : key);
                             setManualInput(localKeys[storeKeyName] || "");
                           }}
-                          className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer border ${isEditing ? 'bg-zinc-700 border-zinc-600 text-white' : 'bg-zinc-900 border-zinc-700 text-zinc-300 hover:bg-zinc-800'}`}
+                          className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer border ${isEditing ? 'bg-zinc-700 border-zinc-600 text-white' : 'bg-layer-1 border-subtle text-zinc-300 hover:bg-layer-2'}`}
                         >
                           {isEditing ? 'Cancelar' : (isLocalConnected ? 'Editar' : 'Adicionar')}
                         </button>
@@ -161,13 +161,13 @@ export default function ConnectApisModal() {
                   </div>
 
                   {isEditing && (
-                    <div className="p-4 border-t border-zinc-800 bg-black/20 animate-in slide-in-from-top-2 duration-200">
-                      <label className="text-xs text-zinc-400 mb-1.5 block">Cole sua chave API aqui:</label>
+                    <div className="p-4 border-t border-subtle bg-black/20 animate-in slide-in-from-top-2 duration-200">
+                      <label className="text-xs text-muted mb-1.5 block">Cole sua chave API aqui:</label>
                       <div className="flex gap-2">
                         <input 
                           type="password"
                           placeholder="sk-..."
-                          className="flex-1 bg-zinc-950 border border-zinc-700 rounded-md py-2 px-3 text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                          className="flex-1 bg-zinc-950 border border-subtle rounded-md py-2 px-3 text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                           value={manualInput}
                           onChange={(e) => setManualInput(e.target.value)}
                         />
@@ -187,8 +187,8 @@ export default function ConnectApisModal() {
           )}
         </div>
         
-        <div className="p-6 border-t border-zinc-800 bg-zinc-900/50 rounded-b-xl flex justify-between items-center">
-          <button onClick={checkServerKeys} className="text-zinc-400 hover:text-white text-sm flex items-center gap-2 transition-colors cursor-pointer">
+        <div className="p-6 border-t border-subtle bg-layer-1/50 rounded-b-xl flex justify-between items-center">
+          <button onClick={checkServerKeys} className="text-muted hover:text-white text-sm flex items-center gap-2 transition-colors cursor-pointer">
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} /> Verificar
           </button>
           <button onClick={onClose} className="px-6 py-2.5 bg-white hover:bg-zinc-200 text-black font-bold rounded-lg transition-colors cursor-pointer shadow-lg shadow-white/5">
