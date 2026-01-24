@@ -129,27 +129,36 @@ export default function Layout({ children }: LayoutProps) {
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="p-6 border-b border-default">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-orion-400 to-cyan-400 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="w-10 h-10 flex items-center justify-center flex-shrink-0 relative">
                 {logoUrl ? (
                   <img
                     src={logoUrl}
-                    alt={systemName}
-                    className="w-full h-full object-cover"
+                    alt="ORION"
+                    className="w-full h-full object-contain drop-shadow-glow"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
                     }}
                   />
                 ) : (
-                  <span className="text-white font-bold text-sm">
-                    {systemName.substring(0, 2).toUpperCase()}
-                  </span>
+                  /* Fallback: Logo SVG ORION */
+                  <div className="relative w-full h-full bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-glow-md shadow-cyan-500/50 group-hover:shadow-glow-lg group-hover:shadow-cyan-400/70 transition-all duration-300">
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-xl" />
+                    <span className="relative text-white font-black text-lg tracking-tighter drop-shadow-lg">
+                      OR
+                    </span>
+                  </div>
                 )}
               </div>
               {(!isCollapsed || isMobile) && (
-                <span className="text-lg font-bold text-white whitespace-nowrap overflow-hidden">
-                  {systemName}
-                </span>
+                <div className="flex flex-col">
+                  <span className="text-xl font-bold bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent whitespace-nowrap group-hover:from-cyan-300 group-hover:via-blue-300 group-hover:to-cyan-300 transition-all duration-300">
+                    {systemName}
+                  </span>
+                  <span className="text-xs text-cyan-400 font-medium">
+                    AI-Powered Production
+                  </span>
+                </div>
               )}
             </Link>
           </div>
