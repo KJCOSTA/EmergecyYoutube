@@ -136,7 +136,7 @@ function WorkflowContent() {
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-white mb-2">Workflow em Andamento</h3>
-                <p className="text-sm text-zinc-400">
+                <p className="text-sm text-muted">
                   Detectamos um workflow anterior. Deseja continuar de onde parou ou iniciar um novo?
                 </p>
               </div>
@@ -170,13 +170,13 @@ function WorkflowContent() {
         <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
           WorkFlow de Produção
         </h1>
-        <p className="text-zinc-400">Siga as etapas para criar seu vídeo automaticamente</p>
+        <p className="text-muted">Siga as etapas para criar seu vídeo automaticamente</p>
       </div>
 
       {/* Timeline Horizontal */}
       <div className="relative mb-12">
         {/* Progress Bar */}
-        <div className="absolute top-[52px] left-0 right-0 h-1 bg-zinc-800 rounded-full">
+        <div className="absolute top-[52px] left-0 right-0 h-1 bg-layer-2 rounded-full">
           <div
             className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-500"
             style={{
@@ -217,8 +217,8 @@ function WorkflowContent() {
                         : isCurrent
                         ? `bg-gradient-to-br ${stepData.color} border-white shadow-lg shadow-purple-500/50 animate-pulse`
                         : isLocked
-                        ? 'bg-zinc-800 border-zinc-700'
-                        : 'bg-zinc-900 border-zinc-600 hover:border-indigo-500'
+                        ? 'bg-layer-2 border-subtle'
+                        : 'bg-layer-1 border-default hover:border-active'
                       }
                     `}
                   >
@@ -227,9 +227,9 @@ function WorkflowContent() {
                     ) : isCurrent ? (
                       <Icon className="w-12 h-12 text-white" />
                     ) : isLocked ? (
-                      <Lock className="w-12 h-12 text-zinc-600" />
+                      <Lock className="w-12 h-12 text-disabled" />
                     ) : (
-                      <Icon className="w-12 h-12 text-zinc-400" />
+                      <Icon className="w-12 h-12 text-muted" />
                     )}
                   </div>
 
@@ -243,14 +243,14 @@ function WorkflowContent() {
                           : isCurrent
                           ? 'text-white'
                           : isLocked
-                          ? 'text-zinc-600'
-                          : 'text-zinc-400'
+                          ? 'text-disabled'
+                          : 'text-muted'
                         }
                       `}
                     >
                       {stepData.title}
                     </h3>
-                    <p className="text-xs text-zinc-500 max-w-[120px]">
+                    <p className="text-xs text-muted max-w-[120px]">
                       {stepData.description}
                     </p>
                   </div>
@@ -263,7 +263,7 @@ function WorkflowContent() {
                         ? 'bg-green-500 text-white'
                         : isCurrent
                         ? 'bg-indigo-500 text-white'
-                        : 'bg-zinc-700 text-zinc-400'
+                        : 'bg-layer-2 text-muted'
                       }
                     `}
                   >
@@ -293,7 +293,7 @@ function WorkflowContent() {
             <h3 className="text-lg font-bold text-white mb-2">
               Etapa Atual: {workflowSteps.find(s => s.step === currentStep)?.title}
             </h3>
-            <p className="text-sm text-zinc-400 mb-4">
+            <p className="text-sm text-muted mb-4">
               {workflowSteps.find(s => s.step === currentStep)?.description}
             </p>
             <button
@@ -314,28 +314,28 @@ function WorkflowContent() {
 
       {/* Instructions */}
       <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+        <div className="bg-layer-1 border border-subtle rounded-xl p-6">
           <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center mb-3">
             <CheckCircle2 className="w-6 h-6 text-green-400" />
           </div>
           <h4 className="font-medium text-white mb-2">Etapas Completadas</h4>
-          <p className="text-sm text-zinc-500">Marcadas em verde. Você pode revisitar a qualquer momento.</p>
+          <p className="text-sm text-muted">Marcadas em verde. Você pode revisitar a qualquer momento.</p>
         </div>
 
-        <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+        <div className="bg-layer-1 border border-subtle rounded-xl p-6">
           <div className="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center mb-3">
             <Circle className="w-6 h-6 text-indigo-400" />
           </div>
           <h4 className="font-medium text-white mb-2">Etapa Atual</h4>
-          <p className="text-sm text-zinc-500">Destacada e pulsando. Clique para continuar o workflow.</p>
+          <p className="text-sm text-muted">Destacada e pulsando. Clique para continuar o workflow.</p>
         </div>
 
-        <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
-          <div className="w-10 h-10 bg-zinc-500/10 rounded-lg flex items-center justify-center mb-3">
-            <Lock className="w-6 h-6 text-zinc-400" />
+        <div className="bg-layer-1 border border-subtle rounded-xl p-6">
+          <div className="w-10 h-10 bg-layer-3/50 rounded-lg flex items-center justify-center mb-3">
+            <Lock className="w-6 h-6 text-muted" />
           </div>
           <h4 className="font-medium text-white mb-2">Etapas Bloqueadas</h4>
-          <p className="text-sm text-zinc-500">Complete as etapas anteriores para desbloquear.</p>
+          <p className="text-sm text-muted">Complete as etapas anteriores para desbloquear.</p>
         </div>
       </div>
     </div>
