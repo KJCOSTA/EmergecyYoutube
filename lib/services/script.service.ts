@@ -38,35 +38,35 @@ export const scriptService = {
 
     try {
       const { text } = await generateText({
-        model: anthropic('claude-sonnet-4-20250514'),
-        system: `You are an expert YouTube scriptwriter for the Brazilian market.
-Create engaging, value-packed scripts optimized for retention.
-Always respond in valid JSON format.`,
-        prompt: `Create a YouTube script for: "${topic}"
+        model: anthropic('claude-3-sonnet-20240229'),
+        system: `Você é um roteirista especialista em vídeos para o YouTube, focado no mercado brasileiro.
+Crie roteiros que sejam envolventes, repletos de valor e otimizados para retenção de audiência.
+Responda SEMPRE em Português do Brasil e utilize um formato JSON válido.`,
+        prompt: `Crie um roteiro de vídeo para o YouTube sobre o tema: "${topic}"
 
-Research insights:
-- Top topics: ${research.internalAnalysis?.topPerformingTopics?.join(', ') || 'N/A'}
-- Audience insights: ${research.internalAnalysis?.audienceInsights?.join(', ') || 'N/A'}
-- Trends: ${research.externalAnalysis?.trends?.join(', ') || 'N/A'}
+Utilize os seguintes insights da pesquisa:
+- Tópicos populares: ${research.internalAnalysis?.topPerformingTopics?.join(', ') || 'N/A'}
+- Insights da audiência: ${research.internalAnalysis?.audienceInsights?.join(', ') || 'N/A'}
+- Tendências: ${research.externalAnalysis?.trends?.join(', ') || 'N/A'}
 
-Requirements:
-1. Hook (first 30 seconds): Grab attention immediately
-2. Body: 3-5 main points with value and entertainment
-3. CTA: Clear call-to-action
+Requisitos:
+1. Gancho (primeiros 30s): Prenda a atenção imediatamente.
+2. Corpo: 3 a 5 pontos principais, entregando valor e entretenimento.
+3. CTA: Uma chamada para ação clara e direta.
 
-Return JSON:
+Retorne um objeto JSON com a seguinte estrutura:
 {
-  "title": "Video title (SEO optimized)",
-  "content": "Full script text",
+  "title": "Título do vídeo (otimizado para SEO)",
+  "content": "Texto completo do roteiro...",
   "sections": {
-    "hook": "Opening hook text",
-    "body": ["Point 1 text", "Point 2 text", ...],
-    "cta": "Call to action text"
+    "hook": "Texto do gancho inicial para prender a atenção.",
+    "body": ["Texto do ponto 1", "Texto do ponto 2", ...],
+    "cta": "Texto da chamada para ação."
   },
   "metadata": {
     "wordCount": 1500,
-    "estimatedDuration": "10-12 minutes",
-    "tone": "engaging and educational"
+    "estimatedDuration": "10-12 minutos",
+    "tone": "envolvente e educacional"
   }
 }`,
       });

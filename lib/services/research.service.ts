@@ -16,7 +16,7 @@ interface ResearchResult {
 
 export const researchService = {
   /**
-   * Execute deep research using Gemini 2.0
+   * Execute deep research using Gemini
    */
   async execute(projectId: string, topic: string): Promise<ResearchResult> {
     // Update research status
@@ -27,30 +27,31 @@ export const researchService = {
     });
 
     try {
-      // Use Gemini 2.0 for deep research
+      // Use Gemini for deep research
       const { text } = await generateText({
-        model: google('gemini-2.0-flash-exp'),
-        system: `You are a YouTube content research specialist for the Brazilian market.
-Your task is to analyze trends, audience behavior, and content opportunities.
-Always respond in valid JSON format.`,
-        prompt: `Conduct deep research on the topic: "${topic}"
+        model: google('gemini-pro'),
+        system: `Você é um especialista em pesquisa de conteúdo para o YouTube, focado no mercado brasileiro.
+Sua tarefa é analisar tendências, comportamento da audiência e oportunidades de conteúdo.
+Responda SEMPRE em Português do Brasil.
+Sua resposta DEVE ser um objeto JSON válido, sem nenhum texto ou formatação adicional.`,
+        prompt: `Realize uma pesquisa aprofundada sobre o tópico: "${topic}"
 
-Analyze:
-1. Internal factors: What topics perform well in this niche? What does the audience want?
-2. External factors: Current trends, competitor analysis, content gaps
+Analise:
+1.  Fatores internos: Quais tópicos relacionados performam bem neste nicho? O que a audiência busca?
+2.  Fatores externos: Tendências atuais, análise de concorrência e lacunas de conteúdo.
 
-Return a JSON object with this structure:
+Retorne um objeto JSON com a seguinte estrutura:
 {
   "internalAnalysis": {
-    "topPerformingTopics": ["topic1", "topic2", ...],
+    "topPerformingTopics": ["tópico1", "tópico2", ...],
     "audienceInsights": ["insight1", "insight2", ...],
-    "contentGaps": ["gap1", "gap2", ...]
+    "contentGaps": ["lacuna1", "lacuna2", ...]
   },
   "externalAnalysis": {
-    "trends": ["trend1", "trend2", ...],
-    "competitors": ["competitor insight 1", ...]
+    "trends": ["tendência1", "tendência2", ...],
+    "competitors": ["análise de concorrente 1", ...]
   },
-  "summary": "Brief summary of findings"
+  "summary": "Breve resumo dos achados"
 }`,
       });
 
