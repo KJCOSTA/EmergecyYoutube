@@ -1,25 +1,41 @@
-import fs from 'fs/promises';
-import path from 'path';
+import { PrismaClient } from '@prisma/client';
 import type { UserProfile } from '@/types';
 
-const PROFILE_FILE = path.join(process.cwd(), 'data', 'user-profile.json');
+const prisma = new PrismaClient();
+
+const defaultProfile = {
+  id: 'admin-001',
+  name: 'Admin',
+  email: 'admin@orion.com',
+  role: 'System Administrator',
+  avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin',
+  bio: 'ORION System Administrator',
+};
 
 /**
  * Get user profile
  */
 export async function getUserProfile(): Promise<UserProfile> {
   try {
-    const fileContent = await fs.readFile(PROFILE_FILE, 'utf-8');
-    return JSON.parse(fileContent) as UserProfile;
-  } catch (error) {
-    console.error('Failed to read user profile:', error);
-    // Return default profile if file doesn't exist
+    let profile = await prisma.userProfile.findUnique({
+      where: { id: 'admin-001' },
+    });
+
+    if (!profile) {
+      profile = await prisma.userProfile.create({
+        data: defaultProfile,
+      });
+    }
+
     return {
-      id: 'admin-001',
-      name: 'Admin',
-      role: 'System Administrator',
-      avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin',
-      bio: 'ORION System Administrator',
+      ...profile,
+      createdAt: profile.createdAt.toISOString(),
+      updatedAt: profile.updatedAt.toISOString(),
+    };
+  } catch (error) {
+    console.error('Failed to read user profile from database:', error);
+    return {
+      ...defaultProfile,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -33,19 +49,30 @@ export async function updateUserProfile(
   updates: Partial<Omit<UserProfile, 'id' | 'createdAt'>>
 ): Promise<UserProfile> {
   try {
-    const currentProfile = await getUserProfile();
+    const { name, email, role, avatarUrl, bio } = updates;
 
-    const updatedProfile: UserProfile = {
-      ...currentProfile,
-      ...updates,
-      updatedAt: new Date().toISOString(),
+    const updatedProfile = await prisma.userProfile.upsert({
+      where: { id: 'admin-001' },
+      update: {
+        name,
+        email,
+        role,
+        avatarUrl,
+        bio,
+      },
+      create: {
+        ...defaultProfile,
+        ...updates,
+      },
+    });
+
+    return {
+      ...updatedProfile,
+      createdAt: updatedProfile.createdAt.toISOString(),
+      updatedAt: updatedProfile.updatedAt.toISOString(),
     };
-
-    await fs.writeFile(PROFILE_FILE, JSON.stringify(updatedProfile, null, 2), 'utf-8');
-
-    return updatedProfile;
   } catch (error) {
-    console.error('Failed to update user profile:', error);
+    console.error('Failed to update user profile in database:', error);
     throw error;
   }
 }

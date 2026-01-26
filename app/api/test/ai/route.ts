@@ -1,123 +1,75 @@
-import { NextRequest, NextResponse } from "next/server";
-import { createOpenAI } from "@ai-sdk/openai";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
-import { createAnthropic } from "@ai-sdk/anthropic";
-import { generateText } from "ai";
+import { NextRequest, NextResponse } from 'next/server';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import Anthropic from '@anthropic-ai/sdk';
+import OpenAI from 'openai';
 
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    console.log("[AI TEST] Iniciando requisição de teste de IA");
+    const { provider, model, apiKey, prompt } = await req.json();
 
-    const body = await request.json();
-    const { provider, apiKey, model, prompt } = body;
-
-    // Validações
-    if (!provider || !apiKey || !model || !prompt) {
-      return NextResponse.json(
-        {
-          error: "Campos obrigatórios: provider, apiKey, model, prompt",
-          received: { provider, model, hasApiKey: !!apiKey, hasPrompt: !!prompt },
-        },
-        { status: 400 }
-      );
+    if (!provider || !model || !apiKey || !prompt) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    console.log("[AI TEST] Configuração:", {
-      provider,
-      model,
-      promptLength: prompt.length,
-    });
-
-    // Cria o provider baseado na seleção
-    let aiProvider: any;
-    let modelInstance: any;
+    let text = '';
+    let metadata = {};
 
     switch (provider) {
-      case "openai":
-        console.log("[AI TEST] Configurando OpenAI...");
-        aiProvider = createOpenAI({
-          apiKey: apiKey,
-        });
-        modelInstance = aiProvider(model);
+      case 'google':
+        try {
+          const genAI = new GoogleGenerativeAI(apiKey);
+          const aiModel = genAI.getGenerativeModel({ model });
+          const result = await aiModel.generateContent(prompt);
+          const response = await result.response;
+          text = response.text();
+        } catch (error) {
+          console.error('Google AI Error:', error);
+          return NextResponse.json({ error: 'Failed to generate content with Google AI', details: error.message }, { status: 500 });
+        }
         break;
 
-      case "google":
-        console.log("[AI TEST] Configurando Google Gemini...");
-        aiProvider = createGoogleGenerativeAI({
-          apiKey: apiKey,
-        });
-        modelInstance = aiProvider(model);
+      case 'anthropic':
+        try {
+          const anthropic = new Anthropic({ apiKey });
+          const msg = await anthropic.messages.create({
+            model,
+            max_tokens: 1024,
+            messages: [{ role: 'user', content: prompt }],
+          });
+          text = msg.content[0].text;
+        } catch (error) {
+          console.error('Anthropic AI Error:', error);
+          return NextResponse.json({ error: 'Failed to generate content with Anthropic AI', details: error.message }, { status: 500 });
+        }
         break;
 
-      case "anthropic":
-        console.log("[AI TEST] Configurando Anthropic Claude...");
-        aiProvider = createAnthropic({
-          apiKey: apiKey,
-        });
-        modelInstance = aiProvider(model);
+      case 'openai':
+        try {
+          const openai = new OpenAI({ apiKey });
+          const completion = await openai.chat.completions.create({
+            model,
+            messages: [{ role: 'user', content: prompt }],
+          });
+          text = completion.choices[0].message.content;
+        } catch (error) {
+          console.error('OpenAI Error:', error);
+          return NextResponse.json({ error: 'Failed to generate content with OpenAI', details: error.message }, { status: 500 });
+        }
         break;
 
       default:
-        return NextResponse.json(
-          {
-            error: `Provider '${provider}' não suportado`,
-            supportedProviders: ["openai", "google", "anthropic"],
-          },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: 'Invalid provider' }, { status: 400 });
     }
 
-    console.log("[AI TEST] Fazendo chamada para a API...");
-
-    const startTime = Date.now();
-
-    const result = await generateText({
-      model: modelInstance,
-      prompt: prompt,
-    });
-
-    const endTime = Date.now();
-    const duration = endTime - startTime;
-
-    console.log("[AI TEST] Resposta recebida em", duration, "ms");
-    console.log("[AI TEST] Texto gerado:", result.text.substring(0, 100) + "...");
-
     return NextResponse.json({
-      success: true,
       provider,
       model,
-      duration: `${duration}ms`,
-      usage: result.usage,
-      text: result.text,
-      metadata: {
-        finishReason: result.finishReason,
-        timestamp: new Date().toISOString(),
-      },
+      text,
+      metadata,
     });
 
   } catch (error) {
-    console.error("[AI TEST] Erro completo:", error);
-
-    // Captura detalhes específicos do erro
-    let errorDetails: any = {
-      message: error instanceof Error ? error.message : String(error),
-    };
-
-    // Se for um erro de API, tenta capturar mais detalhes
-    if (error && typeof error === "object") {
-      if ("status" in error) errorDetails.status = error.status;
-      if ("statusText" in error) errorDetails.statusText = error.statusText;
-      if ("code" in error) errorDetails.code = error.code;
-      if ("type" in error) errorDetails.type = error.type;
-    }
-
-    return NextResponse.json(
-      {
-        error: "Erro ao chamar API de IA",
-        details: errorDetails,
-        stack: error instanceof Error ? error.stack : undefined,
-      },
-      { status: 500 }
-    );
+    console.error('API Error:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

@@ -1,307 +1,122 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { ArrowLeft, Database } from "lucide-react";
-
-const PROVIDERS = {
-  openai: {
-    name: "OpenAI",
-    models: ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo"],
-  },
-  google: {
-    name: "Google Gemini",
-    models: ["gemini-1.5-pro", "gemini-1.5-flash", "gemini-2.0-flash-exp"],
-  },
-  anthropic: {
-    name: "Anthropic Claude",
-    models: ["claude-3-5-sonnet-latest", "claude-3-5-haiku-latest"],
-  },
-};
+import { useState } from 'react';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Select } from '@/components/ui/Select';
+import { Card } from '@/components/ui/Card';
+import { StreamingText } from '@/components/ui/StreamingText';
+import { AIModelSelector } from '@/components/AIModelSelector';
 
 export default function AITestPage() {
-  const router = useRouter();
-  const [provider, setProvider] = useState<keyof typeof PROVIDERS>("openai");
-  const [model, setModel] = useState(PROVIDERS.openai.models[0]);
-  const [apiKey, setApiKey] = useState("");
-  const [prompt, setPrompt] = useState("Olá! Por favor, responda em português: qual é a capital do Brasil?");
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [provider, setProvider] = useState('google');
+  const [model, setModel] = useState('gemini-1.5-flash');
+  const [apiKey, setApiKey] = useState('');
+  const [prompt, setPrompt] = useState('Explique a importância da velocidade de um site para o SEO.');
+  const [response, setResponse] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleProviderChange = (newProvider: keyof typeof PROVIDERS) => {
-    setProvider(newProvider);
-    setModel(PROVIDERS[newProvider].models[0]);
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setResponse(null);
 
-  const handleTest = async () => {
     try {
-      setLoading(true);
-      setError(null);
-      setResult(null);
-
-      console.log("[CLIENT] Testando API de IA:", {
-        provider,
-        model,
-        hasApiKey: !!apiKey,
-        promptLength: prompt.length,
-      });
-
-      const response = await fetch("/api/test/ai", {
-        method: "POST",
+      const res = await fetch('/api/test/ai', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          provider,
-          model,
-          apiKey,
-          prompt,
-        }),
+        body: JSON.stringify({ provider, model, apiKey, prompt }),
       });
 
-      const data = await response.json();
-
-      console.log("[CLIENT] Resposta do servidor:", data);
-
-      if (!response.ok) {
-        throw new Error(
-          data.details?.message || data.error || "Erro ao chamar API"
-        );
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.details || 'An error occurred');
       }
 
-      setResult(data);
-    } catch (err) {
-      console.error("[CLIENT] Erro ao testar API:", err);
-      setError(err instanceof Error ? err.message : String(err));
+      const data = await res.json();
+      setResponse(data);
+    } catch (error) {
+      setResponse({ error: error.message });
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-layer-1 text-foreground p-4 sm:p-6 lg:p-8">
       <div className="max-w-4xl mx-auto">
-        {/* Navigation */}
-        <div className="flex items-center justify-between mb-4">
-          <button
-            onClick={() => router.push("/test")}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 font-medium transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Voltar para Testes
-          </button>
-          <button
-            onClick={() => router.push("/test/db")}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium transition-colors"
-          >
-            <Database className="w-4 h-4" />
-            Teste de DB
-          </button>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h1 className="text-3xl font-bold mb-2 text-gray-800">
-            Teste de APIs de IA
+        <header className="mb-8">
+          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text pb-2">
+            AI Model Test Suite
           </h1>
-          <p className="text-sm text-gray-600 mb-6">
-            Página de diagnóstico técnico - Validação de tokens, SDKs e chamadas reais às APIs
+          <p className="text-muted-foreground mt-2">
+            Teste a integração com diferentes provedores e modelos de IA diretamente.
           </p>
+        </header>
 
-          <div className="space-y-4">
-            {/* Seleção de Provider */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Provider de IA:
-              </label>
-              <div className="grid grid-cols-3 gap-3">
-                {Object.entries(PROVIDERS).map(([key, value]) => (
-                  <button
-                    key={key}
-                    onClick={() => handleProviderChange(key as keyof typeof PROVIDERS)}
-                    className={`py-2 px-4 rounded-lg font-semibold transition-colors ${
-                      provider === key
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    }`}
-                    disabled={loading}
-                  >
-                    {value.name}
-                  </button>
-                ))}
-              </div>
+        <Card className="bg-layer-2 border-border-subtle p-6 rounded-lg shadow-lg mb-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <AIModelSelector 
+                provider={provider}
+                setProvider={setProvider}
+                model={model}
+                setModel={setModel}
+              />
             </div>
 
-            {/* Seleção de Modelo */}
             <div>
-              <label
-                htmlFor="model"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Modelo:
-              </label>
-              <select
-                id="model"
-                value={model}
-                onChange={(e) => setModel(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800"
-                disabled={loading}
-              >
-                {PROVIDERS[provider].models.map((m) => (
-                  <option key={m} value={m}>
-                    {m}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* API Key */}
-            <div>
-              <label
-                htmlFor="apiKey"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                API Key:
-              </label>
-              <input
-                id="apiKey"
+              <Input 
                 type="password"
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
-                placeholder="Cole sua API key aqui..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800"
-                disabled={loading}
+                placeholder="Sua API Key"
+                className="w-full bg-layer-3 border-border-subtle"
               />
-              <p className="text-xs text-gray-500 mt-1">
-                Sua API key é usada apenas para esta requisição e não é armazenada
-              </p>
             </div>
 
-            {/* Prompt */}
             <div>
-              <label
-                htmlFor="prompt"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Prompt:
-              </label>
               <textarea
-                id="prompt"
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
-                placeholder="Digite seu prompt aqui..."
-                rows={4}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800"
-                disabled={loading}
+                placeholder="Digite seu prompt"
+                className="w-full bg-layer-3 border-border-subtle rounded-md p-3 h-32 text-sm"
               />
             </div>
 
-            {/* Botão de teste */}
-            <button
-              onClick={handleTest}
-              disabled={loading || !apiKey.trim() || !prompt.trim()}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-            >
-              {loading ? "Testando API..." : "Executar Teste"}
-            </button>
+            <div className="flex justify-end">
+              <Button type="submit" isLoading={isLoading} className="bg-blue-600 hover:bg-blue-700 text-white">
+                {isLoading ? 'Testando...' : 'Testar Modelo'}
+              </Button>
+            </div>
+          </form>
+        </Card>
 
-            {/* Exibição de erro */}
-            {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                <h3 className="text-red-800 font-semibold mb-2">Erro:</h3>
-                <pre className="text-sm text-red-700 whitespace-pre-wrap break-words">
-                  {error}
-                </pre>
+        {response && (
+          <Card className="bg-layer-2 border-border-subtle p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-semibold mb-4">Resultado</h2>
+            {response.error ? (
+              <div className="text-red-400 bg-red-900/20 p-4 rounded-md">
+                <p className="font-bold">Erro no Teste:</p>
+                <p>{response.error}</p>
               </div>
-            )}
-
-            {/* Exibição do resultado */}
-            {result && (
+            ) : (
               <div className="space-y-4">
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                  <h3 className="text-green-800 font-semibold mb-2">
-                    Resposta da IA:
-                  </h3>
-                  <div className="bg-white p-4 rounded-lg">
-                    <p className="text-gray-800 whitespace-pre-wrap">
-                      {result.text}
-                    </p>
-                  </div>
+                <div>
+                  <strong className="text-muted-foreground">Provedor:</strong> {response.provider}
                 </div>
-
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <h3 className="text-blue-800 font-semibold mb-2">
-                    Metadados:
-                  </h3>
-                  <div className="space-y-1 text-sm text-blue-700">
-                    <p>
-                      <strong>Provider:</strong> {result.provider}
-                    </p>
-                    <p>
-                      <strong>Modelo:</strong> {result.model}
-                    </p>
-                    <p>
-                      <strong>Duração:</strong> {result.duration}
-                    </p>
-                    {result.usage && (
-                      <div>
-                        <p className="font-semibold mt-2">Uso de tokens:</p>
-                        <pre className="bg-white p-2 rounded text-xs mt-1 overflow-auto">
-                          {JSON.stringify(result.usage, null, 2)}
-                        </pre>
-                      </div>
-                    )}
-                  </div>
+                <div>
+                  <strong className="text-muted-foreground">Modelo:</strong> {response.model}
                 </div>
-
-                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                  <h3 className="text-gray-800 font-semibold mb-2">
-                    Resposta completa (JSON):
-                  </h3>
-                  <pre className="bg-white p-3 rounded text-xs text-gray-800 overflow-auto max-h-96">
-                    {JSON.stringify(result, null, 2)}
-                  </pre>
+                <div className="border-t border-border-subtle pt-4 mt-4">
+                  <StreamingText text={response.text} />
                 </div>
               </div>
             )}
-
-            {/* Instruções */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h3 className="text-blue-800 font-semibold mb-2">Instruções:</h3>
-              <ul className="text-sm text-blue-700 space-y-1 list-disc list-inside">
-                <li>Selecione o provider de IA desejado</li>
-                <li>Escolha o modelo</li>
-                <li>Cole sua API key (ela não será armazenada)</li>
-                <li>Escreva um prompt de teste</li>
-                <li>Clique em "Executar Teste" para fazer a chamada real</li>
-                <li>Abra o console do navegador (F12) para ver logs detalhados</li>
-                <li>Verifique o terminal do servidor para logs do backend</li>
-              </ul>
-            </div>
-
-            {/* Informações técnicas */}
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-              <h3 className="text-gray-800 font-semibold mb-2">
-                Informações técnicas:
-              </h3>
-              <ul className="text-sm text-gray-700 space-y-1">
-                <li>
-                  <strong>API Route:</strong> POST /api/test/ai
-                </li>
-                <li>
-                  <strong>SDK:</strong> Vercel AI SDK (ai@6.0.49)
-                </li>
-                <li>
-                  <strong>Providers:</strong> @ai-sdk/openai, @ai-sdk/google,
-                  @ai-sdk/anthropic
-                </li>
-                <li>
-                  <strong>Sem abstrações:</strong> Chamadas diretas às APIs oficiais
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+          </Card>
+        )}
       </div>
     </div>
   );
