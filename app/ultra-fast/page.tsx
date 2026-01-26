@@ -35,6 +35,7 @@ interface ScriptSection {
   text: string;
   duration: number;
   order: number;
+  regenerating?: boolean;
 }
 
 interface MediaOption {
@@ -120,6 +121,12 @@ export default function UltraFastV2() {
     const section = scriptSections.find((s) => s.id === sectionId);
     if (!section) return;
 
+    // Marcar seção como sendo regenerada
+    setScriptSections((prev) =>
+      prev.map((s) => (s.id === sectionId ? { ...s, regenerating: true } : s))
+    );
+    setError(null);
+
     try {
       const response = await fetch("/api/ultra-fast-v2/regenerate-section", {
         method: "POST",
@@ -132,14 +139,27 @@ export default function UltraFastV2() {
         }),
       });
 
-      if (!response.ok) throw new Error("Falha ao regenerar seção");
-
       const data = await response.json();
+
+      // Se houver erro na API, mostrar o erro real
+      if (!response.ok) {
+        throw new Error(data.error || data.details || "Falha ao regenerar seção");
+      }
+
+      // Atualizar seção com novo texto
       setScriptSections((prev) =>
-        prev.map((s) => (s.id === sectionId ? { ...s, text: data.text } : s))
+        prev.map((s) => (s.id === sectionId ? { ...s, text: data.text, regenerating: false } : s))
       );
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro ao regenerar seção");
+      // Remover flag de regenerating
+      setScriptSections((prev) =>
+        prev.map((s) => (s.id === sectionId ? { ...s, regenerating: false } : s))
+      );
+
+      // Mostrar erro detalhado
+      const errorMessage = err instanceof Error ? err.message : "Erro ao regenerar seção";
+      setError(`Erro ao regenerar seção: ${errorMessage}`);
+      console.error("Regenerate error:", err);
     }
   };
 
@@ -493,10 +513,15 @@ export default function UltraFastV2() {
                       <span className="text-xs text-muted">segundos</span>
                       <button
                         onClick={() => handleRegenerateSection(section.id)}
-                        className="p-1 hover:bg-layer-1 rounded transition-colors"
-                        title="Regenerar esta seção"
+                        disabled={section.regenerating}
+                        className={`p-1 hover:bg-layer-1 rounded transition-colors ${
+                          section.regenerating ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
+                        title={section.regenerating ? "Regenerando..." : "Regenerar esta seção"}
                       >
-                        <RefreshCw className="w-4 h-4 text-blue-400" />
+                        <RefreshCw className={`w-4 h-4 text-blue-400 ${
+                          section.regenerating ? "animate-spin" : ""
+                        }`} />
                       </button>
                       <button
                         onClick={() => handleRemoveSection(section.id)}

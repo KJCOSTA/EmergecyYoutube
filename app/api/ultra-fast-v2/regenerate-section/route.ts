@@ -7,6 +7,12 @@ export async function POST(request: NextRequest) {
   try {
     const { theme, currentText, duration, context } = await request.json();
 
+    console.log("=== REGENERATE SECTION REQUEST ===");
+    console.log("Theme:", theme);
+    console.log("Current text length:", currentText?.length);
+    console.log("Duration:", duration);
+    console.log("Context length:", context?.length);
+
     const prompt = `Reescreva esta seção de roteiro de vídeo sobre "${theme}":
 
 SEÇÃO ATUAL:
@@ -28,8 +34,11 @@ RESPONDA APENAS COM O NOVO TEXTO, NADA MAIS.`;
 
     // 1. Tentar Claude (Anthropic) primeiro
     const anthropicKey = process.env.ANTHROPIC_API_KEY;
+    console.log("Anthropic key available:", !!anthropicKey);
+
     if (anthropicKey) {
       try {
+        console.log("Trying Claude regeneration...");
         const anthropic = new Anthropic({ apiKey: anthropicKey });
         const response = await anthropic.messages.create({
           model: "claude-3-5-haiku-20241022",
@@ -40,11 +49,14 @@ RESPONDA APENAS COM O NOVO TEXTO, NADA MAIS.`;
         const content = response.content[0];
         if (content.type === "text") {
           const newText = content.text.trim().replace(/^["']|["']$/g, "");
+          console.log("✅ Claude regeneration SUCCESS, text length:", newText.length);
           return NextResponse.json({ text: newText });
         }
       } catch (error) {
-        console.error("Anthropic regenerate failed:", error);
+        console.error("❌ Anthropic regenerate failed:", error);
       }
+    } else {
+      console.log("⚠️ Skipping Claude - no API key");
     }
 
     // 2. Fallback para OpenAI
@@ -87,6 +99,7 @@ RESPONDA APENAS COM O NOVO TEXTO, NADA MAIS.`;
     }
 
     // 4. Último fallback: variação simples do texto atual
+    console.log("⚠️ All AI providers failed, using fallback variation");
     const variations = [
       `${currentText.replace(/\.$/, "")}. Este conceito é fundamental para entender o tema.`,
       `Vamos explorar isso: ${currentText}`,
@@ -95,6 +108,7 @@ RESPONDA APENAS COM O NOVO TEXTO, NADA MAIS.`;
     ];
 
     const randomVariation = variations[Math.floor(Math.random() * variations.length)];
+    console.log("✅ Fallback variation generated, length:", randomVariation.length);
     return NextResponse.json({ text: randomVariation });
   } catch (error) {
     console.error("Regenerate section error:", error);
