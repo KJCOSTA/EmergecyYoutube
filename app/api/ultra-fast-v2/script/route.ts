@@ -40,7 +40,38 @@ IMPORTANTE:
 - SEM placeholders, SEM "..."
 - A soma das durações deve ser próxima de ${targetDuration} segundos`;
 
-    // Tentar OpenAI primeiro
+    // 1. Tentar Claude (Anthropic) primeiro
+    const anthropicKey = process.env.ANTHROPIC_API_KEY;
+    if (anthropicKey) {
+      try {
+        const anthropic = new Anthropic({ apiKey: anthropicKey });
+        const response = await anthropic.messages.create({
+          model: "claude-3-5-sonnet-20241022",
+          max_tokens: 4096,
+          messages: [{ role: "user", content: prompt }],
+        });
+
+        const content = response.content[0];
+        if (content.type === "text") {
+          const jsonMatch = content.text.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            const parsed = JSON.parse(jsonMatch[0]);
+            const sections = parsed.sections.map((s: any, idx: number) => ({
+              id: `section-${Date.now()}-${idx}`,
+              text: s.text,
+              duration: s.duration || avgSectionDuration,
+              order: idx,
+            }));
+
+            return NextResponse.json({ sections });
+          }
+        }
+      } catch (error) {
+        console.error("Anthropic failed:", error);
+      }
+    }
+
+    // 2. Fallback para OpenAI
     const openaiKey = process.env.OPENAI_API_KEY;
     if (openaiKey) {
       try {
@@ -69,7 +100,7 @@ IMPORTANTE:
       }
     }
 
-    // Fallback para Google Gemini
+    // 3. Fallback para Google Gemini
     const googleKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
     if (googleKey) {
       try {
@@ -95,38 +126,7 @@ IMPORTANTE:
       }
     }
 
-    // Fallback para Anthropic
-    const anthropicKey = process.env.ANTHROPIC_API_KEY;
-    if (anthropicKey) {
-      try {
-        const anthropic = new Anthropic({ apiKey: anthropicKey });
-        const response = await anthropic.messages.create({
-          model: "claude-3-5-haiku-20241022",
-          max_tokens: 2048,
-          messages: [{ role: "user", content: prompt }],
-        });
-
-        const content = response.content[0];
-        if (content.type === "text") {
-          const jsonMatch = content.text.match(/\{[\s\S]*\}/);
-          if (jsonMatch) {
-            const parsed = JSON.parse(jsonMatch[0]);
-            const sections = parsed.sections.map((s: any, idx: number) => ({
-              id: `section-${Date.now()}-${idx}`,
-              text: s.text,
-              duration: s.duration || avgSectionDuration,
-              order: idx,
-            }));
-
-            return NextResponse.json({ sections });
-          }
-        }
-      } catch (error) {
-        console.error("Anthropic failed:", error);
-      }
-    }
-
-    // Último fallback: roteiro básico gerado programaticamente
+    // 4. Último fallback: roteiro básico gerado programaticamente
     const fallbackSections = [];
     for (let i = 0; i < numSections; i++) {
       let text = "";
