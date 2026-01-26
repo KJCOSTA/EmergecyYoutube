@@ -242,42 +242,78 @@ export default function DashboardPage() {
         </div>
       </motion.div>
 
-      {/* Quick Video CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="mb-6"
-      >
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-500/10 via-emerald-500/10 to-teal-500/10 border-2 border-green-500/30 p-6 group hover:border-green-400/60 hover:shadow-glow-lg hover:shadow-green-500/50 transition-all duration-300">
-          <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 via-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      {/* Quick Actions CTAs */}
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        {/* Quick Video */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-500/10 via-emerald-500/10 to-teal-500/10 border-2 border-green-500/30 p-6 group hover:border-green-400/60 hover:shadow-glow-lg hover:shadow-green-500/50 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 via-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-          <div className="relative z-10 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-green-500/50">
-                <Zap className="w-7 h-7 text-white" />
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-green-500/50">
+                  <Zap className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white">Quick Video</h3>
+                  <p className="text-xs text-muted">Automático · 3-5 min</p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-2xl font-bold text-white mb-1">Quick Video</h2>
-                <p className="text-foreground-muted">
-                  Gere um vídeo profissional em minutos com IA + mídia stock. Perfeito para publicar hoje!
-                </p>
-              </div>
+              <p className="text-sm text-foreground-muted mb-4">
+                Gere vídeos curtos automaticamente. Zero configuração, máxima velocidade.
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => router.push('/quick-video')}
+                className="w-full px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-500 text-white text-sm font-semibold shadow-lg shadow-green-500/50 hover:shadow-xl hover:shadow-green-400/70 transition-all duration-300 flex items-center justify-center gap-2"
+              >
+                <Zap className="w-4 h-4" />
+                Gerar Agora
+              </motion.button>
             </div>
-
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => router.push('/quick-video')}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold shadow-lg shadow-green-500/50 hover:shadow-xl hover:shadow-green-400/70 transition-all duration-300 flex items-center gap-2"
-            >
-              <Zap className="w-5 h-5" />
-              Gerar Agora
-              <ArrowRight className="w-4 h-4" />
-            </motion.button>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+
+        {/* Ultra-Fast V2 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+        >
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500/10 via-fuchsia-500/10 to-pink-500/10 border-2 border-purple-500/30 p-6 group hover:border-purple-400/60 hover:shadow-glow-lg hover:shadow-purple-500/50 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-fuchsia-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-fuchsia-500 flex items-center justify-center shadow-lg shadow-purple-500/50">
+                  <Sparkles className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white">Ultra-Fast</h3>
+                  <p className="text-xs text-muted">Controlado · 10-15 min</p>
+                </div>
+              </div>
+              <p className="text-sm text-foreground-muted mb-4">
+                Vídeos de 9 minutos com controle total. Edite roteiro, escolha mídia, configure tudo.
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => router.push('/ultra-fast')}
+                className="w-full px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white text-sm font-semibold shadow-lg shadow-purple-500/50 hover:shadow-xl hover:shadow-purple-400/70 transition-all duration-300 flex items-center justify-center gap-2"
+              >
+                <Sparkles className="w-4 h-4" />
+                Criar Vídeo
+              </motion.button>
+            </div>
+          </div>
+        </motion.div>
+      </div>
 
       {/* Bento Grid */}
       <motion.div
