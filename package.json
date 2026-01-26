@@ -4,10 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
+    "postinstall": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "db:push": "prisma db push",
     "vercel:comments": "tsx scripts/get-vercel-comments.ts",
     "vercel:comments:all": "tsx scripts/get-vercel-comments.ts --show-resolved"
   },
