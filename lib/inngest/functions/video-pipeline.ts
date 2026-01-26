@@ -67,3 +67,7 @@ export const videoWorkflow = inngest.createFunction(
     };
   }
 );
+
+
+// Export esperado pelo handler do Inngest
+export const functions = [videoWorkflow];
