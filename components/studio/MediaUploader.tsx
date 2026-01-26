@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Upload, CheckCircle2, X, FileVideo, FileImage, AlertCircle } from "lucide-react";
+import { Upload, X, FileVideo, FileImage, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
@@ -20,11 +20,6 @@ export default function MediaUploader({
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
-
-  const acceptedFormats = {
-    video: [".mp4", ".mov", ".webm", ".avi"],
-    image: [".jpg", ".jpeg", ".png", ".webp", ".gif"],
-  };
 
   const handleFile = useCallback(
     async (file: File) => {
@@ -77,7 +72,7 @@ export default function MediaUploader({
           setIsUploading(false);
           setUploadProgress(0);
         }, 500);
-      } catch (err) {
+      } catch {
         setError("Erro ao fazer upload do arquivo");
         setIsUploading(false);
         setUploadProgress(0);

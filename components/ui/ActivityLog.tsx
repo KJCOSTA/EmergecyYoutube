@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { CheckCircle2, XCircle, AlertCircle, Info, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -179,7 +179,7 @@ function useState<T>(initialState: T): [T, React.Dispatch<React.SetStateAction<T
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const setState = (value: T | ((prev: T) => T)) => {
-    const newValue = typeof value === "function" ? (value as Function)(ref.current) : value;
+    const newValue = typeof value === "function" ? (value as (prev: T) => T)(ref.current) : value;
     ref.current = newValue;
     forceUpdate();
   };

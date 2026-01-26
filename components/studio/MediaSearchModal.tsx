@@ -126,7 +126,7 @@ export default function MediaSearchModal({
           {/* Tipo */}
           <select
             value={mediaType}
-            onChange={(e) => setMediaType(e.target.value as any)}
+            onChange={(e) => setMediaType(e.target.value as "image" | "video" | "all")}
             className="bg-gray-900 border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
           >
             <option value="all">Todos</option>
@@ -137,7 +137,7 @@ export default function MediaSearchModal({
           {/* Fonte */}
           <select
             value={source}
-            onChange={(e) => setSource(e.target.value as any)}
+            onChange={(e) => setSource(e.target.value as "pexels" | "pixabay" | "all")}
             className="bg-gray-900 border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
           >
             <option value="all">Todas as fontes</option>
@@ -148,7 +148,7 @@ export default function MediaSearchModal({
           {/* Ordenação */}
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as any)}
+            onChange={(e) => setSortBy(e.target.value as "relevance" | "popular")}
             className="bg-gray-900 border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
           >
             <option value="relevance">Relevância</option>

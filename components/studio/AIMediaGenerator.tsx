@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Sparkles, DollarSign, Image, Video, Loader2, AlertCircle } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
