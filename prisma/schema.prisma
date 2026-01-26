@@ -165,6 +165,13 @@ model CompetitorAnalysis {
   project          Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
+model TestMessage {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 enum ProjectStatus {
   PENDING
   RESEARCHING
