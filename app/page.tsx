@@ -242,6 +242,43 @@ export default function DashboardPage() {
         </div>
       </motion.div>
 
+      {/* Quick Video CTA */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="mb-6"
+      >
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-500/10 via-emerald-500/10 to-teal-500/10 border-2 border-green-500/30 p-6 group hover:border-green-400/60 hover:shadow-glow-lg hover:shadow-green-500/50 transition-all duration-300">
+          <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 via-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+          <div className="relative z-10 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-green-500/50">
+                <Zap className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-white mb-1">Quick Video</h2>
+                <p className="text-foreground-muted">
+                  Gere um vídeo profissional em minutos com IA + mídia stock. Perfeito para publicar hoje!
+                </p>
+              </div>
+            </div>
+
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => router.push('/quick-video')}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold shadow-lg shadow-green-500/50 hover:shadow-xl hover:shadow-green-400/70 transition-all duration-300 flex items-center gap-2"
+            >
+              <Zap className="w-5 h-5" />
+              Gerar Agora
+              <ArrowRight className="w-4 h-4" />
+            </motion.button>
+          </div>
+        </div>
+      </motion.div>
+
       {/* Bento Grid */}
       <motion.div
         variants={containerVariants}
