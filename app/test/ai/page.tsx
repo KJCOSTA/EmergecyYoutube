@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { ArrowLeft, Database } from "lucide-react";
 
 const PROVIDERS = {
   openai: {
@@ -18,6 +20,7 @@ const PROVIDERS = {
 };
 
 export default function AITestPage() {
+  const router = useRouter();
   const [provider, setProvider] = useState<keyof typeof PROVIDERS>("openai");
   const [model, setModel] = useState(PROVIDERS.openai.models[0]);
   const [apiKey, setApiKey] = useState("");
@@ -79,6 +82,24 @@ export default function AITestPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-4xl mx-auto">
+        {/* Navigation */}
+        <div className="flex items-center justify-between mb-4">
+          <button
+            onClick={() => router.push("/test")}
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 font-medium transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Voltar para Testes
+          </button>
+          <button
+            onClick={() => router.push("/test/db")}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium transition-colors"
+          >
+            <Database className="w-4 h-4" />
+            Teste de DB
+          </button>
+        </div>
+
         <div className="bg-white rounded-lg shadow-lg p-6">
           <h1 className="text-3xl font-bold mb-2 text-gray-800">
             Teste de APIs de IA

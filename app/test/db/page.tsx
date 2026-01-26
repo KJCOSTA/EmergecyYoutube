@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { ArrowLeft, Brain } from "lucide-react";
 
 export default function DatabaseTestPage() {
+  const router = useRouter();
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -71,6 +74,24 @@ export default function DatabaseTestPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-2xl mx-auto">
+        {/* Navigation */}
+        <div className="flex items-center justify-between mb-4">
+          <button
+            onClick={() => router.push("/test")}
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 font-medium transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Voltar para Testes
+          </button>
+          <button
+            onClick={() => router.push("/test/ai")}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-100 hover:bg-purple-200 text-purple-700 font-medium transition-colors"
+          >
+            <Brain className="w-4 h-4" />
+            Teste de IA
+          </button>
+        </div>
+
         <div className="bg-white rounded-lg shadow-lg p-6">
           <h1 className="text-3xl font-bold mb-2 text-gray-800">
             Teste de Banco de Dados

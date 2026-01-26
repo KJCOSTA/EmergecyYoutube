@@ -24,6 +24,7 @@ import {
   Code2,
   Server,
   Brain,
+  FlaskConical,
 } from 'lucide-react';
 import {
   AreaChart,
@@ -387,6 +388,13 @@ export default function DashboardPage() {
                   description="Guias e referências"
                   onClick={() => router.push('/documentation')}
                   gradient="from-emerald-500 to-green-500"
+                />
+                <ActionButton
+                  icon={<FlaskConical className="w-4 h-4" />}
+                  label="Testes de Diagnóstico"
+                  description="Validar DB e APIs"
+                  onClick={() => router.push('/test')}
+                  gradient="from-amber-500 to-orange-500"
                 />
               </div>
             </div>
