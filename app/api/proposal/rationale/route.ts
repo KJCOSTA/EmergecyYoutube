@@ -78,7 +78,6 @@ Keep it to 2-3 paragraphs.`,
 ${researchContext}
 ${channelContext}`,
       temperature: 0.7,
-      maxTokens: 1000,
     });
 
     return NextResponse.json({ rationale: text.trim() });

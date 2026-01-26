@@ -69,7 +69,6 @@ Description summary: ${description?.substring(0, 500) || "N/A"}
 
 Trending topics in this niche: ${researchContext}`,
       temperature: 0.7,
-      maxTokens: 1000,
     });
 
     let tagsList: string[] = [];

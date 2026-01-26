@@ -73,7 +73,6 @@ Return a JSON object with this structure:
       prompt: `Suggest 3 copyright-free music tracks for a video about: ${theme}
 Mood: ${mood || "professional, engaging, educational"}`,
       temperature: 0.7,
-      maxTokens: 1000,
     });
 
     let suggestionsData;

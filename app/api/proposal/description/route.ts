@@ -80,7 +80,6 @@ ${scriptSummary}
 Research Insights:
 ${researchContext}`,
       temperature: 0.7,
-      maxTokens: 2000,
     });
 
     const description: Description = {

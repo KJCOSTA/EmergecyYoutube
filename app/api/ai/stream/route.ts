@@ -14,14 +14,12 @@ export async function POST(request: NextRequest) {
       systemPrompt,
       userPrompt,
       temperature = 0.7,
-      maxTokens = 4096,
     } = body as {
       provider: AIProvider;
       model: string;
       systemPrompt: string;
       userPrompt: string;
       temperature?: number;
-      maxTokens?: number;
     };
 
     if (!provider || !model || !userPrompt) {
@@ -73,7 +71,6 @@ export async function POST(request: NextRequest) {
       system: systemPrompt,
       prompt: userPrompt,
       temperature,
-      maxTokens,
     });
 
     return result.toDataStreamResponse();

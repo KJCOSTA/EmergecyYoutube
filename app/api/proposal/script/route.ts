@@ -108,7 +108,6 @@ ${researchContext}
 
 Generate a complete script with all sections. The total duration should be at least 8 minutes (480 seconds).`,
       temperature: 0.8,
-      maxTokens: 8000,
     });
 
     let scriptData;

@@ -101,7 +101,6 @@ Hook from script: ${scriptHook}
 
 Research insights: ${researchContext}`,
       temperature: 0.8,
-      maxTokens: 2000,
     });
 
     let variationsData;
