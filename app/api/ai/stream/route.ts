@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
       temperature,
     });
 
-    return result.toDataStreamResponse();
+    return result.toTextStreamResponse();
   } catch (error) {
     console.error("AI Streaming error:", error);
     return new Response(
