@@ -30,6 +30,8 @@ export type MediaSource = "pexels" | "pixabay" | "unsplash" | "ai_generated";
 // ============================================
 // Step 1: Menu de Entrada (Context)
 // ============================================
+export type WorkflowMode = "FAST" | "STANDARD" | "PREMIUM";
+
 export interface ChannelMetrics {
   videoId: string;
   title: string;
@@ -43,12 +45,41 @@ export interface ChannelMetrics {
   publishedAt: string;
 }
 
+export interface YouTubeStudioData {
+  id: string;
+  rawData: Record<string, unknown>;
+  totalVideos: number;
+  analyzedAt: string;
+  topPerformingVideos?: ChannelMetrics[];
+  avgCTR?: number;
+  avgWatchTime?: number;
+}
+
+export interface CompetitorData {
+  id: string;
+  videoUrl: string;
+  videoTitle: string | null;
+  videoDescription: string | null;
+  videoTags: string[];
+  analyzedAt: string;
+  videoId?: string;
+  thumbnailUrl?: string;
+  viewCount?: number;
+  likeCount?: number;
+}
+
 export interface ContextData {
   id: string;
   createdAt: string;
   updatedAt: string;
   theme: string;
   autoMode: boolean;
+  mode: WorkflowMode;
+  tagsFoco: string[];
+  linkConcorrente: string | null;
+  dadosConcorrente: CompetitorData | null;
+  transcricao: string | null;
+  planilhaYouTubeStudio: YouTubeStudioData | null;
   metrics: ChannelMetrics[];
   channelData: ChannelData | null;
 }
@@ -207,13 +238,14 @@ export interface TitleThumbnailVariation {
   thumbnailPrompt: string;
   thumbnailUrl: string | null;
   imageProvider: ImageProvider | null;
+  isReady: boolean;
 }
 
 export interface TitlesAndThumbs {
   id: string;
   status: AssetStatus;
-  variations: TitleThumbnailVariation[];
-  selectedVariation: string | null;
+  variations: TitleThumbnailVariation[]; // Sempre 3 variações (A, B, C)
+  allVariationsRequired: boolean; // Sempre true para teste A/B/C do YouTube
   generatedAt: string;
   approvedAt: string | null;
 }
@@ -237,6 +269,8 @@ export interface ProposalData {
 // ============================================
 // Step 5: Studio de Criação
 // ============================================
+export type MediaUploadSource = "user_upload" | "ai_generated" | "stock";
+
 export interface MediaItem {
   id: string;
   source: MediaSource;
@@ -246,6 +280,8 @@ export interface MediaItem {
   type: "image" | "video";
   duration: number | null;
   attribution: string;
+  uploadSource?: MediaUploadSource;
+  aiPrompt?: string;
 }
 
 export interface StoryboardScene {
@@ -271,9 +307,13 @@ export interface RenderData {
   id: string;
   createdAt: string;
   storyboardId: string;
-  status: "pending" | "rendering" | "completed" | "error";
+  status: "pending" | "rendering" | "completed" | "awaiting_preview" | "preview_approved" | "preview_rejected" | "error";
   progress: number;
   videoUrl: string | null;
+  videoPreviewUrl: string | null;
+  previewApproved: boolean;
+  previewApprovedAt: string | null;
+  previewNotes: string | null;
   error: string | null;
 }
 

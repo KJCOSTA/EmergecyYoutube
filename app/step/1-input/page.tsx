@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Upload, Youtube, Wifi, FileText, Sparkles, CheckCircle2, RefreshCw, ArrowRight, Users, Video, Eye, X, AlertCircle } from "lucide-react";
+import { Upload, Youtube, Wifi, FileText, Sparkles, CheckCircle2, RefreshCw, ArrowRight, Users, Video, Eye, X, AlertCircle, Link2, MessageSquare, Table, Tag } from "lucide-react";
 import { useAPIKeysStore } from '@/lib/api-keys-store';
 import { useUIStore, useWorkflowStore } from '@/lib/store';
 import { useRouter } from 'next/navigation';
+import { WorkflowMode } from '@/types';
+import ModeSelector from '@/components/workflow/ModeSelector';
 
 interface ServerStatus {
   openai?: boolean;
@@ -40,6 +42,15 @@ export default function InputPage() {
   const [loadingChannel, setLoadingChannel] = useState(false);
   const [hasFetchedChannel, setHasFetchedChannel] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Novos campos do Pack #1
+  const [selectedMode, setSelectedMode] = useState<WorkflowMode>("FAST");
+  const [tagsFoco, setTagsFoco] = useState<string>("");
+  const [linkConcorrente, setLinkConcorrente] = useState<string>("");
+  const [transcricao, setTranscricao] = useState<string>("");
+  const [youtubeSpreadsheet, setYoutubeSpreadsheet] = useState<File | null>(null);
+  const [isDraggingSpreadsheet, setIsDraggingSpreadsheet] = useState(false);
+  const spreadsheetInputRef = useRef<HTMLInputElement>(null);
 
   // Pega as chaves que você salvou no navegador
   const { keys: localKeys } = useAPIKeysStore();
@@ -183,18 +194,83 @@ export default function InputPage() {
     }
   };
 
+  // Funções para planilha do YouTube Studio
+  const handleSpreadsheetSelect = useCallback((file: File) => {
+    const validExtensions = ['.xlsx', '.xls', '.csv'];
+    const isValid = validExtensions.some(ext => file.name.toLowerCase().endsWith(ext));
+
+    if (file && isValid) {
+      setYoutubeSpreadsheet(file);
+    } else {
+      alert('Por favor, selecione um arquivo válido (.xlsx, .xls ou .csv).');
+    }
+  }, []);
+
+  const handleSpreadsheetDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDraggingSpreadsheet(true);
+  }, []);
+
+  const handleSpreadsheetDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDraggingSpreadsheet(false);
+  }, []);
+
+  const handleSpreadsheetDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDraggingSpreadsheet(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleSpreadsheetSelect(file);
+  }, [handleSpreadsheetSelect]);
+
+  const handleSpreadsheetInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleSpreadsheetSelect(file);
+  };
+
+  const handleClickSpreadsheetUpload = () => {
+    spreadsheetInputRef.current?.click();
+  };
+
+  const removeSpreadsheet = () => {
+    setYoutubeSpreadsheet(null);
+    if (spreadsheetInputRef.current) {
+      spreadsheetInputRef.current.value = '';
+    }
+  };
+
   // Avançar para próxima etapa
-  const canAdvance = theme.trim().length > 0 && isAIConnected;
+  // Validação: pelo menos um campo deve estar preenchido além do modo
+  const hasAnyInput =
+    theme.trim().length > 0 ||
+    linkConcorrente.trim().length > 0 ||
+    transcricao.trim().length > 0 ||
+    youtubeSpreadsheet !== null;
+
+  const canAdvance = hasAnyInput && isAIConnected;
 
   const handleAdvance = () => {
     if (canAdvance) {
       const now = new Date().toISOString();
+
+      // Processar tags de foco (separar por vírgula)
+      const tagsArray = tagsFoco
+        .split(',')
+        .map(tag => tag.trim())
+        .filter(tag => tag.length > 0);
+
       setContext({
         id: crypto.randomUUID(),
         createdAt: now,
         updatedAt: now,
-        theme: theme.trim(),
+        theme: theme.trim() || null,
         autoMode: false,
+        mode: selectedMode,
+        tagsFoco: tagsArray,
+        linkConcorrente: linkConcorrente.trim() || null,
+        dadosConcorrente: null, // Será preenchido na próxima etapa se houver link
+        transcricao: transcricao.trim() || null,
+        planilhaYouTubeStudio: null, // Será processado na próxima etapa se houver arquivo
         metrics: [],
         channelData: channelInfo ? {
           channelId: "user-channel",
@@ -232,6 +308,75 @@ export default function InputPage() {
           {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Wifi className="w-4 h-4" />}
           {isYoutubeConnected && isAIConnected ? "Conexões Ativas" : "Conectar APIs"}
         </button>
+      </div>
+
+      {/* Seletor de Modo de Workflow */}
+      <ModeSelector
+        selectedMode={selectedMode}
+        onSelect={setSelectedMode}
+      />
+
+      {/* Planilha do YouTube Studio */}
+      <div className="bg-layer-1 border border-subtle rounded-xl p-4 sm:p-6">
+        <div className="flex items-center gap-3 mb-4 sm:mb-6">
+          <div className="p-2 sm:p-2.5 bg-green-500/10 rounded-lg">
+            <Table className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-white text-base sm:text-lg">Planilha do YouTube Studio</h3>
+            <p className="text-xs text-muted">Analise dados de performance dos seus vídeos (opcional)</p>
+          </div>
+        </div>
+
+        <input
+          ref={spreadsheetInputRef}
+          type="file"
+          accept=".xlsx,.xls,.csv"
+          onChange={handleSpreadsheetInputChange}
+          className="hidden"
+        />
+
+        {youtubeSpreadsheet ? (
+          <div className="border-2 border-green-500/30 bg-green-500/5 rounded-xl p-4 sm:p-6">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="p-2 sm:p-3 bg-green-500/10 rounded-full flex-shrink-0">
+                  <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-green-500" />
+                </div>
+                <div className="min-w-0">
+                  <p className="font-medium text-green-400 text-sm sm:text-base truncate">{youtubeSpreadsheet.name}</p>
+                  <p className="text-muted text-xs">{(youtubeSpreadsheet.size / 1024).toFixed(1)} KB</p>
+                </div>
+              </div>
+              <button
+                onClick={removeSpreadsheet}
+                className="p-2 hover:bg-red-500/10 rounded-lg transition-colors flex-shrink-0"
+              >
+                <X className="w-4 h-4 text-red-400" />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div
+            onClick={handleClickSpreadsheetUpload}
+            onDragOver={handleSpreadsheetDragOver}
+            onDragLeave={handleSpreadsheetDragLeave}
+            onDrop={handleSpreadsheetDrop}
+            className={`border-2 border-dashed rounded-xl h-32 sm:h-40 flex flex-col items-center justify-center text-muted transition-all cursor-pointer ${
+              isDraggingSpreadsheet
+                ? 'border-green-500 bg-green-500/10'
+                : 'border-subtle hover:bg-layer-2/50 hover:border-zinc-600'
+            }`}
+          >
+            <div className={`p-2 sm:p-3 rounded-full mb-2 sm:mb-3 shadow-inner transition-colors ${isDraggingSpreadsheet ? 'bg-green-500/20' : 'bg-layer-2'}`}>
+              <Table className={`w-5 h-5 sm:w-6 sm:h-6 ${isDraggingSpreadsheet ? 'text-green-400' : 'text-muted'}`} />
+            </div>
+            <p className="font-medium text-foreground-secondary text-sm sm:text-base">
+              {isDraggingSpreadsheet ? 'Solte a planilha aqui' : 'Clique ou arraste a planilha'}
+            </p>
+            <p className="text-xs text-muted mt-1">XLSX, XLS ou CSV exportado do YouTube Studio</p>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
@@ -409,7 +554,7 @@ export default function InputPage() {
           </div>
           <div>
             <h3 className="font-semibold text-white text-base sm:text-lg">Definição de Tema</h3>
-            <p className="text-xs text-muted">O que vamos criar hoje?</p>
+            <p className="text-xs text-muted">O que vamos criar hoje? (opcional se houver outras fontes)</p>
           </div>
         </div>
 
@@ -422,14 +567,77 @@ export default function InputPage() {
         />
       </div>
 
+      {/* Tags de Foco */}
+      <div className="bg-layer-1 border border-subtle rounded-xl p-4 sm:p-6">
+        <div className="flex items-center gap-3 mb-4 sm:mb-6">
+          <div className="p-2 sm:p-2.5 bg-purple-500/10 rounded-lg">
+            <Tag className="w-4 h-4 sm:w-5 sm:h-5 text-purple-500" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-white text-base sm:text-lg">Tags de Foco</h3>
+            <p className="text-xs text-muted">Palavras-chave para direcionar o conteúdo (opcional)</p>
+          </div>
+        </div>
+
+        <input
+          type="text"
+          value={tagsFoco}
+          onChange={(e) => setTagsFoco(e.target.value)}
+          placeholder="Ex: motivação, empreendedorismo, sucesso (separe por vírgula)"
+          className="w-full bg-black/50 border border-zinc-700 rounded-xl py-3 sm:py-4 px-3 sm:px-4 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all text-sm sm:text-base"
+        />
+      </div>
+
+      {/* Link de Vídeo Concorrente */}
+      <div className="bg-layer-1 border border-subtle rounded-xl p-4 sm:p-6">
+        <div className="flex items-center gap-3 mb-4 sm:mb-6">
+          <div className="p-2 sm:p-2.5 bg-cyan-500/10 rounded-lg">
+            <Link2 className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-500" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-white text-base sm:text-lg">Vídeo de Referência</h3>
+            <p className="text-xs text-muted">Link de um vídeo para análise e inspiração (opcional)</p>
+          </div>
+        </div>
+
+        <input
+          type="url"
+          value={linkConcorrente}
+          onChange={(e) => setLinkConcorrente(e.target.value)}
+          placeholder="https://www.youtube.com/watch?v=..."
+          className="w-full bg-black/50 border border-zinc-700 rounded-xl py-3 sm:py-4 px-3 sm:px-4 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all text-sm sm:text-base"
+        />
+      </div>
+
+      {/* Transcrição de Vídeo */}
+      <div className="bg-layer-1 border border-subtle rounded-xl p-4 sm:p-6">
+        <div className="flex items-center gap-3 mb-4 sm:mb-6">
+          <div className="p-2 sm:p-2.5 bg-pink-500/10 rounded-lg">
+            <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-white text-base sm:text-lg">Transcrição de Vídeo</h3>
+            <p className="text-xs text-muted">Cole a transcrição de um vídeo para análise (opcional)</p>
+          </div>
+        </div>
+
+        <textarea
+          value={transcricao}
+          onChange={(e) => setTranscricao(e.target.value)}
+          placeholder="Cole aqui a transcrição completa de um vídeo..."
+          rows={6}
+          className="w-full bg-black/50 border border-zinc-700 rounded-xl py-3 sm:py-4 px-3 sm:px-4 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all text-sm sm:text-base resize-y"
+        />
+      </div>
+
       {/* Botão de Avançar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-4 border-t border-subtle">
         {!canAdvance && (
           <div className="flex items-center gap-2 text-amber-400 bg-amber-500/10 px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-xs sm:text-sm order-2 sm:order-1">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
             <span>
-              {!theme.trim()
-                ? 'Defina um tema para continuar'
+              {!hasAnyInput
+                ? 'Preencha pelo menos um campo de input (tema, link, transcrição ou planilha)'
                 : !isAIConnected
                 ? 'Conecte pelo menos uma API de IA'
                 : ''}
