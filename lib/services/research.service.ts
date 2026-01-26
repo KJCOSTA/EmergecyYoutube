@@ -52,7 +52,6 @@ Return a JSON object with this structure:
   },
   "summary": "Brief summary of findings"
 }`,
-        maxTokens: 4096,
       });
 
       // Parse the response

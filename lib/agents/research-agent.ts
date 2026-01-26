@@ -39,7 +39,6 @@ Analyze and return JSON with:
   "trends": ["trend1", "trend2", ...],
   "competitors": ["competitor insight 1", ...]
 }`,
-    maxTokens: 4096,
   });
 
   const jsonMatch = text.match(/\{[\s\S]*\}/);

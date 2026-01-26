@@ -72,7 +72,6 @@ Return JSON:
     "tone": "engaging and educational"
   }
 }`,
-    maxTokens: 8192,
   });
 
   const jsonMatch = text.match(/\{[\s\S]*\}/);

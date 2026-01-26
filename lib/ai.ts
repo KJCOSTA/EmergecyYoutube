@@ -59,7 +59,6 @@ export interface GenerationRequest {
   systemPrompt: string;
   userPrompt: string;
   temperature?: number;
-  maxTokens?: number;
 }
 
 export async function generateWithAI(request: GenerationRequest): Promise<string> {

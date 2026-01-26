@@ -69,7 +69,6 @@ Return JSON:
     "tone": "engaging and educational"
   }
 }`,
-        maxTokens: 8192,
       });
 
       // Parse the response

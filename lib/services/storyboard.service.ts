@@ -68,7 +68,6 @@ Return JSON:
     }
   ]
 }`,
-        maxTokens: 8192,
       });
 
       // Parse the response
