@@ -15,30 +15,79 @@ export async function POST(request: NextRequest) {
     const avgSectionDuration = 33;
     const numSections = Math.round(targetDuration / avgSectionDuration);
 
-    const prompt = `Crie um roteiro de vídeo profissional e envolvente sobre: "${theme}"
+    const prompt = `Você é um especialista em copywriting para YouTube com foco em RETENÇÃO e ENGAJAMENTO.
 
-REQUISITOS CRÍTICOS:
-- DURAÇÃO TOTAL ALVO: ${targetDuration} segundos (~${Math.floor(targetDuration / 60)} minutos)
-- NÚMERO DE SEÇÕES: ${numSections} seções
-- CADA SEÇÃO: 25-40 segundos de narração
-- ESTRUTURA: Gancho inicial → Desenvolvimento (${numSections - 3} seções) → Resumo → Call-to-action final
+Crie um roteiro de vídeo sobre: "${theme}"
+
+📊 ESPECIFICAÇÕES TÉCNICAS:
+- DURAÇÃO TOTAL: ${targetDuration} segundos (~${Math.floor(targetDuration / 60)} minutos)
+- APROXIMADAMENTE ${Math.floor((targetDuration / 60) * 180)} PALAVRAS (~180 palavras por minuto de narração)
+- ${numSections} SEÇÕES com timing estratégico
+- Cada seção: 25-40 segundos de narração
+
+🎯 ESTRUTURA OBRIGATÓRIA:
+
+**SEÇÃO 1 - ABERTURA MAGNÉTICA (0-30s):**
+- Promessa CLARA do que o espectador vai receber
+- Palavras-chave do tema logo no INÍCIO (para algoritmo do YouTube)
+- Loop aberto: "E ao final, vou deixar [algo especial] para você"
+- CTA RÁPIDO: "Se ainda não é inscrito, se inscreva" OU "Torne-se membro e receba conteúdos exclusivos"
+- SEM introdução longa
+
+**SEÇÕES 2-${numSections - 2} - DESENVOLVIMENTO (Corpo Principal):**
+- Storytelling emocional conectado ao tema
+- Narrativa envolvente que mantém atenção
+- Cada seção flui naturalmente para a próxima
+- Linguagem acessível e profissional
+
+**SEÇÃO ${numSections - 1} - PONTO DE REENGAJAMENTO (4-6 min):**
+- Pedir compartilhamento: "Compartilhe com pelo menos 3 pessoas que você ama, assim você se torna um canal de luz"
+- NUNCA fazer isso no meio de uma oração/leitura, sempre DEPOIS
+
+**SEÇÃO ${numSections} - CLÍMAX E RESOLUÇÃO (Últimos 2 min):**
+- Conclusão poderosa que cumpre o prometido
+- Afirmação memorável
+- ENTREGA DO LOOP: Mencionar grupo VIP WhatsApp + Ebook "Orações da Família Brasileira"
+- CTA final: "Clique no primeiro link fixado ou na descrição para entrar na lista VIP do WhatsApp"
+
+❌ PALAVRAS E FRASES PROIBIDAS (NUNCA USAR):
+- blindar / blindagem
+- escudo
+- chave
+- muralha
+- "se você sente"
+- "você não chegou aqui por acaso"
+- "respire fundo"
+
+✅ REGRAS OBRIGATÓRIAS:
+- Linguagem clara, direta e emocional
+- NUNCA promessas de ganhos materiais
+- NUNCA linguagem teológica complexa
+- CTAs estratégicos sem ser invasivo
+- Foco em RETENÇÃO do primeiro ao último segundo
+
+🎨 FLEXIBILIDADE CRIATIVA:
+Você tem TOTAL autonomia para quebrar padrões quando isso:
+- Maximizar performance algorítmica
+- Aumentar potencial de viralização
+- Surfar tendências do nicho
+- A estratégia sempre prevalece sobre o padrão
 
 FORMATO DA RESPOSTA (APENAS JSON):
 {
   "sections": [
     {
-      "text": "Texto completo da seção aqui (2-4 frases curtas e impactantes)",
+      "text": "Texto completo da seção aqui (rico, emotivo, estratégico)",
       "duration": 30
     }
   ]
 }
 
 IMPORTANTE:
-- Texto claro, direto e engajador
-- Cada seção deve ter sentido próprio mas fluir naturalmente para a próxima
-- Linguagem acessível e profissional
+- Cada seção deve ter texto COMPLETO, NÃO resumos
 - SEM placeholders, SEM "..."
-- A soma das durações deve ser próxima de ${targetDuration} segundos`;
+- Duração total deve somar ~${targetDuration}s
+- Foco em RETER o espectador do início ao fim`;
 
     // 1. Tentar Claude (Anthropic) primeiro
     const anthropicKey = process.env.ANTHROPIC_API_KEY;
