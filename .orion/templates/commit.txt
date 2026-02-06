@@ -1,0 +1,30 @@
+tipo: VERBO descrição curta em português
+
+Descrição detalhada em português (opcional).
+
+DETALHES:
+- Arquivos modificados:
+- Funcionalidade:
+- Breaking changes: Não
+
+---
+
+TIPOS DISPONÍVEIS:
+- feat: Nova funcionalidade
+- fix: Correção de bug
+- style: Mudanças visuais/CSS
+- refactor: Refatoração
+- docs: Documentação
+- perf: Performance
+- test: Testes
+- chore: Build/config
+
+VERBOS RECOMENDADOS (MAIÚSCULOS):
+- ADICIONA
+- CORRIGE
+- MODERNIZA
+- ATUALIZA
+- REMOVE
+- IMPLEMENTA
+- REORGANIZA
+- OTIMIZA
